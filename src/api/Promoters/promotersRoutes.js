@@ -2,7 +2,7 @@ import axios from 'axios'
 export const signUp = async (signUpBodySend) => {
     try {
         // console.log('from api call', signUpBodySend)
-        const signUpResponse = await axios.post(process.env.REACT_APP_API + "/createPromoter",
+        const signUpResponse = await axios.post(process.env.REACT_APP_API_URL + "/createPromoter",
         signUpBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -17,7 +17,7 @@ export const signUp = async (signUpBodySend) => {
 export const logIn = async (logInBodySend) => {
     try {
         console.log('from api call', logInBodySend)
-        const logInResponse = await axios.post(process.env.REACT_APP_API + "/logInPromoter",
+        const logInResponse = await axios.post(process.env.REACT_APP_API_URL + "/logInPromoter",
         logInBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -32,7 +32,7 @@ export const logIn = async (logInBodySend) => {
 export const getPromoterById = async (promoterBodySend)=>{
     try {
         console.log('from api call', promoterBodySend)
-        const promoterResponse = await axios.post(process.env.REACT_APP_API + "/getPromoter",
+        const promoterResponse = await axios.post(process.env.REACT_APP_API_URL + "/getPromoter",
         promoterBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -47,7 +47,7 @@ export const getPromoterById = async (promoterBodySend)=>{
 export const updatePromoter = async (promoterBodySend)=>{
     try {
         console.log('from api call', promoterBodySend)
-        const promoterResponse = await axios.post(process.env.REACT_APP_API + "/updatePromoter",
+        const promoterResponse = await axios.post(process.env.REACT_APP_API_URL + "/updatePromoter",
         promoterBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )

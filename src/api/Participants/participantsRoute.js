@@ -2,7 +2,7 @@ import axios from 'axios'
 export const createParticipant = async (participantBodySend) => {
     try {
         // console.log('from api call', signUpBodySend)
-        const participantResponse = await axios.post(process.env.REACT_APP_API + "/createParticipant",
+        const participantResponse = await axios.post(process.env.REACT_APP_API_URL + "/createParticipant",
         participantBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -18,7 +18,7 @@ export const createParticipant = async (participantBodySend) => {
 export const numberOfParticipants = async (participantBodySend) => {
     try {
         // console.log('from api call', signUpBodySend)
-        const participantResponse = await axios.post(process.env.REACT_APP_API + "/numberOfParticipants",
+        const participantResponse = await axios.post(process.env.REACT_APP_API_URL + "/numberOfParticipants",
         participantBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )

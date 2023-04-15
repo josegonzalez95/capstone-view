@@ -2,7 +2,7 @@ import axios from 'axios'
 export const createEvent = async (eventBodySend) => {
     try {
         console.log('from api call', eventBodySend)
-        const eventResponse = await axios.post(process.env.REACT_APP_API + "/createEvent",
+        const eventResponse = await axios.post(process.env.REACT_APP_API_URL + "/createEvent",
         eventBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -17,7 +17,7 @@ export const createEvent = async (eventBodySend) => {
 export const getAllParticipantsByEvent=async(bodySend)=>{
     try {
         console.log('from api call', bodySend)
-        const queryResponse = await axios.post(process.env.REACT_APP_API + "/participantsByEvent",
+        const queryResponse = await axios.post(process.env.REACT_APP_API_URL + "/participantsByEvent",
         bodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -32,7 +32,7 @@ export const getAllParticipantsByEvent=async(bodySend)=>{
 export const getAllEvents = async () => {
     try {
         // console.log('get all from api call')
-        const eventResponse = await axios.get(process.env.REACT_APP_API + "/getAllEvents",
+        const eventResponse = await axios.get(process.env.REACT_APP_API_URL + "/getAllEvents",
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
         const data = eventResponse.data
@@ -46,7 +46,7 @@ export const getAllEvents = async () => {
 export const getEvent = async (eventBodySend) => {
     try {
         // console.log('get all from api call')
-        const eventResponse = await axios.post(process.env.REACT_APP_API + "/getEvent",
+        const eventResponse = await axios.post(process.env.REACT_APP_API_URL + "/getEvent",
         eventBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -61,7 +61,7 @@ export const getEvent = async (eventBodySend) => {
 export const getEventsByPromoter = async (eventBodySend) => {
     try {
         // console.log('get all from api call')
-        const eventResponse = await axios.post(process.env.REACT_APP_API + "/getEventsByPomoter",
+        const eventResponse = await axios.post(process.env.REACT_APP_API_URL + "/getEventsByPomoter",
         eventBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -75,7 +75,7 @@ export const getEventsByPromoter = async (eventBodySend) => {
 export const updateEvent = async (eventBodySend) => {
     try {
         console.log('from api call', eventBodySend)
-        const eventResponse = await axios.post(process.env.REACT_APP_API + "/updateEvent",
+        const eventResponse = await axios.post(process.env.REACT_APP_API_URL + "/updateEvent",
         eventBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
@@ -90,7 +90,7 @@ export const updateEvent = async (eventBodySend) => {
 export const deleteEvent = async (eventBodySend) => {
     try {
         console.log('from api call', eventBodySend)
-        const eventResponse = await axios.post(process.env.REACT_APP_API + "/deleteEvent",
+        const eventResponse = await axios.post(process.env.REACT_APP_API_URL + "/deleteEvent",
         eventBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
