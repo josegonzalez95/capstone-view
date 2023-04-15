@@ -1,0 +1,64 @@
+.container{
+    display: flex;
+    /* height: 50rem; */
+    height: 100vh;
+}
+
+.banner{
+    /* background-color: #82A5FF; */
+    background-color: #FF823C;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(239, 233, 233, 0.583);
+    flex-direction: column;
+}
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.title{
+    /* margin-top: 5rem; */
+    /* margin-bottom: 10rem; */
+    position: absolute;
+    top: 10rem;
+    font-weight: bold;
+}
+
+.labels{
+    margin-bottom: .5rem;
+    font-weight: bold;
+}
+
+.sbmtBtn{
+    background-color: #FF823C !important;
+    /* padding: 0.25rem !important; */
+    /* width: 10rem !important; */
+    /* border-radius: 0.5rem !important; */
+    /* position: relative !important;
+    align-self: center !important; */
+    /*margin-top: 5rem !important; */
+    margin-left: 4rem !important;
+}
+.sbmtBtn:hover{
+    cursor: pointer;
+}
+
+.inputFields{
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    width: 20rem;
+}

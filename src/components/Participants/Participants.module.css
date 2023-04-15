@@ -1,0 +1,17 @@
+.eventRow{
+    display: flex !important;
+    justify-content: space-evenly !important;
+    align-items: center !important;
+}
+
+.sbmtBtn{
+    background-color: #FF823C !important;
+    padding: 0.25rem !important;
+    height: 2.5rem !important;
+    width: 9rem !important;
+    border-radius: 0.5rem !important;
+    margin-left: 5rem !important;
+    font-weight: bold !important;
+    color: white !important;
+    margin-bottom: 1rem !important;
+}

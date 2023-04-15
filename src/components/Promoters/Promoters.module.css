@@ -1,0 +1,47 @@
+/* .navBar{
+    background-color: #FF823C;
+    display: flex;
+    height: 5rem;
+    align-items: center;
+    justify-content: space-between;
+
+} */
+
+.sbmtBtn{
+    background-color: #FF823C !important;
+    padding: 0.25rem !important;
+    height: 3rem !important;
+    width: 9rem !important;
+    border-radius: 0.5rem !important;
+    margin-right: 19rem !important;
+    font-weight: bold !important;
+    color: white !important;
+    z-index: 0;
+}
+
+.title{
+    margin-left: 19rem !important;
+    margin-top: 2rem !important;
+    font-weight: bold !important;
+    color: #525252 !important;
+    font-size: 2rem;
+}
+
+.eventsHeader{
+    display: flex !important;
+    height: 6rem !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    /* justify-content: center !important; */
+}
+
+.eventRow{
+    display: flex !important;
+    justify-content: space-evenly !important;
+    align-items: center !important;
+}
+
+.eventForm{
+    display: flex !important;
+    flex-direction: column !important;
+}
