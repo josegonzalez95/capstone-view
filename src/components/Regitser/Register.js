@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
-import { Label, Form } from "semantic-ui-react";
+import { useParams } from "react-router-dom";
+import { Form } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
-import defaultEventImg from "../../assets/default-image.png"
 import defaultLocation from "../../assets/default.png"
 import styles from "./Register.module.css"
 import {createParticipant} from "../../api/Participants/participantsRoute.js"
@@ -12,7 +11,6 @@ import { createOrder } from "../../api/Orders/ordersRoutes";
 
 function Event() {
   const [orderCreator, setOrderCreator] = useState('')
-  const [participantInfo, setParticipantInfo] = useState()
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
   let participantsFormHTML = []
   const {eventId} = useParams()
@@ -23,9 +21,6 @@ function Event() {
   const [event, setEvent] = useState()
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
-  const handleState = (index, value, attribute) =>{
-    // participantInfo[i] = {...participantInfo[i], :}
-  }
 
   const renderParticipantsForm = ()=>{
     for(let i = 0; i<numOfParticipants; i++){
@@ -118,6 +113,7 @@ function Event() {
       setEvent(eventResponse.event)
     }
     event().catch(console.error)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
     // console.log(event)
@@ -128,7 +124,7 @@ function Event() {
       <div className={styles.container}>
         <p className={styles.title}>{event.title}</p> 
         <button>show or export participants</button>
-        <img  src={event.photo}/>
+        <img  src={event.photo} alt="some"/>
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
         <div className={styles.details}>
           <p>${event.price} | {" "}</p> 

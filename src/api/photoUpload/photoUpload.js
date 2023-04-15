@@ -4,7 +4,7 @@ export const uploadPhoto = async (file) => {
     formData.append("file", file)
     try {
         console.log('from api call', formData)
-        const uploadResponse = await axios.post("http://localhost:3333" + "/uploads",
+        const uploadResponse = await axios.post(process.env.REACT_APP_API + "/uploads",
         formData,
             { headers: { 'Content-Type': 'multipart/form-data', "Access-Control-Allow-Origin": "true" } },
         )

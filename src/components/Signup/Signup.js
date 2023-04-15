@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Input, Form, Divider } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import { signUp } from '../../api/Promoters/promotersRoutes';
 import styles from './Signup.module.css'
 

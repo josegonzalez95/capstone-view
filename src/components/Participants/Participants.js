@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { Grid, Card, Icon, Button } from "semantic-ui-react";
 import styles from './Participants.module.css'
-import { useNavigate, useParams } from "react-router-dom";
-import mainLogo from '../../assets/eventPhoto.jpeg'
+import { useNavigate } from "react-router-dom";
 import { getAllEvents } from "../../api/Events/eventsRoutes";
-import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 
 function Participants() {
-  const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
   const [eventsLst, setEvents] = useState([])
   const navigate = useNavigate()
@@ -54,7 +51,7 @@ eventsLst.map(eventRow =>{
         // console.log(event)
         return(
           <Card>
-            <img  src={event.photo}/>
+            <img  src={event.photo} alt="some"/>
             <Card.Content>
             <Card.Header>{event.title}</Card.Header>
               <Card.Meta>
@@ -67,9 +64,7 @@ eventsLst.map(eventRow =>{
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <a>
                 <Icon name='user' />
-              </a>
             </Card.Content>
             <Button onClick={()=>{navigate(`/registerParticipant/${event.id}`)}} className={styles.sbmtBtn} type='submit'>Register</Button>
           </Card>

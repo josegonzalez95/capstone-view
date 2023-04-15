@@ -2,7 +2,7 @@ import axios from 'axios'
 export const createTicket = async (ticketBodySend) => {
     try {
         // console.log('from api call', signUpBodySend)
-        const ticketResponse = await axios.post("http://localhost:3333" + "/createTicket",
+        const ticketResponse = await axios.post(process.env.REACT_APP_API + "/createTicket",
         ticketBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )

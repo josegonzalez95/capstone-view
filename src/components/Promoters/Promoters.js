@@ -1,6 +1,5 @@
 import styles from './Promoters.module.css'
-import { Button, Grid, Card, Icon, Image, Modal, Header, Form } from 'semantic-ui-react'
-import mainLogo from '../../assets/eventPhoto.jpeg'
+import { Button, Grid, Card, Icon, Modal, Form } from 'semantic-ui-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
@@ -33,6 +32,7 @@ function Promoters() {
       setEvents(events)
     }
     evnts().catch(console.error)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   // let allEvents = []
  
@@ -83,7 +83,6 @@ function Promoters() {
   const [update, setUpdate] = useState(false)
   const [open, setOpen] = useState(false)
   const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
-  const [eventDeleteInfo, setDeleteEventInfo] = useState({id:""})
   const navigate = useNavigate()
   const [eventToEditID, setEventToEditID] = useState(null)
   const [eventToDelID, setEventToDelID] = useState(null)
@@ -163,7 +162,7 @@ function Promoters() {
                         <Card onClick={(e)=>{e.stopPropagation();navigate(`/event/${event.id}`)}}>
                           {/* <img  src={mainLogo} alt="fireSpot"/> */}
                           {/* <img src='https://storage.googleapis.com/capstone-event-photos/default-image.png' /> */}
-                          <img src={event.photo}></img>
+                          <img src={event.photo} alt='some'></img>
                           <Card.Content>
                           <Card.Header>{event.title}</Card.Header>
                             <Card.Meta>
@@ -175,9 +174,7 @@ function Promoters() {
                             </Card.Description>
                           </Card.Content>
                           <Card.Content extra>
-                            <a>
                               <Icon name='user' />
-                            </a>
                           </Card.Content>
                           <Grid columns ={2}>
                             <Grid.Row>

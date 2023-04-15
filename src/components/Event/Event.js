@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
-import { Label, Form } from "semantic-ui-react";
+import { useParams } from "react-router-dom";
 import { getEvent } from "../../api/Events/eventsRoutes";
-import defaultEventImg from "../../assets/default-image.png"
 import defaultLocation from "../../assets/default.png"
 import styles from "./Event.module.css"
 import { numberOfParticipants } from "../../api/Participants/participantsRoute";
@@ -11,7 +9,6 @@ import { getAllParticipantsByEvent } from "../../api/Events/eventsRoutes";
 
 
 function Event() {
-  const [eventInfo, setEventInfo] = useState()
   const [numberParticipants, setnumberOfParticipants] = useState()
   const {id} = useParams()
   console.log(window.location.pathname)
@@ -25,7 +22,6 @@ function Event() {
 
     console.log(participantsResponse.participants)
 
-    let allClientsData = []
 
     // participants.forEach(client => {
     //   if (client.active) {
@@ -49,6 +45,7 @@ function Event() {
       setnumberOfParticipants(numberOfParts.ticketNumber.count)
     }
     event().catch(console.error)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
     // console.log(event)
