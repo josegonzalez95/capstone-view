@@ -1,11 +1,10 @@
 //   This component is a form that allows user input to login user as a promoter
 
 import React, { useState } from 'react'
-import { Button, Input, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import { logIn } from '../../api/Promoters/promotersRoutes';
 import { useAuth } from '../../customHooks/useAuth';
 import styles from './Login.module.css'
-import mainLogo from '../../assets/Logo.jpeg'
 
 
 const Login = () => {

@@ -1,32 +1,26 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
-import { Label, Form } from "semantic-ui-react";
+import { useParams } from "react-router-dom";
 import { getEvent } from "../../api/Events/eventsRoutes";
-import defaultEventImg from "../../assets/default-image.png"
-import defaultLocation from "../../assets/default.png"
 import styles from "./Event.module.css"
 import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 import CsvDownloader from 'react-csv-downloader';
 import { getAllParticipantsByEvent } from "../../api/Events/eventsRoutes";
 import MyMapComponent from "../Map/MyMapComponent";
-import TestMap from '../Map/TestMap.js'
 import Image from "../Image/Image";
 // const { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader } = require("@react-google-maps/api");
-import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
+import { useJsApiLoader } from '@react-google-maps/api';
 
 
 
 
 function Event() {
-  const [eventInfo, setEventInfo] = useState()
   const [numberParticipants, setnumberOfParticipants] = useState()
   const {id} = useParams()
   console.log(window.location.pathname)
   // console.log(useLoaderData())
   console.log(id)
   const [event, setEvent] = useState()
-  const [position, setPosition] = useState({lat:0, lng:0})
-  let geocoder
+  const position = {lat:0, lng:0}
 
   useEffect(()=>{
     // geocoder = new google.maps.Geocoder();
@@ -38,8 +32,6 @@ function Event() {
       // console.log("position",position);
       lat = String(position.coords.latitude) 
       lng = String(position.coords.longitude)
-      // const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true&key=AIzaSyB99llZJYiSuVsR2Ga9p8RSvYwIQU6Kvtc`)
-      // console.log(response)
     };
     
     const errorCallback = (error) => {
@@ -48,11 +40,6 @@ function Event() {
   
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     console.log('use effect', lat, lng)
-    // const getCityName=async()=>{
-    //   const response = await fetch(`http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true&key=AIzaSyB99llZJYiSuVsR2Ga9p8RSvYwIQU6Kvtc`)
-    //   console.log(response)
-    // }
-    // getCityName()
 
   })
 
@@ -110,7 +97,6 @@ function Event() {
 
     console.log(participantsResponse.participants)
 
-    let allClientsData = []
 
     // participants.forEach(client => {
     //   if (client.active) {
@@ -134,6 +120,7 @@ function Event() {
       setnumberOfParticipants(numberOfParts.ticketNumber.count)
     }
     event().catch(console.error)
+    // eslint-disable-next-line
   },[])
   return (
     // console.log(event)

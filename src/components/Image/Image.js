@@ -21,6 +21,7 @@ function Image({ src, width, height }) {
 
   return (
     <img
+    alt='some'
       src={src}
       ref={imgRef}
       onLoad={handleImageLoaded}

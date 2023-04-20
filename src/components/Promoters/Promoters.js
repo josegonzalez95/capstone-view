@@ -12,7 +12,6 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import StyledDropzone from '../FileUpload/FileUpload'
-import Image from "../Image/Image.js";
 
 
 

@@ -14,17 +14,18 @@ import MyMapComponent from "../Map/MyMapComponent";
 import Image from "../Image/Image.js";
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
-import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
+import { useJsApiLoader } from '@react-google-maps/api';
 
 
-const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+// const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
 
 
 
 function Event() {
   const [orderCreator, setOrderCreator] = useState('')
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
-  const [position, setPosition] = useState({lat:0, lng:0})
+  // const [position, setPosition] = useState({lat:0, lng:0})
+  const position = {lat:0, lng:0}
   const [changeState, setChangeState] = useState(false)
 
 

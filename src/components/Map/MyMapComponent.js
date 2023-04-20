@@ -1,7 +1,7 @@
   // google maps component showing a pin location for each event
 
 import React, { useEffect, useState } from 'react'
-import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '400px',
@@ -61,49 +61,49 @@ function MyComponent(props) {
   //   };
 
   // navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-
+// eslint-disable-next-line
   },[])
 
-  const [response, setResponse] = useState()
-  const [destination, setDestination] = useState('San Juan')
+  // const [response, setResponse] = useState()
+  // const [destination, setDestination] = useState('San Juan')
 
   // const center = {lat: Number(localStorage.getItem('lat')), lng: Number(localStorage.getItem('lng'))};
   const center = {lat: Number(position.coords.lat), lng: Number(position.coords.lng)}
-  const directionsCallback =(response) =>{
-    console.log("directionsCallback", response)
+  // const directionsCallback =(response) =>{
+  //   console.log("directionsCallback", response)
 
-    if (response) {
-      if (response.status === 'OK') {
-        setResponse(
-            response
-        )
-      } else {
-        console.log('response: ', response)
-      }
-    }
-  }
+  //   if (response) {
+  //     if (response.status === 'OK') {
+  //       setResponse(
+  //           response
+  //       )
+  //     } else {
+  //       console.log('response: ', response)
+  //     }
+  //   }
+  // }
   
 
-  const [map, setMap] = React.useState(null)
+  // const [map, setMap] = React.useState(null)
 
-  const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+  // const onLoad = React.useCallback(function callback(map) {
+  //   const bounds = new window.google.maps.LatLngBounds(center);
+  //   map.fitBounds(bounds);
 
-    setMap(map)
-  }, [])
+  //   setMap(map)
+  // }, [])
 
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null)
-  }, [])
+  // const onUnmount = React.useCallback(function callback(map) {
+  //   setMap(null)
+  // }, [])
 
   return isLoaded ? (
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
         zoom={8}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
+        // onLoad={onLoad}
+        // onUnmount={onUnmount}
       >
         
                 {/* <DirectionsService
