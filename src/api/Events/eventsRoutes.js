@@ -1,3 +1,6 @@
+//   functions that directly call events endpoints
+//   param  req.body - body to be sent to the endpoint.
+
 import axios from 'axios'
 export const createEvent = async (eventBodySend) => {
     try {

@@ -1,3 +1,5 @@
+//   param  req.body - body to be sent to the endpoint.
+
 import axios from 'axios'
 export const createTicket = async (ticketBodySend) => {
     try {

@@ -1,9 +1,12 @@
+//  This component is a form that allows user input to signup and create a user as a promoter
+
 import React, { useState } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import { signUp } from '../../api/Promoters/promotersRoutes';
 import styles from './Signup.module.css'
 
 const Signup = () => {
+    //   user info state initialization, this will be used to store and update user info
     const [userInfo, setUserInfo] = useState({name:"", password:"",email:"", address:""})
     const handleSubmit=async(e)=>{
         e.preventDefault()
@@ -12,6 +15,8 @@ const Signup = () => {
         console.log(result.newPromoter)
         setUserInfo({name:"", password:"",email:"", address:""})
     }
+
+    //  renders form element
     return(
         <div className={styles.container}>
             <div className={styles.banner}>

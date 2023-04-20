@@ -1,3 +1,5 @@
+  // custom hook to store logged in user information in local storage
+
 import { useState } from "react";
 
 export const useLocalStorage = (keyName, defaultValue) => {

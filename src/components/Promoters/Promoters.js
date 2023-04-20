@@ -1,14 +1,28 @@
+  // show events by promoters and provides a form for promoters to create an event
+
+
 import styles from './Promoters.module.css'
 import { Button, Grid, Card, Icon, Modal, Form } from 'semantic-ui-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
 import { uploadPhoto } from '../../api/photoUpload/photoUpload'
-import Dropzone from 'react-dropzone'
+import { Dropdown } from 'semantic-ui-react'
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import StyledDropzone from '../FileUpload/FileUpload'
+import Image from "../Image/Image.js";
+
+
+
+
 
 function Promoters() {
 
   const [eventsLst, setEvents] = useState([])
+
+    // use effect hook used to load events data by promoter before rendering component
   useEffect(()=>{
     let events = [];
     const evnts =async()=>{
@@ -32,7 +46,6 @@ function Promoters() {
       setEvents(events)
     }
     evnts().catch(console.error)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   // let allEvents = []
  
@@ -82,7 +95,10 @@ function Promoters() {
   // console.log("all events", events)
   const [update, setUpdate] = useState(false)
   const [open, setOpen] = useState(false)
-  const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
+  const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", 
+                                                          // date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
+                                                          date: new Date(), 
+                                                          photo:""})
   const navigate = useNavigate()
   const [eventToEditID, setEventToEditID] = useState(null)
   const [eventToDelID, setEventToDelID] = useState(null)
@@ -92,6 +108,7 @@ function Promoters() {
   const createEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
+    console.log(eventInfo)
     
    
     console.log(eventInfo.photo[0])
@@ -105,8 +122,94 @@ function Promoters() {
     // console.log(result)
     // console.log(result.newEvent)
     window.location.replace(`event/${result.newEvent.event.id}`)
-    setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+    setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
   }
+  const countryOptions = [
+    {key:'adj', value:'Adjuntas', text:'Adjuntas'},
+    {key:'agu', value:'Aguada', text:'Aguada'},
+    {key:'aguad', value:'Aguadilla', text:'Aguadilla'},
+    {key:'aguas', value:'Aguas Buenas', text:'Aguas Buenas'},
+    {key:'aic', value:'Aibonito', text:'Aibonito'},
+    {key:'anas', value:'Añasco', text:'Añasco'},
+    {key:'are', value:'Arecibo', text:'Arecibo'},
+    {key:'arr', value:'Arroyo', text:'Arroyo'},
+    {key:'barc', value:'Barceloneta', text:'Barceloneta'},
+    {key:'barr', value:'Barranquitas', text:'Barranquitas'},
+    {key:'baya', value:'Bayamón', text:'Bayamón'},
+    {key:'cabo', value:'Cabo Rojo', text:'Cabo Rojo'},
+    {key:'cagu', value:'Caguas', text:'Caguas'},
+    {key:'cam', value:'Camuy', text:'Camuy'},
+    {key:'can', value:'Canóvanas', text:'Canóvanas'},
+    {key:'car', value:'Carolina', text:'Carolina'},
+    {key:'cat', value:'Cataño', text:'Cataño'},
+    {key:'cay', value:'Cayey', text:'Cayey'},
+    {key:'cei', value:'Ceiba', text:'Ceiba'},
+    {key:'cia', value:'Ciales', text:'Ciales'},
+    {key:'cid', value:'Cidra', text:'Cidra'},
+    {key:'coa', value:'Coamo', text:'Coamo'},
+    {key:'com', value:'Comerío', text:'Comerío'},
+    {key:'cor', value:'Corozal', text:'Corozal'},
+    {key:'cule', value:'Culebra', text:'Culebra'},
+    {key:'dora', value:'Dorado', text:'Dorado'},
+    {key:'faj', value:'Fajardo', text:'Fajardo'},
+    {key:'flor', value:'Florida', text:'Florida'},
+    {key:'guan', value:'Guanica', text:'Guanica'},
+    {key:'guay', value:'Guayama', text:'Guayama'},
+    {key:'guayn', value:'Guayanilla', text:'Guayanilla'},
+    {key:'guaynabo', value:'Guaynabo', text:'Guaynabo'},
+    {key:'gur', value:'Gurabo', text:'Gurabo'},
+    {key:'hat', value:'Hatillo', text:'Hatillo'},
+    {key:'horm', value:'Hormigueros', text:'Hormigueros'},
+    {key:'hum', value:'Humacao', text:'Humacao'},
+    {key:'isab', value:'Isabela', text:'Isabela'},
+    {key:'jay', value:'Jayuya', text:'Jayuya'},
+    {key:'juana', value:'Juana Díaz', text:'Juana Díaz'},
+    {key:'junc', value:'Juncos', text:'Juncos'},
+    {key:'laja', value:'Lajas', text:'Lajas'},
+    {key:'lama', value:'Lares', text:'Lares'},
+    {key:'lasm', value:'Las Marías', text:'Las Marías'},
+    {key:'lasp', value:'Las Piedras', text:'Las Piedras'},
+    {key:'loiz', value:'Loíza', text:'Loíza'},
+    {key:'luq', value:'Luquillo', text:'Luquillo'},
+    {key:'man', value:'Manatí', text:'Manatí'},
+    {key:'mar', value:'Maricao', text:'Maricao'},
+    {key:'mau', value:'Maunabo', text:'Maunabo'},
+    {key:'may', value:'Mayagüez', text:'Mayagüez'},
+    {key:'moca', value:'Moca', text:'Moca'},
+    {key:'mor', value:'Morovis', text:'Morovis'},
+    {key:'naguabo', value:'Naguabo', text:'Naguabo'},
+    {key:'nara', value:'Naranjito', text:'Naranjito'},
+    {key:'oroc', value:'Orocovis', text:'Orocovis'},
+    {key:'pat', value:'Patillas', text:'Patillas'},
+    {key:'pen', value:'Peñuelas', text:'Peñuelas'},
+    {key:'pied', value:'Ponce', text:'Ponce'},
+    {key:'quebr', value:'Quebradillas', text:'Quebradillas'},
+    {key:'rin', value:'Rincón', text:'Rincón'},
+    {key:'roos', value:'Río Grande', text:'Río Grande'},
+    {key:'sab', value:'Sabana Grande', text:'Sabana Grande'},
+    {key:'sal', value:'Salinas', text:'Salinas'},
+    {key:'sanl', value:'San Lorenzo', text:'San Lorenzo'},
+    {key:'sanse', value:'San Sebastián', text:'San Sebastián'},
+    {key:'sant', value:'Santa Isabel', text:'Santa Isabel'},
+    {key:'toa', value:'Toa Alta', text:'Toa Alta'},
+    {key:'toc', value:'Toa Baja', text:'Toa Baja'},
+    {key:'truj', value:'Trujillo Alto', text:'Trujillo Alto'},
+    {key:'utu', value:'Utuado', text:'Utuado'},
+    {key:'veg', value:'Vega Alta', text:'Vega Alta'},
+    {key:'vegab', value:'Vega Baja', text:'Vega Baja'},
+    {key:'viej', value:'Vieques', text:'Vieques'},
+    {key:'vill', value:'Villalba', text:'Villalba'},
+    {key:'yab', value:'Yabucoa', text:'Yabucoa'},
+    {key:'yar', value:'Yauco', text:'Yauco'}
+  ]
+
+  const onDateChange=(e)=>{
+    console.log(e)
+    // const newDate = `${new Date(e).getFullYear()}-${new Date(e).getMonth()+1}-${new Date(e).getDate()}`
+    // console.log(newDate)
+    setEventInfo({...eventInfo, date: e })
+  }
+
   const updateEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
@@ -130,7 +233,15 @@ function Promoters() {
     // console.log(result.newEvent)
   }
 
-  console.log()
+  const handlePriceChange = (e)=>{
+
+    // console.log(e.target.value)
+
+    if(e.target.value.match(/^[0-9]/)){
+      console.log(e.target.value)
+      setEventInfo({...eventInfo, price:Number(e.target.value)})
+    }
+  }
 
   return (
     <div>
@@ -150,6 +261,7 @@ function Promoters() {
             {/* </Grid.Column> */}
           </Grid.Row>
           {/* <Grid.Row> */}
+
             {
 
               eventsLst.map(eventRow =>{
@@ -243,25 +355,45 @@ function Promoters() {
             address.
           </p>
           <p>Is it okay to use this photo?</p> */}
+          <div style={{display:"flex", flexDirection:"column"}}>
+          <label style={{fontWeight:"bold"}}>Date</label>
+          <DatePicker onChange={(e)=>onDateChange(e)} value={eventInfo.date}/>
+          </div>
           <Form >
+
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' />
+                
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' /> */}
+                <Form.Input onChange={(e)=>{handlePriceChange(e)}} fluid label='Price' placeholder='Price' value={eventInfo.price}/>
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' /> */}
+                <label style={{fontWeight:"bold"}}>Location</label>
+                <Dropdown
+                  placeholder='Select City'
+                  fluid
+                  search
+                  selection
+                  options={countryOptions}
+                  onChange={(e)=>{console.log(e.target.textContent); setEventInfo({...eventInfo, location: e.target.textContent})}}
+                />
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' /> */}
+                  {/* <div> */}
+                {/* <DatePicker onChange={(e)=>onDateChange(e)} value={date}/> */}
+                {/* </div> */}
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' /> */}
                 <Form.Input label='Photo'>
-                <Dropzone onDrop={acceptedFiles => {console.log(acceptedFiles); setEventInfo({...eventInfo, photo:acceptedFiles})}}>
-  {({getRootProps, getInputProps}) => (
-    <section className={`file-upload-container`}>
-      <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
-    </section>
-  )}
-</Dropzone>
+                {/* <Dropzone onDrop={acceptedFiles => {console.log(acceptedFiles); setEventInfo({...eventInfo, photo:acceptedFiles})}}>
+                  {({getRootProps, getInputProps}) => (
+                    <section >
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <p>Drag 'n' drop some files here, or click to select files</p>
+                      </div>
+                    </section>
+                  )}
+                </Dropzone> */}
+                <StyledDropzone eventInfo={eventInfo} setEventInfo={setEventInfo}/>
                 </Form.Input>
             </Form.Group>
           </Form>

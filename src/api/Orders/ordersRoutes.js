@@ -1,3 +1,5 @@
+//   functions that directly call orders endpoints
+//   param req.body - body to be sent to the endpoint.
 import axios from 'axios'
 export const createOrder = async (orderBodySend) => {
     try {

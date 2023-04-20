@@ -1,3 +1,6 @@
+//   functions that directly call promoters endpoints
+//   @param req.body - body to be sent to the endpoint.
+
 import axios from 'axios'
 export const signUp = async (signUpBodySend) => {
     try {

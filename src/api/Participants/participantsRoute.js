@@ -1,3 +1,6 @@
+//   functions that directly call participants endpoints
+//   param  req.body - body to be sent to the endpoint.
+
 import axios from 'axios'
 export const createParticipant = async (participantBodySend) => {
     try {

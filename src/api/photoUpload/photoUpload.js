@@ -1,3 +1,6 @@
+//   functions that directly call upload to google cloud storage endpoints
+//   param req.body - body to be sent to the endpoint.
+
 import axios from 'axios'
 export const uploadPhoto = async (file) => {
     let formData = new FormData()
