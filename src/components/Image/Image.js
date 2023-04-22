@@ -25,7 +25,7 @@ function Image({ src, width, height }) {
       src={src}
       ref={imgRef}
       onLoad={handleImageLoaded}
-      style={{ width: imageDimensions.width, height: imageDimensions.height }}
+      style={{ width: imageDimensions.width, height: imageDimensions.height, marginBottom:"2rem" }}
     />
   );
 }

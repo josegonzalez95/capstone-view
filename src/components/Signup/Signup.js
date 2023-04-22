@@ -10,10 +10,13 @@ const Signup = () => {
     const [userInfo, setUserInfo] = useState({name:"", password:"",email:"", address:""})
     const handleSubmit=async(e)=>{
         e.preventDefault()
-        console.log(userInfo)
-        const result = await signUp(userInfo)
-        console.log(result.newPromoter)
-        setUserInfo({name:"", password:"",email:"", address:""})
+        const {name, password, address, email} = userInfo
+        if(name && password && address && email){
+            console.log(userInfo)
+            const result = await signUp(userInfo)
+            console.log(result.newPromoter)
+            setUserInfo({name:"", password:"",email:"", address:""})
+        }
     }
 
     //  renders form element

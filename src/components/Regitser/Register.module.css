@@ -38,3 +38,10 @@
     margin-bottom: 3rem !important;
     margin-top: 3rem !important;
 }
+
+.rgtsBtn{
+    margin-right: 1rem !important;
+    font-weight: bold !important;
+    color: white !important;
+    background-color: #ff833c !important;
+}

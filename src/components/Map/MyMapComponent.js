@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
-  width: '400px',
-  height: '400px'
+  width: '800px',
+  height: '800px'
 };
 
 
@@ -98,10 +98,11 @@ function MyComponent(props) {
   // }, [])
 
   return isLoaded ? (
+    <div style={{marginBottom:"2rem"}}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={8}
+        zoom={10}
         // onLoad={onLoad}
         // onUnmount={onUnmount}
       >
@@ -144,8 +145,9 @@ function MyComponent(props) {
         {/* <Marker  position={{ lat: position.coords.latitude, lng: position.coords.longitude }}/> */}
         {/* <Marker  position={{lat: Number(localStorage.getItem('lat')), lng: Number(localStorage.getItem('lng'))}}/> */}
         <Marker position={position.coords} />
-        <></>
+        
       </GoogleMap>
+      </div>
   ) : <></>
 }
 

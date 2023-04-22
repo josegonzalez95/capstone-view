@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import styles from "./Event.module.css"
 import { numberOfParticipants } from "../../api/Participants/participantsRoute";
@@ -9,6 +9,7 @@ import MyMapComponent from "../Map/MyMapComponent";
 import Image from "../Image/Image";
 // const { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
+import { Button } from "semantic-ui-react";
 
 
 
@@ -21,6 +22,7 @@ function Event() {
   console.log(id)
   const [event, setEvent] = useState()
   const position = {lat:0, lng:0}
+  const navigate = useNavigate()
 
   useEffect(()=>{
     // geocoder = new google.maps.Geocoder();
@@ -122,23 +124,78 @@ function Event() {
     event().catch(console.error)
     // eslint-disable-next-line
   },[])
+  const datetime = event ? event.date:"";
+const [date, time] = datetime.split('T');
   return (
     // console.log(event)
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
       <div className={styles.container}>
         <p className={styles.title}>{event.title}</p> 
+        <div className={styles.dtls}>
+        {/* <p className={styles.title}>{event.title}</p>  */}
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
+        
         <div className={styles.details}>
-          <p>${event.price} | {" "}</p> 
-          <p>{event.date}</p> 
-          <p> | Participants: {numberParticipants}</p>
-          <button>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 
+          
+        </div>
+        <div className={styles.details}>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date}</p> 
+          
+        </div>
+        <div className={styles.details}>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
+          
+        </div>
+        <div>
+        <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Participants:</p> {numberParticipants}</p> 
+
+        </div>
+        <Button className={styles.export}>
           <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
               <i className="fa fa-download"></i> Export to CSV
           </CsvDownloader>
-          </button>
+          </Button>
         </div>
+        {/* <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p> */}
+        <div className={styles.details}>
+          {/* <p>${event.price} | {" "}</p>  */}
+          {/* <p>{event.date}</p>  */}
+          {/* <p> | Participants: {numberParticipants}</p> */}
+          {/* <button>
+          <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
+              <i className="fa fa-download"></i> Export to CSV
+          </CsvDownloader>
+          </button> */}
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         {/* <button>show or export participants</button> */}
         <Image src={event.photo} width={800} height={800}/>

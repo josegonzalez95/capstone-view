@@ -10,6 +10,7 @@ import "./App.css"
 import Event from "./components/Event/Event.js";
 import Register from "./components/Regitser/Register.js"
 import PromoterProfile from "./components/PromoterProfile/PromoterProfile.js";
+import RegisterForm from "./components/RegisterForm/RegisterForm.js";
 
 function App() {
   const navigate = useNavigate()
@@ -35,6 +36,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/event/:id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
         <Route path="/registerParticipant/:eventId" element={<Register/>} />
+        <Route path="/registerParticipant/:eventId/registerForm" element={<RegisterForm/>} />
       </Routes>
     </>
   );

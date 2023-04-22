@@ -1,0 +1,34 @@
+.btns{
+    margin-right: 1rem !important;
+  font-weight: bold !important;
+  color: white !important;
+  background-color: #ff833c !important;
+  margin-bottom: 2rem !important;
+}
+.parent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: rebeccapurple; */
+}
+
+.form{
+    /* From https://css.glass */
+/* From https://css.glass */
+background: rgba(255, 227, 209, 0.483);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(4.6px);
+-webkit-backdrop-filter: blur(4.6px);
+border: 1px solid rgba(255, 227, 209, 0.15);
+margin-bottom: 2rem;
+width: 30rem;
+padding: 1rem;
+}
+
+.btnContainer{
+    /* background-color: red; */
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}

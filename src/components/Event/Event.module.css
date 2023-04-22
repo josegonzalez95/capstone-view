@@ -29,3 +29,24 @@
     display: flex !important;
     flex-direction: column !important;
 }
+
+.rgtsBtn{
+    margin-right: 1rem !important;
+    font-weight: bold !important;
+    color: white !important;
+    background-color: #ff833c !important;
+}
+
+.dtls{
+    /* background-color: red; */
+    width: 100%;
+}
+
+.export{
+        margin-right: 1rem !important;
+        font-weight: bold !important;
+        color: white !important;
+        background-color: #ff833c !important;
+        margin-bottom: 1rem !important;
+        margin-top: 1rem !important;
+}

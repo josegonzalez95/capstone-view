@@ -3,10 +3,10 @@
 
 import DatePicker from 'react-date-picker';
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Form, Modal, Button } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
-import styles from "./Register.module.css"
+import styles from "./RegisterForm.module.css"
 import {createParticipant} from "../../api/Participants/participantsRoute.js"
 import { createTicket } from "../../api/Tickets/ticketsRoutes";
 import { createOrder } from "../../api/Orders/ordersRoutes";
@@ -21,15 +21,14 @@ import { useJsApiLoader } from '@react-google-maps/api';
 
 
 
-function Event() {
+function RegisterForm() {
   const [orderCreator, setOrderCreator] = useState('')
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
   // const [position, setPosition] = useState({lat:0, lng:0})
   const position = {lat:0, lng:0}
   const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
-
+  const [confirmSubmit, setConfirmSubmit] = useState(false)
 
 
  
@@ -58,7 +57,8 @@ function Event() {
     let participantsFormHTML = []
     for(let i = 0; i<numOfParticipants; i++){
       participantsFormHTML.push(
-        <div >
+        <div className={styles.form}>
+          <h3>Participant {i + 1}</h3>
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{
                   participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
@@ -115,6 +115,7 @@ function Event() {
   //   then it create the order and collect its id
   //   finally it create the tickets for the participants and the order
   const handleSubmit =async(e)=>{
+    // setOpen(true)
     let listOfParticipantId = []
     e.preventDefault()
 
@@ -151,56 +152,51 @@ function Event() {
     event().catch(console.error)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
-
-    const datetime = event ? event.date:"";
-const [date, time] = datetime.split('T');
-
-// console.log('Date:', date); // Date: 2023-04-13
-// console.log('Time:', time.slice(0, -5)); // Time: 08:00:00
   return (
     // console.log(event)
-
-
-
     
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
       {console.log(participantsInfo)}
+      
       <div className={styles.container}>
-        <p className={styles.title}>{event.title}</p> 
-        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
-        
-        <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 
-          
-        </div>
-        <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date}</p> 
-          
-        </div>
-        <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
-          
-        </div>
-        <div style={{marginBottom: "1rem", marginTop:"1rem"}} className={styles.details}>
-        <Button className={styles.rgtsBtn} onClick={()=>{navigate(`registerForm`)}}>Register</Button>
-        </div>
-        
-
-        <Image src={event.photo} width={800} height={800}/>
+        {/* <p className={styles.title}>{event.title}</p>  */}
+        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Register Participants</p>
+        <div className={styles.btnContainer}>
+        <Button className={styles.btns} onClick={()=>{
+                              setNumOfParticipants(numOfParticipants + 1); 
+                              setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
+                            }}
+                          >Add Participant</Button>
+        <Button className={styles.btns} onClick={()=>{
+          if(numOfParticipants>1){
+            setNumOfParticipants(numOfParticipants - 1)}
+          }
+          }>Delete Participant</Button>
+          </div>
+        {/* <div className={styles.details}> */}
+          {/* <p>${event.price} | {" "}</p> 
+          <p>{event.date}</p>  */}
+        {/* </div> */}
+        {/* <Image src={event.photo} width={800} height={800}/> */}
         {/* <img  src={event.photo} alt="some"/> */}
         
-        {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>}
+        {/* {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>} */}
         {/* <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' /> */}
-        {/* {renderParticipantsForm()} */}
-        {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button>
-
-        <button onClick={()=>{
+        {renderParticipantsForm()}
+        <div className={styles.btnContainer}>
+        <Button className={styles.btns} onClick={(e)=>{setOpen(true)}}>submit</Button>
+        </div>
+        {/* <button onClick={()=>{
                               setNumOfParticipants(numOfParticipants + 1); 
                               setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
                             }}
                           >add participant</button>
-        <button onClick={()=>{setNumOfParticipants(numOfParticipants - 1)}}>delete participant</button> */}
+        <button onClick={()=>{
+          if(numOfParticipants>1){
+            setNumOfParticipants(numOfParticipants - 1)}
+          }
+          }>delete participant</button> */}
       </div>
       <Modal
       onClose={() => setOpen(false)}
@@ -208,7 +204,7 @@ const [date, time] = datetime.split('T');
       open={open}
       // trigger={<Button>Show Modal</Button>}
     >
-      <Modal.Header>Create Event</Modal.Header>
+      <Modal.Header>Confirm Order</Modal.Header>
       <Modal.Content >
         {/* <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped /> */}
         <Modal.Description>
@@ -222,21 +218,26 @@ const [date, time] = datetime.split('T');
           <label style={{fontWeight:"bold"}}>Date</label>
           <DatePicker onChange={(e)=>onDateChange(e)} value={eventInfo.date}/>
           </div> */}
-          {renderParticipantsForm()}
+          {/* {renderParticipantsForm()} */}
         </Modal.Description>
+        <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' />
+
       </Modal.Content>
       <Modal.Actions>
         <Button color='black' onClick={() => setOpen(false)}>
           Cancel
         </Button>
         <Button
-          content="Create Event"
+          content="Confirm Order"
           labelPosition='right'
           icon='checkmark'
-          onClick={() => {
+          onClick={(e) => {
+            if(orderCreator){
+              handleSubmit(e)
+              setOpen(false)
+            }
               // createEventCall();
               // console.log(eventInfo);
-              setOpen(false)
             }
           }
           positive
@@ -248,4 +249,4 @@ const [date, time] = datetime.split('T');
   );
 }
 
-export default Event;
+export default RegisterForm;

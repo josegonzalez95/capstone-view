@@ -13,17 +13,20 @@ const Login = () => {
     const {login} = useAuth()
     const handleSubmit=async(e)=>{
         e.preventDefault()
-        console.log(userInfo)
-        const response = await logIn(userInfo)
-        const result = response.promoter
-        console.log(result)
-        console.log(result.status === "success" ? true:false)
-        if(result.status ==="success"){
-            login(result.promoter)
-        }else{
+        const {email, password} = userInfo
+        if(email && password){
+            console.log(userInfo)
+            const response = await logIn(userInfo)
+            const result = response.promoter
             console.log(result)
+            console.log(result.status === "success" ? true:false)
+            if(result.status ==="success"){
+                login(result.promoter)
+            }else{
+                console.log(result)
+            }
+            setUserInfo({email:"", password:""})
         }
-        setUserInfo({email:"", password:""})
     }
 
     //   renders form element
