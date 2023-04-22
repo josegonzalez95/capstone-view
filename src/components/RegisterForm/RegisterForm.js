@@ -10,11 +10,9 @@ import styles from "./RegisterForm.module.css"
 import {createParticipant} from "../../api/Participants/participantsRoute.js"
 import { createTicket } from "../../api/Tickets/ticketsRoutes";
 import { createOrder } from "../../api/Orders/ordersRoutes";
-import MyMapComponent from "../Map/MyMapComponent";
-import Image from "../Image/Image.js";
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
-import { useJsApiLoader } from '@react-google-maps/api';
+// import { useJsApiLoader } from '@react-google-maps/api';
 
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
@@ -25,10 +23,9 @@ function RegisterForm() {
   const [orderCreator, setOrderCreator] = useState('')
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
   // const [position, setPosition] = useState({lat:0, lng:0})
-  const position = {lat:0, lng:0}
+  // const position = {lat:0, lng:0}
   const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
-  const [confirmSubmit, setConfirmSubmit] = useState(false)
 
 
  
@@ -38,10 +35,10 @@ function RegisterForm() {
   const [event, setEvent] = useState()
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
-    const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: process.env.REACT_APP_MAP_KEY
-  })
+  //   const { isLoaded } = useJsApiLoader({
+  //   id: 'google-map-script',
+  //   googleMapsApiKey: process.env.REACT_APP_MAP_KEY
+  // })
 
   const onDateChange=(e, i)=>{
     console.log(new Date(e))
