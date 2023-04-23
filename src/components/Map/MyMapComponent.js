@@ -39,6 +39,7 @@ function MyComponent(props) {
       fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}, Puerto Rico&key=${apiKey}`)
         .then(response => {response.json(); console.log(response)})
         .then(data => {
+          console.log(data)
           // Get the latitude and longitude from the response
           const lat = data.results[0].geometry.location.lat;
           const lng = data.results[0].geometry.location.lng;
