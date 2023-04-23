@@ -10,6 +10,8 @@ import styles from "./RegisterForm.module.css"
 import {createParticipant} from "../../api/Participants/participantsRoute.js"
 import { createTicket } from "../../api/Tickets/ticketsRoutes";
 import { createOrder } from "../../api/Orders/ordersRoutes";
+// import emailjs from "emailjs"
+import { sendEmail } from '../../api/Email/sendEmail';
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
 // import { useJsApiLoader } from '@react-google-maps/api';
@@ -20,6 +22,7 @@ import { createOrder } from "../../api/Orders/ordersRoutes";
 
 
 function RegisterForm() {
+
   const [orderCreator, setOrderCreator] = useState('')
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
   // const [position, setPosition] = useState({lat:0, lng:0})
@@ -35,10 +38,6 @@ function RegisterForm() {
   const [event, setEvent] = useState()
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
-  //   const { isLoaded } = useJsApiLoader({
-  //   id: 'google-map-script',
-  //   googleMapsApiKey: process.env.REACT_APP_MAP_KEY
-  // })
 
   const onDateChange=(e, i)=>{
     console.log(new Date(e))
@@ -112,6 +111,17 @@ function RegisterForm() {
   //   then it create the order and collect its id
   //   finally it create the tickets for the participants and the order
   const handleSubmit =async(e)=>{
+    let participantInfoEmail = ""
+    let emailData = {
+      "service_id": process.env.REACT_APP_service_id,
+      "user_id": process.env.REACT_APP_user_id,
+      "template_id": process.env.REACT_APP_template_id,
+      "template_params":{
+          "destination":`"${orderCreator}"`,
+          "name":`"${orderCreator}"`,
+          "subject": "Order confirmation email",
+          "from_name":"PUR Cycling registration platform",
+      }}
     // setOpen(true)
     let listOfParticipantId = []
     e.preventDefault()
@@ -119,19 +129,30 @@ function RegisterForm() {
     console.log(participantsInfo)
     console.log(orderCreator)
 
-    participantsInfo.forEach(async participant => {
+    participantsInfo.forEach(async (participant, i) => {
+      participantInfoEmail+= `- Participant ${i+1}\n 
+                              name: ${participant.name}\n  
+                              email: ${participant.email}\n 
+                              phone: ${participant.phone}\n
+                              birthdate: ${participant.birthdate.toLocaleDateString()}\n
+                              category: ${participant.category}\n\n`
       const participantResponse = await createParticipant(participant)
-      console.log((participantResponse))
+      
+                             
       listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
     });
+    console.log(participantInfoEmail)
+    emailData["template_params"]["participants"] = participantInfoEmail
     // create order
     const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:""})
-    console.log(listOfParticipantId)
+    // console.log(listOfParticipantId)
 
     const orderId = orderResponse.newOrder.order.id
     listOfParticipantId.forEach(async id=>{
       await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
     })
+    console.log(emailData)
+    await sendEmail(emailData)
     setNumOfParticipants(1)
     setParticipantsInfo([{name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
     window.location.reload()

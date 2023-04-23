@@ -104,29 +104,30 @@ function Promoters() {
 
   // console.log(JSON.parse(localStorage.getItem('user')).id)
 
-  const createEventCall=async(e)=>{
-    // e.preventDefault()
-    // console.log('create event call')
-    e.preventDefault()
-    const{date, details, location, photo ,price, title}= eventInfo
-    if(date && details && location && photo && price && title){
-      console.log(eventInfo)
+  // const createEventCall=async(e)=>{
+  //   // e.preventDefault()
+  //   // console.log('create event call')
+  //   e.preventDefault()
+  //   console.log('create event call')
+  //   const{date, details, location, photo ,price, title}= eventInfo
+  //   if(date && details && location && photo && price && title){
+  //     console.log(eventInfo)
     
    
-      console.log(eventInfo.photo[0])
-      const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
-      const photoURL = photoUploadResponse.data
+  //     console.log(eventInfo.photo[0])
+  //     const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+  //     const photoURL = photoUploadResponse.data
   
-      const eventBodySend = {...eventInfo, photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+  //     const eventBodySend = {...eventInfo, photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
   
-       // console.log(eventBodySend)
-      const result = await createEvent(eventBodySend)
-      // console.log(result)
-      // console.log(result.newEvent)
-      window.location.replace(`event/${result.newEvent.event.id}`)
-      setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
-    }
-  }
+  //      // console.log(eventBodySend)
+  //     const result = await createEvent(eventBodySend)
+  //     // console.log(result)
+  //     // console.log(result.newEvent)
+  //     window.location.replace(`event/${result.newEvent.event.id}`)
+  //     setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+  //   }
+  // }
   const countryOptions = [
     {key:'adj', value:'Adjuntas', text:'Adjuntas'},
     {key:'agu', value:'Aguada', text:'Aguada'},
@@ -410,8 +411,27 @@ function Promoters() {
           content="Create Event"
           labelPosition='right'
           icon='checkmark'
-          onClick={() => {
-              createEventCall();
+          onClick={async() => {
+            console.log("create event call on button")
+            const{date, details, location, photo ,price, title}= eventInfo
+    if(date && details && location && photo && price && title){
+      console.log(eventInfo)
+    
+   
+      console.log(eventInfo.photo[0])
+      const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+      const photoURL = photoUploadResponse.data
+  
+      const eventBodySend = {...eventInfo, photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+  
+       // console.log(eventBodySend)
+      const result = await createEvent(eventBodySend)
+      // console.log(result)
+      // console.log(result.newEvent)
+      window.location.replace(`event/${result.newEvent.event.id}`)
+      setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+    }
+              // createEventCall();
               // console.log(eventInfo);
               setOpen(false)
             }
