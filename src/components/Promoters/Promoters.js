@@ -412,25 +412,29 @@ function Promoters() {
           labelPosition='right'
           icon='checkmark'
           onClick={async() => {
-            console.log("create event call on button")
-            const{date, details, location, photo ,price, title}= eventInfo
-    if(date && details && location && photo && price && title){
-      console.log(eventInfo)
-    
-   
-      console.log(eventInfo.photo[0])
-      const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
-      const photoURL = photoUploadResponse.data
-  
-      const eventBodySend = {...eventInfo, photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
-  
-       // console.log(eventBodySend)
-      const result = await createEvent(eventBodySend)
-      // console.log(result)
-      // console.log(result.newEvent)
-      window.location.replace(`event/${result.newEvent.event.id}`)
-      setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
-    }
+              console.log("create event call on button")
+              const{date, details, location, photo ,price, title}= eventInfo
+              if(date && details && location && photo && price && title){
+                console.log(eventInfo)
+
+              const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
+              const { lat, lng } = geoCodeResponse.results[0].geometry.location
+            
+                console.log(eventInfo.photo[0])
+                const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+                const photoURL = photoUploadResponse.data
+                // const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
+                // console.log(eventBodySend)
+            
+                const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng}), photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+            
+                // console.log(eventBodySend)
+                const result = await createEvent(eventBodySend)
+                // console.log(result)
+                // console.log(result.newEvent)
+                window.location.replace(`event/${result.newEvent.event.id}`)
+                setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+              }
               // createEventCall();
               // console.log(eventInfo);
               setOpen(false)

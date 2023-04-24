@@ -1,6 +1,6 @@
   // google maps component showing a pin location for each event
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -17,7 +17,7 @@ function MyComponent(props) {
   })
 
   // position state use to display the pin on the map
-  const [position, setPosition] = useState({coords:{lat:0, lng:0}})
+  // const [position, setPosition] = useState({coords:{lat:0, lng:0}})
 
 
 
@@ -25,51 +25,61 @@ function MyComponent(props) {
 
 
     // use effect hook used to load position data as latitude and longitude of the event using google maps api
-  useEffect(()=>{
-    console.log(props)
-    // const lat = localStorage.getItem('lat')
-    // const lng = localStorage.getItem('lng')
-    // console.log('posssss',Number(lng), Number(lat))
-    const getPosition=()=>{
-      console.log(props.location)
-      const cityName = props.location; // Replace with the name of the city you want to geocode
-      const apiKey = process.env.REACT_APP_MAP_KEY; // Replace with your Google Maps API key
-      
-      // Make a request to the Google Maps Geocoding API
-      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}, Puerto Rico&key=${apiKey}`)
-        .then(response => {response.json(); console.log(response)})
-        .then(data => {
-          console.log(data)
-          // Get the latitude and longitude from the response
-          const lat = data.results[0].geometry.location.lat;
-          const lng = data.results[0].geometry.location.lng;
-          setPosition({coords:{lat:lat, lng:lng}})
-          
-          console.log(`Latitude: ${lat}, Longitude: ${lng}`);
-        })
-        .catch(error => console.log(error));
-      
-    }
-  
-    getPosition()
-  //   const successCallback = (position) => {
-  //     console.log(position.coords);
-  //     setPosition(position)
-  //   };
-    
-  //   const errorCallback = (error) => {
-  //     console.log(error);
-  //   };
+//   useEffect(()=>{
+//     console.log(props)
+//     // const lat = localStorage.getItem('lat')
+//     // const lng = localStorage.getItem('lng')
+//     // console.log('posssss',Number(lng), Number(lat))
+//     const getPosition=async()=>{
+//       console.log(props.location)
+//       const cityName = props.location; // Replace with the name of the city you want to geocode
+//       const apiKey = process.env.REACT_APP_MAP_KEY; // Replace with your Google Maps API key
+//       // console.log(cityName, apiKey)
+//       // const apiURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+//       // cityName + ", Puerto Rico"
+//     // )}&key=${apiKey}`
+//       // Make a request to the Google Maps Geocoding API
+//       // fetch(apiURL)
 
-  // navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-// eslint-disable-next-line
-  },[])
+//       // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}, Puerto Rico&key=${apiKey}`)
+//       //   .then(response => {response.json();console.log(response)})
+//       //   .then(data => {
+//       //     console.log(data)
+//       //     // Get the latitude and longitude from the response
+//       //     const lat = data.results[0].geometry.location.lat;
+//       //     const lng = data.results[0].geometry.location.lng;
+//       //     setPosition({coords:{lat:lat, lng:lng}})
+          
+//       //     console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+//       //   })
+//       //   .catch(error => console.log(error));
+
+
+//       // const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}, Puerto Rico&key=${apiKey}`).then(response => response.json())
+//       // console.log(geoCodeResponse)
+//       // const { lat, lng } = geoCodeResponse.results[0].geometry.location
+//       // setPosition({coords:{lat:lat, lng:lng}})
+//     }
+  
+//     getPosition()
+//   //   const successCallback = (position) => {
+//   //     console.log(position.coords);
+//   //     setPosition(position)
+//   //   };
+    
+//   //   const errorCallback = (error) => {
+//   //     console.log(error);
+//   //   };
+
+//   // navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+// // eslint-disable-next-line
+//   },[])
 
   // const [response, setResponse] = useState()
   // const [destination, setDestination] = useState('San Juan')
 
   // const center = {lat: Number(localStorage.getItem('lat')), lng: Number(localStorage.getItem('lng'))};
-  const center = {lat: Number(position.coords.lat), lng: Number(position.coords.lng)}
+  // const center = {lat: Number(position.coords.lat), lng: Number(position.coords.lng)}
   // const directionsCallback =(response) =>{
   //   console.log("directionsCallback", response)
 
@@ -102,7 +112,7 @@ function MyComponent(props) {
     <div style={{marginBottom:"2rem"}}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
+        center={JSON.parse(props.location)}
         zoom={10}
         // onLoad={onLoad}
         // onUnmount={onUnmount}
@@ -145,7 +155,7 @@ function MyComponent(props) {
         { /* Child components, such as markers, info windows, etc. */ }
         {/* <Marker  position={{ lat: position.coords.latitude, lng: position.coords.longitude }}/> */}
         {/* <Marker  position={{lat: Number(localStorage.getItem('lat')), lng: Number(localStorage.getItem('lng'))}}/> */}
-        <Marker position={position.coords} />
+        <Marker position={JSON.parse(props.location)} />
         
       </GoogleMap>
       </div>

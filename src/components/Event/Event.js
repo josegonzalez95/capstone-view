@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import styles from "./Event.module.css"
 import { numberOfParticipants } from "../../api/Participants/participantsRoute";
@@ -22,7 +22,6 @@ function Event() {
   console.log(id)
   const [event, setEvent] = useState()
   const position = {lat:0, lng:0}
-  const navigate = useNavigate()
 
   useEffect(()=>{
     // geocoder = new google.maps.Geocoder();
@@ -117,6 +116,7 @@ function Event() {
       const eventResponse = await getEvent({id: Number(id)})
       const numberOfParts = await numberOfParticipants({eventid: Number(id)})
       console.log(numberOfParts)
+      console.log(eventResponse)
       console.log(eventResponse)
       setEvent(eventResponse.event)
       setnumberOfParticipants(numberOfParts.ticketNumber.count)
