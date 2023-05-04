@@ -130,16 +130,18 @@ function RegisterForm() {
     console.log(orderCreator)
 
     participantsInfo.forEach(async (participant, i) => {
-      participantInfoEmail+= `- Participant ${i+1}\n 
-                              name: ${participant.name}\n  
-                              email: ${participant.email}\n 
-                              phone: ${participant.phone}\n
-                              birthdate: ${participant.birthdate.toLocaleDateString()}\n
-                              category: ${participant.category}\n\n`
-      const participantResponse = await createParticipant(participant)
-      
-                             
-      listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
+      if(participant.name && participant.email && participant.address && participant.birthdate && participant.category && participant.phone && participant.gender){
+        if(participant.name.length <= 50 && participant.email.length<=255 && participant.address.length<=200 && participant.category.length<=255 && participant.phone.length<=10 && participant.gender.length===1){
+          participantInfoEmail+= `- Participant ${i+1}\n 
+                                  name: ${participant.name}\n  
+                                  email: ${participant.email}\n 
+                                  phone: ${participant.phone}\n
+                                  birthdate: ${participant.birthdate.toLocaleDateString()}\n
+                                  category: ${participant.category}\n\n`
+          const participantResponse = await createParticipant(participant)
+          listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
+        }
+      }
     });
     console.log(participantInfoEmail)
     emailData["template_params"]["participants"] = participantInfoEmail

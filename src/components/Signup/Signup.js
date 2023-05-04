@@ -12,10 +12,12 @@ const Signup = () => {
         e.preventDefault()
         const {name, password, address, email} = userInfo
         if(name && password && address && email){
-            console.log(userInfo)
-            const result = await signUp(userInfo)
-            console.log(result.newPromoter)
-            setUserInfo({name:"", password:"",email:"", address:""})
+            if(name.length<=50 && password.length<=20 && address<=200 && email.length<=254){
+                console.log(userInfo)
+                const result = await signUp(userInfo)
+                console.log(result.newPromoter)
+                setUserInfo({name:"", password:"",email:"", address:""})
+            }
         }
     }
 

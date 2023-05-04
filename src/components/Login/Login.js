@@ -15,17 +15,19 @@ const Login = () => {
         e.preventDefault()
         const {email, password} = userInfo
         if(email && password){
-            console.log(userInfo)
-            const response = await logIn(userInfo)
-            const result = response.promoter
-            console.log(result)
-            console.log(result.status === "success" ? true:false)
-            if(result.status ==="success"){
-                login(result.promoter)
-            }else{
+            if(password.length<=20 && email.length<=254){
+                console.log(userInfo)
+                const response = await logIn(userInfo)
+                const result = response.promoter
                 console.log(result)
+                console.log(result.status === "success" ? true:false)
+                if(result.status ==="success"){
+                    login(result.promoter)
+                }else{
+                    console.log(result)
+                }
+                setUserInfo({email:"", password:""})
             }
-            setUserInfo({email:"", password:""})
         }
     }
 

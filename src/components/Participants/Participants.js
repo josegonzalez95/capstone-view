@@ -18,7 +18,7 @@ function Participants() {
       
       let tempLst = [];
       const response = await getAllEvents()
-      let allEvents = response.events.reverse()
+      let allEvents = response.events.sort((a, b) => new Date(b.date) - new Date(a.date));
 
       console.log('evnts', allEvents)
       allEvents.forEach((evnt, i)=>{

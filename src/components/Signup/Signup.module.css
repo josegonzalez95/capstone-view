@@ -6,7 +6,7 @@
 
 .banner{
     /* background-color: #82A5FF; */
-    background-color: #FF823C;
+    background-color: #82A5FF;
     width: 60%;
     display: flex;
     align-items: center;
@@ -44,7 +44,7 @@
 }
 
 .sbmtBtn{
-    background-color: #FF823C !important;
+    background-color: #82A5FF !important;
     /* padding: 0.25rem !important;
     width: 10rem !important;
     border-radius: 0.5rem !important;

@@ -58,11 +58,16 @@ const PromoterProfile = ({id}) => {
           <p>Is it okay to use this photo?</p> */}
           <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
+              <div style={{width:"100%"}}>
                 <Form.Input onChange={(e)=>{setEditInfo({...editInfo, name:e.target.value})}} fluid label='Name' placeholder='Name' />
+                <p style={{marginLeft:"0.5rem"}}>{editInfo.name.length}/50</p>
+              
                 <Form.Input onChange={(e)=>{setEditInfo({...editInfo, email:e.target.value})}} fluid label='Email' placeholder='Email' />
+                <p style={{marginLeft:"0.5rem"}}>{editInfo.email.length}/254</p>
                 <Form.Input onChange={(e)=>{setEditInfo({...editInfo, address:e.target.value})}} fluid label='Address' placeholder='Address' />
+                <p style={{marginLeft:"0.5rem"}}>{editInfo.address.length}/200</p>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' /> */}
-                
+              </div>
             </Form.Group>
           </Form>
         </Modal.Description>
@@ -79,8 +84,13 @@ const PromoterProfile = ({id}) => {
             //   updateProfileEventCall();
             //   console.log(editInfo);
               // call update promoter endpoint function
-                await updatePromoter({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
 
+              const {name, email, address} = editInfo
+
+              if(name.length<=50 && address<=200 && email.length<=254){
+
+                await updatePromoter({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
+              }
                 console.log({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
                 setEditInfo({name:"", password:"",email:"", address:""})
                 setOpen(false)

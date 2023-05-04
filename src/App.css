@@ -1,5 +1,5 @@
 .navBar{
-  background-color: #ff833cc3;
+  background-color: #82a5ffb9;
   display: flex;
   height: 5rem;
   align-items: center;
@@ -10,20 +10,21 @@
 .title{
   font-weight: bold;
   margin-left: 3rem;
+  color: black;
 }
 
 .btn{
   margin-right: 1rem !important;
   font-weight: bold !important;
   color: white !important;
-  background-color: #ff833c !important;
+  background-color: #82A5FF !important;
 }
 
 .myevntsbtn{
   font-weight: bold !important;
   margin-right: 1rem !important;
   color: white !important;
-  background-color: #ff833c !important;
+  background-color: #82A5FF !important;
 }
 
 .btns{
@@ -33,13 +34,13 @@
 .signout{
     margin-right: 1rem !important;
   color: white !important;
-  background-color: #ff833c !important;
+  background-color: #82A5FF !important;
 }
 
 .profile{
   margin-right: 1rem !important;
   color: white !important;
-  background-color: #ff833c !important;
+  background-color: #82A5FF !important;
 }
 
 /* .App {

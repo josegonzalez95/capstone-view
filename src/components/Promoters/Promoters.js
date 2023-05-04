@@ -12,6 +12,7 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import StyledDropzone from '../FileUpload/FileUpload'
+import Image from '../Image/Image.js'
 
 
 
@@ -28,7 +29,8 @@ function Promoters() {
       
       let tempLst = [];
       let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
-      let allEvents = response.events.reverse()
+      // let allEvents = response.events.reverse()
+      let allEvents = response.events.sort((a, b) => new Date(b.date) - new Date(a.date));
       console.log('evnts', allEvents)
       allEvents.forEach((evnt, i)=>{
         // console.log(evnt)
@@ -255,19 +257,27 @@ function Promoters() {
         <Button className={styles.sbmtBtn} type='submit'>SignUp</Button>
       </nav> */}
       <div className={styles.events}>
-        <Grid>
-          <Grid.Row className={styles.eventsHeader}>
+      <div className={styles.eventsHeader}>
             {/* <Grid.Column> */}
               <p className={styles.title}>Events</p>
             {/* </Grid.Column> */}
             {/* <Grid.Column> */}
             <Button onClick={()=>{setOpen(true)}} className={styles.sbmtBtn} type='submit'>Create New Event</Button>
             {/* </Grid.Column> */}
-          </Grid.Row>
+          </div>
+        <Grid>
+          {/* <Grid.Row className={styles.eventsHeader}> */}
+            {/* <Grid.Column> */}
+              {/* <p className={styles.title}>Events</p> */}
+            {/* </Grid.Column> */}
+            {/* <Grid.Column> */}
+            {/* <Button onClick={()=>{setOpen(true)}} className={styles.sbmtBtn} type='submit'>Create New Event</Button> */}
+            {/* </Grid.Column> */}
+          {/* </Grid.Row> */}
           {/* <Grid.Row> */}
 
             {
-
+          <div className={styles.eventsContainer}>{
               eventsLst.map(eventRow =>{
                 // console.log(eventRow)
                 return(
@@ -279,6 +289,7 @@ function Promoters() {
                           {/* <img  src={mainLogo} alt="fireSpot"/> */}
                           {/* <img src='https://storage.googleapis.com/capstone-event-photos/default-image.png' /> */}
                           <img src={event.photo} alt='some'></img>
+                          {/* <Image src={event.photo} width={200} height={400}/> */}
                           <Card.Content>
                           <Card.Header>{event.title}</Card.Header>
                             <Card.Meta>
@@ -304,10 +315,10 @@ function Promoters() {
                                     setUpdate(true); 
                                     }
                                   } 
-                            className={styles.sbmtBtn} type='submit'>Update</Button>
+                            className={styles.sbmtBtnn} type='submit'>Update</Button>
                           </Grid.Column>
                           <Grid.Column>
-                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall(); setEventToDelID(event.id)}} className={styles.sbmtBtn} type='submit'>Delete</Button>
+                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall(); setEventToDelID(event.id)}} className={styles.sbmtBtnn} type='submit'>Delete</Button>
                             </Grid.Column>
                             </Grid.Row>
                           </Grid>
@@ -318,6 +329,7 @@ function Promoters() {
                 )
 
               })
+            }</div>
 
               // events[0].map(event=>{
               //   return(
@@ -367,8 +379,9 @@ function Promoters() {
 
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
+                <p style={{marginLeft:"0.5rem"}}>{eventInfo.title.length}/1000</p>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                
+                <p style={{marginLeft:"0.5rem"}}>{eventInfo.details.length}/1000</p>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' /> */}
                 <Form.Input onChange={(e)=>{handlePriceChange(e)}} fluid label='Price' placeholder='Price' value={eventInfo.price}/>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' /> */}
@@ -415,25 +428,27 @@ function Promoters() {
               console.log("create event call on button")
               const{date, details, location, photo ,price, title}= eventInfo
               if(date && details && location && photo && price && title){
-                console.log(eventInfo)
+                if(details.length<=1000 && location.length<=200 && title.length<=1000){
+                  console.log(eventInfo)
 
-              const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
-              const { lat, lng } = geoCodeResponse.results[0].geometry.location
-            
-                console.log(eventInfo.photo[0])
-                const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
-                const photoURL = photoUploadResponse.data
-                // const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
-                // console.log(eventBodySend)
-            
-                const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng}), photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
-            
-                // console.log(eventBodySend)
-                const result = await createEvent(eventBodySend)
-                // console.log(result)
-                // console.log(result.newEvent)
-                window.location.replace(`event/${result.newEvent.event.id}`)
-                setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+                  const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
+                  const { lat, lng } = geoCodeResponse.results[0].geometry.location
+              
+                  console.log(eventInfo.photo[0])
+                  const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+                  const photoURL = photoUploadResponse.data
+                  // const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
+                  // console.log(eventBodySend)
+              
+                  const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng}), photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+              
+                  // console.log(eventBodySend)
+                  const result = await createEvent(eventBodySend)
+                  // console.log(result)
+                  // console.log(result.newEvent)
+                  window.location.replace(`event/${result.newEvent.event.id}`)
+                  setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+                }
               }
               // createEventCall();
               // console.log(eventInfo);

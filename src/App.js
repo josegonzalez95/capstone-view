@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">
-          <p className="title">PURCycling</p>
+          <a className="title" href="/">PURCycling</a>
           <div className="btns">
             <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
             <Button className="myevntsbtn" onClick={()=>{navigate("promoters")}}>MyEvents</Button>
