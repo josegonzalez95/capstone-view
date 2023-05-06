@@ -32,3 +32,10 @@ padding: 1rem;
     /* align-items: center; */
     justify-content: center;
 }
+
+@media only screen and (max-width: 415px) {
+    /* CSS styles for small screens go here */
+    .form{
+        width: 25rem;
+    }
+  }

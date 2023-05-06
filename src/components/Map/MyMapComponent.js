@@ -1,13 +1,32 @@
   // google maps component showing a pin location for each event
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
-const containerStyle = {
-  width: '800px',
-  height: '800px'
-};
+// const containerStyle = {
+//   width: '800px',
+//   height: '800px'
+// };
 
+
+
+// const containerStyle = {
+//   width: window.innerWidth > 800 ? '800px':'400px',
+//   height: window.innerWidth > 800 ? '800px':'400px',
+// };
+
+
+// const handleResize = ()=>{
+//   if(window.innerWidth > 800){
+//     setSize({width: '800px', height:'800px'})
+//   }else{
+//     setSize({width: '400px', height:'400px'})
+//   }
+// }
+
+// window.addEventListener('resize', handleResize)
+
+// console.log(window.innerWidth)
 
 
 function MyComponent(props) {
@@ -15,6 +34,37 @@ function MyComponent(props) {
     id: 'google-map-script',
     googleMapsApiKey: process.env.REACT_APP_MAP_KEY
   })
+
+  const [size, setSize] = useState({width: '800px', height:'800px'})
+
+
+  const containerStyle = {
+    width: size.width,
+    height: size.height
+  };
+
+
+
+  useEffect(()=>{
+    if(window.innerWidth > 800){
+      setSize({width: '800px', height:'800px'})
+    }else if(window.innerWidth > 400 && window.innerWidth <800){
+      setSize({width: '400px', height:'400px'})
+    }else if(window.innerWidth <400){
+      setSize({width: '370px', height:'370px'})
+    }
+    const handleResize = ()=>{
+      if(window.innerWidth > 800){
+        setSize({width: '800px', height:'800px'})
+      }else if(window.innerWidth > 400 && window.innerWidth <800){
+        setSize({width: '400px', height:'400px'})
+      }else if(window.innerWidth <400){
+        setSize({width: '370px', height:'370px'})
+      }
+    }
+    
+    window.addEventListener('resize', handleResize)
+  },[])
 
   // position state use to display the pin on the map
   // const [position, setPosition] = useState({coords:{lat:0, lng:0}})
