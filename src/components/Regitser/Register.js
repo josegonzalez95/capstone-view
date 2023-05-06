@@ -11,10 +11,11 @@ import styles from "./Register.module.css"
 // import { createTicket } from "../../api/Tickets/ticketsRoutes";
 // import { createOrder } from "../../api/Orders/ordersRoutes";
 import MyMapComponent from "../Map/MyMapComponent";
-import Image from "../Image/Image.js";
+// import Image from "../Image/Image.js";
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
+import ResizableImage from "../ResizableImage/ResizableImage";
 
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
@@ -29,6 +30,8 @@ function Event() {
   // const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+
+  console.log(window.location)
 
 
 
@@ -187,7 +190,8 @@ const [date, time] = datetime.split('T');
         </div>
         
 
-        <Image src={event.photo} width={800} height={800}/>
+        {/* <Image src={event.photo} width={800} height={800}/> */}
+        <ResizableImage src={event.photo} aspectRatio={1/1}/>
         {/* <img  src={event.photo} alt="some"/> */}
         
         {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>}

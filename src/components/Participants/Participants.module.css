@@ -2,6 +2,14 @@
     display: flex !important;
     justify-content: space-evenly !important;
     align-items: center !important;
+    /* background-color: red; */
+    width: 75%;
+    margin-bottom: 2rem;
+}
+
+.eventRowShort{
+    display: flex !important;
+    width: 75%;
 }
 
 .sbmtBtn{
@@ -15,3 +23,11 @@
     color: white !important;
     margin-bottom: 1rem !important;
 }
+
+@media only screen and (max-width: 1180px) {
+    /* CSS styles for small screens go here */
+    .eventRow{
+        display: flex;
+        flex-direction: column;
+    }
+  }

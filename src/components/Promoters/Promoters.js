@@ -12,7 +12,8 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import StyledDropzone from '../FileUpload/FileUpload'
-import Image from '../Image/Image.js'
+// import Image from '../Image/Image.js'
+import ResizableImage from '../ResizableImage/ResizableImage'
 
 
 
@@ -288,7 +289,8 @@ function Promoters() {
                         <Card onClick={(e)=>{e.stopPropagation();navigate(`/event/${event.id}`)}}>
                           {/* <img  src={mainLogo} alt="fireSpot"/> */}
                           {/* <img src='https://storage.googleapis.com/capstone-event-photos/default-image.png' /> */}
-                          <img src={event.photo} alt='some'></img>
+                          {/* <img src={event.photo} alt='some'></img> */}
+                          <ResizableImage src={event.photo} aspectRatio={1/1}/>
                           {/* <Image src={event.photo} width={200} height={400}/> */}
                           <Card.Content>
                           <Card.Header>{event.title}</Card.Header>

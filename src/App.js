@@ -20,12 +20,12 @@ function App() {
     <>
       {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">
           <a className="title" href="/">PURCycling</a>
-          <div className="btns">
+          { pathName!=="/" && pathName.split("registerParticipant").length === 1 ? <div className="btns">
             <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
             <Button className="myevntsbtn" onClick={()=>{navigate("promoters")}}>MyEvents</Button>
             <Button className="profile" onClick={()=>{navigate("profile")}}>Profile</Button>
             <Button className="signout" onClick={()=>{localStorage.clear(); window.location.reload()}}>SignOut</Button>
-          </div>
+          </div>:null}
       </nav>):null}
       <Routes>
         {/* <Route path="/" element={<></>} /> */}

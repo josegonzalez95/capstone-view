@@ -6,10 +6,11 @@ import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 import CsvDownloader from 'react-csv-downloader';
 import { getAllParticipantsByEvent } from "../../api/Events/eventsRoutes";
 import MyMapComponent from "../Map/MyMapComponent";
-import Image from "../Image/Image";
+// import Image from "../Image/Image";
 // const { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
 import { Button } from "semantic-ui-react";
+import ResizableImage from "../ResizableImage/ResizableImage";
 
 
 
@@ -198,7 +199,8 @@ const [date, time] = datetime.split('T');
 
         
         {/* <button>show or export participants</button> */}
-        <Image src={event.photo} width={800} height={800}/>
+        {/* <Image src={event.photo} width={800} height={800}/> */}
+        <ResizableImage src={event.photo} aspectRatio={1/1}/>
 
         {/* <img  src={event.photo} alt="fireSpot"/> */}
         {/* <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >

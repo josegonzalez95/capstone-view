@@ -5,6 +5,7 @@ import { Grid, Card, Icon, Button } from "semantic-ui-react";
 import styles from './Participants.module.css'
 import { useNavigate } from "react-router-dom";
 import { getAllEvents } from "../../api/Events/eventsRoutes";
+import ResizableImage from "../ResizableImage/ResizableImage";
 
 function Participants() {
 
@@ -38,7 +39,7 @@ function Participants() {
     evnts().catch(console.error)
   }, [])
     return (
-      <div>
+      <div style={{display:"flex", alignItems:"center", flexDirection:"column"}}>
         {console.log(eventsLst)}
         {
           
@@ -46,12 +47,14 @@ function Participants() {
 eventsLst.map(eventRow =>{
   // console.log(eventRow)
   return(
+    // <Grid.Row className={eventRow.length === 3 ? styles.eventRow:styles.eventRowShort}>
     <Grid.Row className={styles.eventRow}>
       {eventRow.map(event=>{
         // console.log(event)
         return(
           <Card>
-            <img  src={event.photo} alt="some"/>
+            {/* <img  src={event.photo} alt="some"/> */}
+            <ResizableImage src={event.photo} aspectRatio={1/1}/>
             <Card.Content>
             <Card.Header>{event.title}</Card.Header>
               <Card.Meta>
