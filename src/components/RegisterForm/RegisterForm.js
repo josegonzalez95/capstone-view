@@ -172,6 +172,8 @@ function RegisterForm() {
     event().catch(console.error)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+  const datetime = event ? event.date:"";
+  const [date] = datetime.split('T');
   return (
     // console.log(event)
     
@@ -180,8 +182,23 @@ function RegisterForm() {
       {console.log(participantsInfo)}
       
       <div className={styles.container}>
+      <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Register Participants</p>
+
+        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>{event.title}</p>
+        
+        <div className={styles.details}>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 
+          
+        </div>
+        <div className={styles.details}>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date} (YYYY-MM-DD)</p> 
+          
+        </div>
+        {/* <div className={styles.details}>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
+          
+        </div> */}
         {/* <p className={styles.title}>{event.title}</p>  */}
-        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Register Participants</p>
         <div className={styles.btnContainer}>
         <Button className={styles.btns} onClick={()=>{
                               setNumOfParticipants(numOfParticipants + 1); 
@@ -205,7 +222,7 @@ function RegisterForm() {
         {/* <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' /> */}
         {renderParticipantsForm()}
         <div className={styles.btnContainer}>
-        <Button className={styles.btns} onClick={(e)=>{setOpen(true)}}>submit</Button>
+        <Button className={styles.btns} onClick={(e)=>{setOpen(true)}}>Submit</Button>
         </div>
         {/* <button onClick={()=>{
                               setNumOfParticipants(numOfParticipants + 1); 

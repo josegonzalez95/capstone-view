@@ -156,7 +156,7 @@ function Event() {
   },[])
 
     const datetime = event ? event.date:"";
-const [date, time] = datetime.split('T');
+const [date] = datetime.split('T');
 
 // console.log('Date:', date); // Date: 2023-04-13
 // console.log('Time:', time.slice(0, -5)); // Time: 08:00:00
@@ -178,13 +178,13 @@ const [date, time] = datetime.split('T');
           
         </div>
         <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date}</p> 
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date} (YYYY-MM-DD)</p> 
           
         </div>
-        <div className={styles.details}>
+        {/* <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
           
-        </div>
+        </div> */}
         <div style={{marginBottom: "1rem", marginTop:"1rem"}} className={styles.details}>
         <Button className={styles.rgtsBtn} onClick={()=>{navigate(`registerForm`)}}>Register</Button>
         </div>
