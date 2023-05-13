@@ -132,11 +132,32 @@ const [date] = datetime.split('T');
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
       <div className={styles.container}>
-        <p className={styles.title}>{event.title}</p> 
+        <p className={styles.title}>{event.title}</p>
         <div className={styles.dtls}>
         {/* <p className={styles.title}>{event.title}</p>  */}
-        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
+
+        {/* The following section enables and controls the Social Media Buttons  */}
+        <div className='container' id='contact'>
+        <link
+          rel='stylesheet'
+          //Here's the host for the Font Awesome icons we're using
+          href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+        />
+        </div>
+        {/* The buttons for Twitter, WhatsApp and Gmail also share the price and date of the event
+            The Facebook buttons don't work the same way because of how they're formatted */}
+        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook'>acebook </a>
         
+        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-twitter'>Twitter </a>
+        
+        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-whatsapp'>WhatsApp </a>
+        
+        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook-square'>Messegener </a>
+
+        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-google'>mail </a>
+
+        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
+
         <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 
           
@@ -155,7 +176,7 @@ const [date] = datetime.split('T');
         </div>
         <Button className={styles.export}>
           <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
-              <i className="fa fa-download"></i> Export to CSV
+              Export to CSV
           </CsvDownloader>
           </Button>
         </div>

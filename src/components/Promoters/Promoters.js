@@ -222,18 +222,18 @@ function Promoters() {
     setEventInfo({...eventInfo, date: e })
   }
 
-  const updateEventCall=async(e)=>{
-    // e.preventDefault()
-    // console.log('create event call')
-    const eventBodySend = {...eventInfo, id: eventToEditID}
-    // console.log(eventBodySend)
-    const result = await updateEvent(eventBodySend)
-    console.log(result)
-    // console.log(result.newEvent)
-    // window.location.replace(`event/${result.newEvent.event.id}`)
-    setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
-    //window.location.reload(true)
-  }
+  // const updateEventCall=async(e)=>{
+  //   // e.preventDefault()
+  //   // console.log('create event call')
+  //   const eventBodySend = {...eventInfo, id: eventToEditID}
+  //   // console.log(eventBodySend)
+  //   const result = await updateEvent(eventBodySend)
+  //   console.log(result)
+  //   // console.log(result.newEvent)
+  //   // window.location.replace(`event/${result.newEvent.event.id}`)
+  //   setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+  //   //window.location.reload(true)
+  // }
   // const deleteEventCall=async(eventid)=>{
   //   // e.preventDefault()
   //   // console.log('create event call')
