@@ -96,14 +96,19 @@ function Promoters() {
 
   // console.log("all events", events)
   const [update, setUpdate] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
   const [open, setOpen] = useState(false)
   const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", 
                                                           // date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
                                                           date: new Date(), 
                                                           photo:""})
+  const [eventToUpdateInfo, seteventToUpdateInfo] = useState({title:"", details:"", price:"", location:"", 
+                                                          // date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
+                                                          date: new Date(), 
+                                                          photo:""})
   const navigate = useNavigate()
   const [eventToEditID, setEventToEditID] = useState(null)
-  const [eventToDelID, setEventToDelID] = useState(null)
+  const [eventToDelID, setEventToDelID] = useState()
 
   // console.log(JSON.parse(localStorage.getItem('user')).id)
 
@@ -220,25 +225,25 @@ function Promoters() {
   const updateEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {...eventInfo, eventid: eventToEditID}
+    const eventBodySend = {...eventInfo, id: eventToEditID}
     // console.log(eventBodySend)
     const result = await updateEvent(eventBodySend)
     console.log(result)
     // console.log(result.newEvent)
     // window.location.replace(`event/${result.newEvent.event.id}`)
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
-    window.location.reload(true)
+    //window.location.reload(true)
   }
-  const deleteEventCall=async(e)=>{
-    // e.preventDefault()
-    // console.log('create event call')
-    const eventBodySend = {id: eventToDelID}
-    console.log(eventBodySend)
-    const result = await deleteEvent(eventBodySend)
-    console.log(result)
-    window.location.reload(true)
-    // console.log(result.newEvent)
-  }
+  // const deleteEventCall=async(eventid)=>{
+  //   // e.preventDefault()
+  //   // console.log('create event call')
+  //   const eventBodySend = {id: eventid }
+  //   console.log(eventBodySend)
+  //   const result = await deleteEvent(eventBodySend)
+  //   console.log(result)
+  //   window.location.reload(true)
+  //   // console.log(result.newEvent)
+  // }
 
   const handlePriceChange = (e)=>{
 
@@ -313,14 +318,21 @@ function Promoters() {
                                     
                                     setEventToEditID(event.id);
                                     const eventToBeEditedResponse = await getEvent({id: Number(event.id)})
-                                    setEventInfo(eventToBeEditedResponse.event)
+                                    seteventToUpdateInfo(eventToBeEditedResponse.event)
                                     setUpdate(true); 
                                     }
                                   } 
-                            className={styles.sbmtBtnn} type='submit'>Update</Button>
+                            className={styles.sbmtBtn} type='submit'>Edit Event</Button>
                           </Grid.Column>
                           <Grid.Column>
-                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall(); setEventToDelID(event.id)}} className={styles.sbmtBtnn} type='submit'>Delete</Button>
+                            <Button onClick={async(e)=>{
+                              e.stopPropagation(); 
+                              //const eventBodySend = {id: event.id }
+                              setEventToDelID(event.id);
+                              //console.log(eventBodySend)
+                              setIsDelete(true);
+                            }} 
+                            className={styles.sbmtBtn} type='submit'>Delete Event</Button>
                             </Grid.Column>
                             </Grid.Row>
                           </Grid>
@@ -357,6 +369,33 @@ function Promoters() {
               // })
             }
           {/* </Grid.Row> */}
+          <Modal
+      onClose={() => setIsDelete(false)}
+      onOpen={() => setIsDelete(true)}
+      open={isDelete}
+      // trigger={<Button>Show Modal</Button>}
+    >
+      <Modal.Header>Are you sure you want to delete this event?</Modal.Header>
+      <Modal.Actions>
+        <Button color='black' onClick={() => setIsDelete(false)}>
+          No
+        </Button>
+        <Button
+          content="yes"
+          labelPosition='right'
+          icon='checkmark'
+          onClick={async(e) => {
+            console.log(eventToDelID)
+            const eventBodySend = {id: eventToDelID }
+            const result = await deleteEvent(eventBodySend)
+            console.log(result)
+            window.location.reload(true)
+            }
+          }
+          positive
+        />
+      </Modal.Actions>
+    </Modal>
           <Modal
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
@@ -467,7 +506,7 @@ function Promoters() {
       open={update}
       // trigger={<Button>Show Modal</Button>}
     >
-      <Modal.Header>Update Event</Modal.Header>
+      <Modal.Header>Edit Event</Modal.Header>
       <Modal.Content >
         {/* <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped /> */}
         <Modal.Description>
@@ -477,14 +516,40 @@ function Promoters() {
             address.
           </p>
           <p>Is it okay to use this photo?</p> */}
+          <div style={{display:"flex", flexDirection:"column"}}>
+          <label style={{fontWeight:"bold"}}>Date</label>
+          <DatePicker onChange={(e)=>onDateChange(e)} value={eventInfo.date}/>
+          </div>
           <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' value={eventInfo.title}/>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' value={eventInfo.details}/>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' value={eventInfo.price}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' value={eventInfo.date}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' value={eventInfo.photo}/>
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/> */}
+                <label style={{fontWeight:"bold"}}>Location</label>
+                <Dropdown
+                  placeholder='Select City'
+                  fluid
+                  search
+                  selection
+                  options={countryOptions}
+                  onChange={(e)=>{console.log(e.target.textContent); setEventInfo({...eventInfo, location: e.target.textContent})}}
+                />
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' value={eventInfo.date}/> */}
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' value={eventInfo.photo}/> */}
+                <Form.Input label='Photo'>
+                {/* <Dropzone onDrop={acceptedFiles => {console.log(acceptedFiles); setEventInfo({...eventInfo, photo:acceptedFiles})}}>
+                  {({getRootProps, getInputProps}) => (
+                    <section >
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <p>Drag 'n' drop some files here, or click to select files</p>
+                      </div>
+                    </section>
+                  )}
+                </Dropzone> */}
+                <StyledDropzone eventInfo={eventInfo} setEventInfo={setEventInfo}/>
+                </Form.Input>
             </Form.Group>
           </Form>
         </Modal.Description>
@@ -497,10 +562,74 @@ function Promoters() {
           content="Update"
           labelPosition='right'
           icon='checkmark'
-          onClick={() => {
-              updateEventCall();
-              console.log(eventInfo);
+          onClick={async() => {
+
+            const{date, details, location, photo ,price, title}= eventInfo
+            let eventBodySend = {id:eventToEditID }
+            if(date || details || location || photo || price || title){
+              if(details.length<=1000 || location.length<=200 || title.length<=1000){
+                console.log("Location event to update",eventToUpdateInfo)
+                console.log("Location event info",eventInfo)
+                if(date){
+                  eventBodySend = {...eventBodySend,date: date}
+                }
+                if(details){
+                  eventBodySend = {...eventBodySend,details: details}
+                }
+                if(location){
+                  const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
+                 const { lat, lng } = geoCodeResponse.results[0].geometry.location
+                 console.log("Locationg geo code",geoCodeResponse.results[0].geometry.location)
+                 eventBodySend = {...eventBodySend, location: JSON.stringify({lat: lat, lng:lng})}
+                 console.log("Location event to update",eventToUpdateInfo)
+
+                }
+                 let photoURL
+                 console.log("what aare",photo)
+                if(photo){
+                  
+                  const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+                  photoURL = photoUploadResponse.data
+                  eventBodySend = {...eventBodySend,photo: photoURL}
+                }
+                if(price){
+                  eventBodySend = {...eventBodySend,price: price}
+                }
+                if(title){
+                  eventBodySend = {...eventBodySend,title: title}
+                }
+
+
+                
+                // console.log("event thingies",photoUploadResponse.data)
+                // if(photoUploadResponse.data == undefined){
+                  
+                //   const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
+                //   console.log("Event body send",eventBodySend)
+                //   const result = await updateEventCall(eventBodySend);
+                //   window.location.replace(`event/${result.newEvent.event.id}`)
+                //   setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+                //}else{
+                
+                 //console.log("thingies body",eventBodySend)
+                // console.log("Event body send",eventBodySend)
+                // const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng}), photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+            
+                // console.log(eventBodySend)
+                //const result = await updateEventCall(eventBodySend);
+                const result = await updateEvent(eventBodySend)
+                 console.log(result)
+                // console.log(result.newEvent)
+                //window.location.replace(`event/${result.newEvent.event.id}`)
+                //window.location.reload(true)
+                //setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+              //}
+              }
+            }
+              
+              //console.log(eventInfo);
               setUpdate(false)
+              window.location.reload()
             }
           }
           positive

@@ -1,0 +1,39 @@
+/* Format for event cards */
+.eventRow{
+    display: flex !important;
+    justify-content: space-evenly !important;
+    align-items: center !important;
+    /* background-color: red; */
+    width: 75%;
+    margin-bottom: 2rem;
+}
+/* fromat of calendar button */
+.sbmtBtn{
+    background-color: #82A5FF !important;
+    padding: 0.25rem !important;
+    height: 2.5rem !important;
+    width: 9rem !important;
+    border-radius: 0.5rem !important;
+    margin-left: 5rem !important;
+    font-weight: bold !important;
+    color: white !important;
+    margin-bottom: 1rem !important;
+}
+/* .highlight {
+    font-weight: 900;
+    background-color: blueviolet;
+ } */
+ /* Meant to change the background of date tiles on the calendar where a condition is met*/
+ .highlighted-date {
+    background-color: rgb(207, 156, 255);
+    color: white;
+    font-weight: 900;
+  }
+
+  @media only screen and (max-width: 1180px) {
+    /* CSS styles for small screens go here */
+    .eventRow{
+        display: flex;
+        flex-direction: column;
+    }
+  }
