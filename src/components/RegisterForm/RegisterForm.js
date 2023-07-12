@@ -10,6 +10,7 @@ import styles from "./RegisterForm.module.css"
 import {createParticipant} from "../../api/Participants/participantsRoute.js"
 import { createTicket } from "../../api/Tickets/ticketsRoutes";
 import { createOrder } from "../../api/Orders/ordersRoutes";
+import { Dropdown } from 'semantic-ui-react'
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
 
@@ -50,7 +51,32 @@ function RegisterForm() {
     setChangeState(!changeState)
   }
 
-  //  his will show as many forms as the numbers of participants in order to register such participants
+  // const genderOptions =  [{key:'m', value:'M', text:'M'}, {key:'f', value:'F', text:'F'}]
+
+  const categoryOptions = [
+    { key: 'infantiles-13-14', value: 'Infantiles 13-14', text: 'Infantiles 13-14' },
+    { key: 'cadete-15-16', value: 'Cadete 15-16', text: 'Cadete 15-16' },
+    { key: 'junior-17-18', value: 'Junior 17-18', text: 'Junior 17-18' },
+    { key: 'elite-open-19+', value: 'Elite open 19+', text: 'Elite open 19+' },
+    { key: 'master-30-39', value: 'Master 30-39', text: 'Master 30-39' },
+    { key: 'master-40-49', value: 'Master 40-49', text: 'Master 40-49' },
+    { key: 'master-50-59', value: 'Master 50-59', text: 'Master 50-59' },
+    { key: 'master-60+', value: 'Master 60+', text: 'Master 60+' },
+    { key: 'aficionados-open', value: 'Aficionados Open', text: 'Aficionados Open' },
+    { key: 'categoria-pueblo', value: 'Categoría Pueblo (No Federado)', text: 'Categoría Pueblo (No Federado)' },
+    { key: 'infantiles-13-14', value: 'Feminas Infantiles 13-14', text: 'Feminas Infantiles 13-14' },
+    { key: 'cadete-15-16', value: 'Feminas Cadete 15-16', text: 'Feminas Cadete 15-16' },
+    { key: 'junior-17-18', value: 'Feminas Junior 17-18', text: 'Feminas Junior 17-18' },
+    { key: 'elite-open', value: 'Feminas Elites open', text: 'Feminas Elites open' },
+    { key: 'master-30-39', value: 'Feminas Master 30-39', text: 'Feminas Master 30-39' },
+    { key: 'master-40-49', value: 'Feminas Master 40-49', text: 'Feminas Master 40-49' },
+    { key: 'master-50+', value: 'Feminas Master 50+', text: 'Feminas Master 50+' },
+    { key: 'aficionada-open', value: 'Feminas Aficionada Open', text: 'Feminas Aficionada Open' },
+    { key: 'categoria-pueblo', value: 'Feminas Categoría Pueblo (No Federada)', text: 'Feminas Categoría Pueblo (No Federada)' }
+  ];
+  
+
+  //  this will show as many forms as the numbers of participants in order to register such participants
   const renderParticipantsForm = ()=>{
     let participantsFormHTML = []
     for(let i = 0; i<numOfParticipants; i++){
@@ -74,10 +100,22 @@ function RegisterForm() {
                   setParticipantsInfo(participantsInfo)
                 }} fluid label='Phone' placeholder='Phone' />
 
-                <Form.Input onChange={(e)=>{
+                {/* <Form.Input onChange={(e)=>{
                   participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
                   setParticipantsInfo(participantsInfo)
-                }} fluid label='Gender' placeholder='Gender' />
+                }} fluid label='Gender' placeholder='Gender' /> */}
+                {/* <label style={{fontWeight:"bold"}}>Gender</label>
+                <Dropdown
+                  placeholder='Gender'
+                  fluid
+                  search
+                  selection
+                  options={genderOptions}
+                  onChange={(e)=>{
+                    participantsInfo[i] = {...participantsInfo[i], gender:e.target.textContent}
+                    setParticipantsInfo(participantsInfo)
+                  }}
+                /> */}
 
           <div style={{display:"flex", flexDirection:"column"}}>
           <label style={{fontWeight:"bold"}}>Birthdate</label>
@@ -95,10 +133,23 @@ function RegisterForm() {
                   setParticipantsInfo(participantsInfo)
                 }} fluid label='Address' placeholder='Address' />
 
-                <Form.Input onChange={(e)=>{
+                {/* <Form.Input onChange={(e)=>{
                   participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
                   setParticipantsInfo(participantsInfo)
-                }} fluid label='Category' placeholder='Category' />
+                }} fluid label='Category' placeholder='Category' /> */}
+                <label style={{fontWeight:"bold"}}>Category</label>
+                <Dropdown
+                  placeholder='Category'
+                  fluid
+                  search
+                  selection
+                  options={categoryOptions}
+                  value={participantsInfo[i].category}
+                  onChange={(e)=>{
+                    participantsInfo[i] = {...participantsInfo[i], category:e.target.textContent}
+                    setParticipantsInfo(participantsInfo)
+                  }}
+                />
             </Form.Group>
             {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
             <br/>
