@@ -11,7 +11,16 @@
     align-items: center;
     /* background-color: rebeccapurple; */
 }
-
+.trash:hover{
+    cursor: pointer !important;
+}
+.partTitle{
+    /* background-color: red; */
+    display: flex;
+    /* align-items: center; */
+    /* text-align: center; */
+    justify-content: space-between;
+}
 .form{
     /* From https://css.glass */
 /* From https://css.glass */

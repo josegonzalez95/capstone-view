@@ -4,7 +4,7 @@
 import DatePicker from 'react-date-picker';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Form, Modal, Button } from "semantic-ui-react";
+import { Form, Modal, Button, Icon, Label } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import styles from "./RegisterForm.module.css"
 import {createParticipant} from "../../api/Participants/participantsRoute.js"
@@ -26,16 +26,18 @@ function RegisterForm() {
 
   const [orderCreator, setOrderCreator] = useState('')
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
+  // const [participantsFormHTML, setParticipantsFormHTML] = useState([])
   // const [position, setPosition] = useState({lat:0, lng:0})
   // const position = {lat:0, lng:0}
   const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
+  const [invalidFields, setInvalidFields] = useState([])
 
 
  
   const {eventId} = useParams()
-  console.log(eventId)
-  console.log(window.location.pathname)
+  // console.log(eventId)
+  // console.log(window.location.pathname)
   const [event, setEvent] = useState()
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
@@ -50,6 +52,22 @@ function RegisterForm() {
     setParticipantsInfo(participantsInfo)
     setChangeState(!changeState)
   }
+
+    //  use effect hook used to load event data before rendering component
+    useEffect(()=>{
+      const event =async()=>{
+        const eventResponse = await getEvent({id: Number(eventId)})
+        // console.log(eventResponse)
+        // console.log(eventResponse)
+        setEvent(eventResponse.event)
+      }
+      event().catch(console.error)
+      console.log("useEffect",participantsInfo);
+      // const formHTML = renderParticipantsForm()
+      // setParticipantsFormHTML(formHTML)
+  
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[participantsInfo])
 
   // const genderOptions =  [{key:'m', value:'M', text:'M'}, {key:'f', value:'F', text:'F'}]
 
@@ -74,90 +92,182 @@ function RegisterForm() {
     { key: 'aficionada-open', value: 'Feminas Aficionada Open', text: 'Feminas Aficionada Open' },
     { key: 'categoria-pueblo', value: 'Feminas Categoría Pueblo (No Federada)', text: 'Feminas Categoría Pueblo (No Federada)' }
   ];
+
+  const [validationErrors, setValidationErrors] = useState([]);
+
+  const validateParticipant = (participant) => {
+    const errors = {};
+
+    if (!participant.name) {
+      errors.name = "Name is required";
+    }else{
+      delete errors.name
+    }
+
+    if (!participant.email) {
+      errors.email = "Email is required";
+    }else{
+      delete errors.email
+    }
+
+    if (!participant.phone) {
+      errors.phone = "Phone is required";
+    }else{
+      delete errors.phone
+    }
+
+    if (!participant.address) {
+      errors.address = "Address is required";
+    } else{
+      delete errors.address
+    }
+
+    if (!participant.birthdate) {
+      errors.birthdate = "Birthdate is required";
+    } else{
+      delete errors.birthdate
+    }
+
+    if (!participant.category) {
+      errors.category = "Category is required";
+    } else{
+      delete errors.category
+    }
+    // else if (!isValidEmail(participant.email)) {
+    //   errors.email = "Invalid email format";
+    // }
+
+    // Add more validation rules here...
+
+    return errors;
+  };
+
+  const isValidEmail = (email) => {
+    // Implement your email validation logic here
+    return true;
+  };
+
+  useEffect(()=>{
+    if(isFormValid()) setOpen(true)
+  }, [validationErrors])
+
+  const handleValidation = () => {
+    const newErrors = participantsInfo.map((participant) =>
+      validateParticipant(participant)
+    );
+    setValidationErrors(newErrors);
+  };
+
+  const isFormValid = () => {
+    return participantsInfo[0].name && validationErrors.every((errors) => Object.keys(errors).length === 0);
+  };
+
   
 
   //  this will show as many forms as the numbers of participants in order to register such participants
-  const renderParticipantsForm = ()=>{
-    let participantsFormHTML = []
-    for(let i = 0; i<numOfParticipants; i++){
-      participantsFormHTML.push(
-        <div className={styles.form}>
-          <h3>Participant {i + 1}</h3>
-            <Form.Group widths='equal' className={styles.eventForm}>
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
-                  // console.log(participantsInfo)
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Name' placeholder='Name' />
+  // const renderParticipantsForm = ()=>{
+  //   console.log("renderParticipantsForm call");
+  //   let participantsFormHTML = []
+  //   console.log("participantsInfo",participantsInfo);
+  //   for(let i = 0; i<numOfParticipants; i++){
+  //     participantsFormHTML.push(
+  //       <div className={styles.form}>
+  //         <h3>Participant {i + 1}</h3>
+  //         <button accessKey={i} onClick={(e)=>{
+  //           const clickedCard = e
+  //           console.log("clickedCard", clickedCard.target.accessKey);
+  //           // && Number(clickedCard.target.accessKey)===i
+  //           if(numOfParticipants>1){
+  //             console.log("---------------------");
+  //             let tempList = participantsInfo
+  //             console.log(tempList);
+  //             tempList.splice(i, 1)
+  //             setParticipantsInfo(tempList)
+  //             // setParticipantsInfo((prevState)=>{
+  //             //   let tempList = prevState
+  //             //   tempList.splice(prevState.length-i-1,1)
+  //             //   return tempList
+  //             // })
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], email:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Email' placeholder='Email' />
+  //             setNumOfParticipants(numOfParticipants - 1)
+  //           }
+  //         }}>delete</button>
+  //           <Form.Group widths='equal' className={styles.eventForm}>
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
+  //                 // console.log(participantsInfo)
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Name' placeholder='Name' />
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Phone' placeholder='Phone' />
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], email:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Email' placeholder='Email' />
 
-                {/* <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Gender' placeholder='Gender' /> */}
-                {/* <label style={{fontWeight:"bold"}}>Gender</label>
-                <Dropdown
-                  placeholder='Gender'
-                  fluid
-                  search
-                  selection
-                  options={genderOptions}
-                  onChange={(e)=>{
-                    participantsInfo[i] = {...participantsInfo[i], gender:e.target.textContent}
-                    setParticipantsInfo(participantsInfo)
-                  }}
-                /> */}
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Phone' placeholder='Phone' />
 
-          <div style={{display:"flex", flexDirection:"column"}}>
-          <label style={{fontWeight:"bold"}}>Birthdate</label>
-          {console.log(participantsInfo[i].birthdate)}
-          <DatePicker onChange={(e)=>onDateChange(e, i)} value={participantsInfo[i].birthdate}/>
-          </div>
-                {/* 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], birthdate:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Birthdate' placeholder='Birthdate' /> */}
+  //               {/* <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Gender' placeholder='Gender' /> */}
+  //               {/* <label style={{fontWeight:"bold"}}>Gender</label>
+  //               <Dropdown
+  //                 placeholder='Gender'
+  //                 fluid
+  //                 search
+  //                 selection
+  //                 options={genderOptions}
+  //                 onChange={(e)=>{
+  //                   participantsInfo[i] = {...participantsInfo[i], gender:e.target.textContent}
+  //                   setParticipantsInfo(participantsInfo)
+  //                 }}
+  //               /> */}
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], address:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Address' placeholder='Address' />
+  //         <div style={{display:"flex", flexDirection:"column"}}>
+  //         <label style={{fontWeight:"bold"}}>Birthdate</label>
+  //         {console.log(participantsInfo[i].birthdate)}
+  //         <DatePicker onChange={(e)=>onDateChange(e, i)} value={participantsInfo[i].birthdate}/>
+  //         </div>
+  //               {/* 
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], birthdate:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Birthdate' placeholder='Birthdate' /> */}
 
-                {/* <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Category' placeholder='Category' /> */}
-                <label style={{fontWeight:"bold"}}>Category</label>
-                <Dropdown
-                  placeholder='Category'
-                  fluid
-                  search
-                  selection
-                  options={categoryOptions}
-                  value={participantsInfo[i].category}
-                  onChange={(e)=>{
-                    participantsInfo[i] = {...participantsInfo[i], category:e.target.textContent}
-                    setParticipantsInfo(participantsInfo)
-                  }}
-                />
-            </Form.Group>
-            {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
-            <br/>
-          </div>
-      )
-    }
-    return <>{participantsFormHTML}</>
-  }
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], address:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Address' placeholder='Address' />
+
+  //               {/* <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Category' placeholder='Category' /> */}
+  //               <label style={{fontWeight:"bold"}}>Category</label>
+  //               <Dropdown
+  //                 placeholder='Category'
+  //                 fluid
+  //                 search
+  //                 selection
+  //                 options={categoryOptions}
+  //                 value={participantsInfo[i].category}
+  //                 onChange={(e)=>{
+  //                   participantsInfo[i] = {...participantsInfo[i], category:e.target.textContent}
+  //                   setParticipantsInfo(participantsInfo)
+  //                 }}
+  //               />
+  //           </Form.Group>
+  //           {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
+  //           <br/>
+  //         </div>
+  //     )
+  //   }
+  //   setParticipantsFormHTML(participantsFormHTML)
+  //   return participantsFormHTML
+  // }
 
 
   //   participants creation, first it creates participants and collect their ids
@@ -192,11 +302,12 @@ function RegisterForm() {
                                   birthdate: ${participant.birthdate.toLocaleDateString()}\n
                                   category: ${participant.category}\n\n`
           const participantResponse = await createParticipant(participant)
+          console.log('new participant created');
           listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
         }
       }
     });
-    console.log(participantInfoEmail)
+    // console.log(participantInfoEmail)
     emailData["template_params"]["participants"] = participantInfoEmail
     // create order
     const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:paymentMethod})
@@ -207,7 +318,7 @@ function RegisterForm() {
       await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
     })
     console.log(emailData)
-    await sendEmail(emailData)
+    // await sendEmail(emailData)
 
     setPaymentMehtod("") //resets the payment method back to blank
     setDisabled(true) //disables the order confirmation button after a successful confirmation
@@ -218,17 +329,21 @@ function RegisterForm() {
     // create tickets
   }
 
-  //  use effect hook used to load event data before rendering component
-  useEffect(()=>{
-    const event =async()=>{
-      const eventResponse = await getEvent({id: Number(eventId)})
-      console.log(eventResponse)
-      console.log(eventResponse)
-      setEvent(eventResponse.event)
-    }
-    event().catch(console.error)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  // //  use effect hook used to load event data before rendering component
+  // useEffect(()=>{
+  //   const event =async()=>{
+  //     const eventResponse = await getEvent({id: Number(eventId)})
+  //     console.log(eventResponse)
+  //     console.log(eventResponse)
+  //     setEvent(eventResponse.event)
+  //   }
+  //   event().catch(console.error)
+  //   const formHTML = renderParticipantsForm(1)
+  //   setParticipantsFormHTML(formHTML)
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // },[participantsInfo])
+
   const datetime = event ? event.date:"";
   const [date] = datetime.split('T');
   return (
@@ -250,7 +365,7 @@ function RegisterForm() {
           
         </div>
         <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date} (YYYY-MM-DD)</p> 
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {new Date(date).toLocaleString('default', { month: 'long', day:'2-digit' , year:'numeric'})}</p> 
           
         </div>
         {/* <div className={styles.details}>
@@ -264,11 +379,12 @@ function RegisterForm() {
                               setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
                             }}
                           >Add Participant</Button>
-        <Button className={styles.btns} onClick={()=>{
+        {/* <Button className={styles.btns} onClick={()=>{
           if(numOfParticipants>1){
             setNumOfParticipants(numOfParticipants - 1)}
+            setParticipantsInfo(participantsInfo.splice(participantsInfo.length-1, 1))
           }
-          }>Delete Participant</Button>
+          }>Delete Participant</Button> */}
           </div>
         {/* <div className={styles.details}> */}
           {/* <p>${event.price} | {" "}</p> 
@@ -279,9 +395,178 @@ function RegisterForm() {
         
         {/* {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>} */}
         {/* <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' /> */}
-        {renderParticipantsForm()}
+        {/* {renderParticipantsForm()} */}
+        {/* <>{participantsFormHTML.map((element, index)=>{
+          return(<div key={index}>{element}</div>)
+        })}</> */}
+        {participantsInfo.map((participant, i)=>{
+          return(
+            <div className={styles.form}>
+          <div className={styles.partTitle}>
+          <h3>Participant {i + 1}</h3>
+          <Icon name='trash alternate outline' className={styles.trash} size='large'
+          // accessKey={i} 
+          onClick={(e)=>{
+            const clickedCard = e
+            console.log("clickedCard", clickedCard.target.accessKey);
+            // && Number(clickedCard.target.accessKey)===i
+            if(numOfParticipants>1){
+              // console.log("---------------------");
+              // const tempList = participantsInfo
+              // console.log(tempList);
+              // tempList.splice(i, 1)
+              // setParticipantsInfo(tempList)
+              // setParticipantsInfo((prevState)=>{
+              //   const tempList = prevState
+              //   tempList.splice(i, 1)
+              //   console.log(tempList)
+              //   return tempList
+              // })
+              setParticipantsInfo(prevState=>{
+                const updatedParticipants = prevState.filter((_, index) => index !== i);
+                return updatedParticipants
+              }
+              );
+
+              setNumOfParticipants(numOfParticipants - 1)
+            }
+          }}></Icon>
+          </div>
+          {/* setParticipantsInfo(prevParticipantsInfo => {
+            const updatedInfo = [...prevParticipantsInfo];
+            updatedInfo[i] = { ...updatedInfo[i], name: e.target.value };
+            return updatedInfo;
+          }); */}
+            <Form.Group widths='equal' className={styles.eventForm}>
+                <Form.Input value={participantsInfo[i].name} onChange={(e)=>{
+                  // participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
+                  // // console.log(participantsInfo)
+                  // setParticipantsInfo(participantsInfo)
+
+                  setParticipantsInfo(prevParticipantsInfo => {
+                    const updatedInfo = [...prevParticipantsInfo];
+                    updatedInfo[i] = { ...updatedInfo[i], name: e.target.value };
+                    return updatedInfo;
+                  });
+                }} fluid label='Name' placeholder='Name' 
+                // error={true?{
+                //   content: 'Please enter a valid email address',
+                //   pointing: 'below',
+                // }:null}
+                />
+                {validationErrors[i] && validationErrors[i].name &&<Label basic color='red' pointing>
+                  {validationErrors[i].name}
+                </Label>}
+                <Form.Input value={participantsInfo[i].email} onChange={(e)=>{
+                  // participantsInfo[i] = {...participantsInfo[i], email:e.target.value}
+                  // setParticipantsInfo(participantsInfo)
+                  setParticipantsInfo(prevParticipantsInfo => {
+                    const updatedInfo = [...prevParticipantsInfo];
+                    updatedInfo[i] = { ...updatedInfo[i], email: e.target.value };
+                    return updatedInfo;
+                  });
+                }} fluid label='Email' placeholder='Email' />
+{validationErrors[i] && validationErrors[i].email &&<Label basic color='red' pointing>
+                  {validationErrors[i].email}
+                </Label>}
+                <Form.Input value={participantsInfo[i].phone} onChange={(e)=>{
+                  // participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
+                  // setParticipantsInfo(participantsInfo)
+                  setParticipantsInfo(prevParticipantsInfo => {
+                    const updatedInfo = [...prevParticipantsInfo];
+                    updatedInfo[i] = { ...updatedInfo[i], phone: e.target.value };
+                    return updatedInfo;
+                  });
+                }} fluid label='Phone' placeholder='Phone' />
+                {validationErrors[i] && validationErrors[i].phone &&<Label basic color='red' pointing>
+                  {validationErrors[i].phone}
+                </Label>}
+
+                {/* <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Gender' placeholder='Gender' /> */}
+                {/* <label style={{fontWeight:"bold"}}>Gender</label>
+                <Dropdown
+                  placeholder='Gender'
+                  fluid
+                  search
+                  selection
+                  options={genderOptions}
+                  onChange={(e)=>{
+                    participantsInfo[i] = {...participantsInfo[i], gender:e.target.textContent}
+                    setParticipantsInfo(participantsInfo)
+                  }}
+                /> */}
+
+          <div style={{display:"flex", flexDirection:"column"}}>
+          <label style={{fontWeight:"bold"}}>Birthdate</label>
+          {console.log(participantsInfo[i].birthdate)}
+          <DatePicker onChange={(e)=>onDateChange(e, i)} value={participantsInfo[i].birthdate}/>
+          {validationErrors[i] && validationErrors[i].birthdate &&<Label basic color='red' pointing>
+                  {validationErrors[i].birthdate}
+                </Label>}
+          </div>
+                {/* 
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], birthdate:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Birthdate' placeholder='Birthdate' /> */}
+
+                <Form.Input value={participantsInfo[i].address} onChange={(e)=>{
+                  // participantsInfo[i] = {...participantsInfo[i], address:e.target.value}
+                  // setParticipantsInfo(participantsInfo)
+                  setParticipantsInfo(prevParticipantsInfo => {
+                    const updatedInfo = [...prevParticipantsInfo];
+                    updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
+                    return updatedInfo;
+                  });
+                }} fluid label='Address' placeholder='Address' />
+{validationErrors[i] && validationErrors[i].address &&<Label basic color='red' pointing>
+                  {validationErrors[i].address}
+                </Label>}
+                {/* <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Category' placeholder='Category' /> */}
+                <div>
+                <label style={{fontWeight:"bold"}}>Category</label>
+                <Dropdown
+                  placeholder='Category'
+                  fluid
+                  search
+                  selection
+                  options={categoryOptions}
+                  value={participantsInfo[i].category}
+                  onChange={(e)=>{
+                    // participantsInfo[i] = {...participantsInfo[i], category:e.target.textContent}
+                    // setParticipantsInfo(participantsInfo)
+                    console.log(e.target.innerText)
+                    setParticipantsInfo(prevParticipantsInfo => {
+                      const updatedInfo = [...prevParticipantsInfo];
+                      updatedInfo[i] = { ...updatedInfo[i], category: e.target.innerText, gender: e.target.innerText.includes("Feminas")?"F":"M" };
+                      return updatedInfo;
+                    });
+                  }}
+                />
+                </div>
+                {validationErrors[i] && validationErrors[i].category &&<Label basic color='red' pointing>
+                  {validationErrors[i].category}
+                </Label>}
+            </Form.Group>
+            {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
+            <br/>
+          </div>
+          )
+        })}
+        {/* {console.log("participantsFormHTML", participantsFormHTML.length)}
+          {console.log("numOfParticipants",numOfParticipants)}
+          {console.log("participantsInfo",participantsInfo.length)} */}
         <div className={styles.btnContainer}>
-        <Button className={styles.btns} onClick={(e)=>{setOpen(true)}}>Submit</Button>
+        <Button className={styles.btns} onClick={(e)=>{handleValidation();
+          // if(isFormValid()) setOpen(true)
+          
+          }}>Submit</Button>
         </div>
 
         {/* <button onClick={()=>{
@@ -352,7 +637,7 @@ function RegisterForm() {
         Cancel
         </Button>
         <Button 
-          disabled = {disabled}
+          // disabled = {disabled}
           content="Confirm Order"
           labelPosition='right'
           icon='checkmark'

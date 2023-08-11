@@ -163,7 +163,7 @@ const [date] = datetime.split('T');
           
         </div>
         <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date} (YYYY-MM-DD)</p> 
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {new Date(date).toLocaleString('default', { month: 'long', day:'2-digit' , year:'numeric'})}</p> 
           
         </div>
         {/* <div className={styles.details}>

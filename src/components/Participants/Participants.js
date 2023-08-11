@@ -59,7 +59,7 @@ eventsLst.map(eventRow =>{
             <Card.Header>{event.title}</Card.Header>
               <Card.Meta>
                 {/* <span className='date'>Joined in 2015</span> */}
-                <span className='date'>{event.date}</span>
+                <span className='date'>{new Date(event.date).toLocaleString('default', { month: 'long', day:'2-digit' , year:'numeric'})}</span>
               </Card.Meta>
               <Card.Description>
                 {/* {event.details} */}
