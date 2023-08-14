@@ -4,10 +4,19 @@ import React, { useState } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import { signUp } from '../../api/Promoters/promotersRoutes';
 import styles from './Signup.module.css'
+import PassphraseForm from '../PassphraseForm/PassphraseForm';
 
 const Signup = () => {
     //   user info state initialization, this will be used to store and update user info
     const [userInfo, setUserInfo] = useState({name:"", password:"",email:"", address:""})
+
+        const [passphraseCorrect, setPassphraseCorrect] = useState(false);
+      
+        const handlePassphraseCorrect = () => {
+          setPassphraseCorrect(true);
+        };
+
+
     const handleSubmit=async(e)=>{
         e.preventDefault()
         const {name, password, address, email} = userInfo
@@ -22,7 +31,10 @@ const Signup = () => {
     }
 
     //  renders form element
-    return(
+    return(<>
+        {!passphraseCorrect ? (
+            <PassphraseForm onPassphraseCorrect={handlePassphraseCorrect} />
+          ) : (
         <div className={styles.container}>
             <div className={styles.banner}>
                 PUR Cycling
@@ -79,6 +91,7 @@ const Signup = () => {
                 </Form>
             </div>
         </div>
+          )}</>
     )
 };
 

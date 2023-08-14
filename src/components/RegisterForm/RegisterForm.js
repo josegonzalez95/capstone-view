@@ -438,6 +438,11 @@ function RegisterForm() {
             return updatedInfo;
           }); */}
             <Form.Group widths='equal' className={styles.eventForm}>
+              <Form.Field>
+                <label style={{fontWeight:"bold"}}>Name</label>
+                {validationErrors[i] && validationErrors[i].name &&<Label basic color='red' pointing="left">
+                  {validationErrors[i].name}
+                </Label>}
                 <Form.Input value={participantsInfo[i].name} onChange={(e)=>{
                   // participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
                   // // console.log(participantsInfo)
@@ -448,14 +453,18 @@ function RegisterForm() {
                     updatedInfo[i] = { ...updatedInfo[i], name: e.target.value };
                     return updatedInfo;
                   });
-                }} fluid label='Name' placeholder='Name' 
+                }} fluid placeholder='Name' 
                 // error={true?{
                 //   content: 'Please enter a valid email address',
                 //   pointing: 'below',
                 // }:null}
                 />
-                {validationErrors[i] && validationErrors[i].name &&<Label basic color='red' pointing>
-                  {validationErrors[i].name}
+              </Form.Field>
+                
+              <Form.Field>
+                <label style={{fontWeight:"bold"}}>Email</label>
+              {validationErrors[i] && validationErrors[i].email &&<Label basic color='red' pointing='left'>
+                  {validationErrors[i].email}
                 </Label>}
                 <Form.Input value={participantsInfo[i].email} onChange={(e)=>{
                   // participantsInfo[i] = {...participantsInfo[i], email:e.target.value}
@@ -465,9 +474,14 @@ function RegisterForm() {
                     updatedInfo[i] = { ...updatedInfo[i], email: e.target.value };
                     return updatedInfo;
                   });
-                }} fluid label='Email' placeholder='Email' />
-{validationErrors[i] && validationErrors[i].email &&<Label basic color='red' pointing>
-                  {validationErrors[i].email}
+                }} fluid placeholder='Email' />
+
+                </Form.Field>
+
+              <Form.Field>
+                <label style={{fontWeight:"bold"}}>Phone</label>
+              {validationErrors[i] && validationErrors[i].phone &&<Label basic color='red' pointing='left'>
+                  {validationErrors[i].phone}
                 </Label>}
                 <Form.Input value={participantsInfo[i].phone} onChange={(e)=>{
                   // participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
@@ -477,11 +491,9 @@ function RegisterForm() {
                     updatedInfo[i] = { ...updatedInfo[i], phone: e.target.value };
                     return updatedInfo;
                   });
-                }} fluid label='Phone' placeholder='Phone' />
-                {validationErrors[i] && validationErrors[i].phone &&<Label basic color='red' pointing>
-                  {validationErrors[i].phone}
-                </Label>}
-
+                }} fluid placeholder='Phone' />
+                
+                </Form.Field>
                 {/* <Form.Input onChange={(e)=>{
                   participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
                   setParticipantsInfo(participantsInfo)
@@ -512,7 +524,11 @@ function RegisterForm() {
                   participantsInfo[i] = {...participantsInfo[i], birthdate:e.target.value}
                   setParticipantsInfo(participantsInfo)
                 }} fluid label='Birthdate' placeholder='Birthdate' /> */}
-
+              <Form.Field>
+              <label style={{fontWeight:"bold"}}>Address</label>
+              {validationErrors[i] && validationErrors[i].address &&<Label basic color='red' pointing='left'>
+                  {validationErrors[i].address}
+                </Label>}
                 <Form.Input value={participantsInfo[i].address} onChange={(e)=>{
                   // participantsInfo[i] = {...participantsInfo[i], address:e.target.value}
                   // setParticipantsInfo(participantsInfo)
@@ -521,16 +537,18 @@ function RegisterForm() {
                     updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
                     return updatedInfo;
                   });
-                }} fluid label='Address' placeholder='Address' />
-{validationErrors[i] && validationErrors[i].address &&<Label basic color='red' pointing>
-                  {validationErrors[i].address}
-                </Label>}
+                }} fluid placeholder='Address' />
+
+                </Form.Field>
                 {/* <Form.Input onChange={(e)=>{
                   participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
                   setParticipantsInfo(participantsInfo)
                 }} fluid label='Category' placeholder='Category' /> */}
                 <div>
                 <label style={{fontWeight:"bold"}}>Category</label>
+                {validationErrors[i] && validationErrors[i].category &&<Label basic color='red' pointing='left'>
+                  {validationErrors[i].category}
+                </Label>}
                 <Dropdown
                   placeholder='Category'
                   fluid
@@ -550,9 +568,7 @@ function RegisterForm() {
                   }}
                 />
                 </div>
-                {validationErrors[i] && validationErrors[i].category &&<Label basic color='red' pointing>
-                  {validationErrors[i].category}
-                </Label>}
+                
             </Form.Group>
             {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
             <br/>

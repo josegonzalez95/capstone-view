@@ -11,6 +11,7 @@ import MyMapComponent from "../Map/MyMapComponent";
 import { useJsApiLoader } from '@react-google-maps/api';
 import { Button } from "semantic-ui-react";
 import ResizableImage from "../ResizableImage/ResizableImage";
+import PaginatedTable from "../PaginatedTable/PaginatedTable";
 
 
 
@@ -22,6 +23,7 @@ function Event() {
   // console.log(useLoaderData())
   console.log(id)
   const [event, setEvent] = useState()
+  const [participants, setParticipants] = useState([])
   const position = {lat:0, lng:0}
 
   useEffect(()=>{
@@ -42,8 +44,15 @@ function Event() {
   
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     console.log('use effect', lat, lng)
+  },[])
 
-  })
+  useEffect(()=>{
+    const getParts =async()=>{
+      const participants = await asyncGetParticipants()
+      setParticipants(participants)
+    }
+    getParts().catch(console.error);
+  },[])
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -94,10 +103,10 @@ function Event() {
 //   })
 
   const asyncGetParticipants=async()=>{
-
+    console.log(id)
     const participantsResponse = await getAllParticipantsByEvent({eventid: Number(id)})
 
-    console.log(participantsResponse.participants)
+    console.log(participantsResponse)
 
 
     // participants.forEach(client => {
@@ -237,6 +246,7 @@ const [date] = datetime.split('T');
         {isLoaded ? <TestMap setPosition={setPosition} location={event.location}/>:<></>}
         </div>*/}
         {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>} 
+        <PaginatedTable participants={participants}/>
         
         {/* <img  src={defaultLocation} alt="fireSpot"/>  */}
       </div>

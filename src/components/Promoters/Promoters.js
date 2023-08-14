@@ -2,7 +2,7 @@
 
 
 import styles from './Promoters.module.css'
-import { Button, Grid, Card, Icon, Modal, Form } from 'semantic-ui-react'
+import { Button, Grid, Card, Icon, Modal, Form, Label, Popup } from 'semantic-ui-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
@@ -51,7 +51,60 @@ function Promoters() {
   }, [])
   // let allEvents = []
  
+  const [validationErrors, setValidationErrors] = useState({});
 
+  const validateParticipant = (event) => {
+    const errors = {};
+
+    if (!event.title) {
+      errors.title = "Title is required";
+    }else{
+      delete errors.title
+    }
+
+    if (!event.details) {
+      errors.details = "Details is required";
+    }else{
+      delete errors.details
+    }
+
+    if (!event.price) {
+      errors.price = "Price is required";
+    }else{
+      delete errors.price
+    }
+
+    if (!event.location) {
+      errors.location = "Location is required";
+    } else{
+      delete errors.location
+    }
+
+    // else if (!isValidEmail(participant.email)) {
+    //   errors.email = "Invalid email format";
+    // }
+
+    // Add more validation rules here...
+
+    return errors;
+  };
+
+
+  useEffect(()=>{
+    console.log("is form valid", isFormValid());
+    if(isFormValid()) setOpen(false)
+  }, [validationErrors])
+
+  const handleValidation = () => {
+    const newErrors = validateParticipant(eventInfo)
+    console.log('new errors', newErrors);
+    
+    setValidationErrors(newErrors);
+  };
+
+  const isFormValid = () => {
+    return Object.keys(validationErrors).length === 0;
+  };
  
 
   // const evnts =async()=>{
@@ -301,7 +354,7 @@ function Promoters() {
                           <Card.Header>{event.title}</Card.Header>
                             <Card.Meta>
                               {/* <span className='date'>Joined in 2015</span> */}
-                              <span className='date'>{event.date}</span>
+                              <span className='date'>{new Date(event.date).toLocaleString('default', { month: 'long', day:'2-digit' , year:'numeric'})}</span>
                             </Card.Meta>
                             <Card.Description>
                               {event.details}
@@ -319,6 +372,7 @@ function Promoters() {
                                     setEventToEditID(event.id);
                                     const eventToBeEditedResponse = await getEvent({id: Number(event.id)})
                                     seteventToUpdateInfo(eventToBeEditedResponse.event)
+                                    // setEventInfo(eventToBeEditedResponse.event)
                                     setUpdate(true); 
                                     }
                                   } 
@@ -419,14 +473,44 @@ function Promoters() {
           <Form >
 
             <Form.Group widths='equal' className={styles.eventForm}>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
-                <p style={{marginLeft:"0.5rem"}}>{eventInfo.title.length}/1000</p>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                <p style={{marginLeft:"0.5rem"}}>{eventInfo.details.length}/1000</p>
+              <Form.Field inline>
+                <label>Title</label>
+                {validationErrors && validationErrors.title &&
+                  <Label basic color='red' pointing='left'>
+                    {validationErrors.title}
+                  </Label>
+                }
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid placeholder='Title' />
+              </Form.Field>
+              <p style={{marginLeft:"0.5rem"}}>{eventInfo.title.length}/1000</p>
+
+              <Form.Field inline>
+                <label>Details</label>
+                {validationErrors && validationErrors.details &&
+                  <Label basic color='red' pointing="left">
+                    {validationErrors.details}
+                  </Label>
+                }
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid placeholder='Details' />
+              </Form.Field>
+              <p style={{marginLeft:"0.5rem"}}>{eventInfo.details.length}/1000</p>
+
+              <Form.Field inline>
+                <label>Price</label>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' /> */}
-                <Form.Input onChange={(e)=>{handlePriceChange(e)}} fluid label='Price' placeholder='Price' value={eventInfo.price}/>
+                {validationErrors && validationErrors.price &&<Label basic color='red' pointing="left">
+                  {validationErrors.price}
+                </Label>}
+                <Form.Input onChange={(e)=>{handlePriceChange(e)}} fluid placeholder='Price' value={eventInfo.price}/>
+              </Form.Field>
+
+              <Form.Field inline>
+                <label>Location</label>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' /> */}
-                <label style={{fontWeight:"bold"}}>Location</label>
+                {validationErrors && validationErrors.location &&<Label basic color='red' pointing="left">
+                  {validationErrors.location}
+                </Label>}
+                {/* <label style={{fontWeight:"bold"}}>Location</label> */}
                 <Dropdown
                   placeholder='Select City'
                   fluid
@@ -435,6 +519,7 @@ function Promoters() {
                   options={countryOptions}
                   onChange={(e)=>{console.log(e.target.textContent); setEventInfo({...eventInfo, location: e.target.textContent})}}
                 />
+              </Form.Field>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' /> */}
                   {/* <div> */}
                 {/* <DatePicker onChange={(e)=>onDateChange(e)} value={date}/> */}
@@ -466,6 +551,7 @@ function Promoters() {
           labelPosition='right'
           icon='checkmark'
           onClick={async() => {
+              handleValidation()
               console.log("create event call on button")
               const{date, details, location, photo ,price, title}= eventInfo
               if(date && details && location && photo && price && title){
@@ -493,7 +579,7 @@ function Promoters() {
               }
               // createEventCall();
               // console.log(eventInfo);
-              setOpen(false)
+              // setOpen(false)
             }
           }
           positive
@@ -522,18 +608,31 @@ function Promoters() {
           </div>
           <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' value={eventInfo.title}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' value={eventInfo.details}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' value={eventInfo.price}/>
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} value={eventInfo.title} fluid label='Title' placeholder='Title'/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} value={eventInfo.details} fluid label='Details' placeholder='Details' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} value={eventInfo.price} type='number' fluid label='Price' placeholder='Price' /> */}
+                <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, title:e.target.value})}} value={eventToUpdateInfo.title} fluid label='Title' placeholder='Title'/>
+                <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, details:e.target.value})}} value={eventToUpdateInfo.details} fluid label='Details' placeholder='Details' />
+                <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, price:Number(e.target.value)})}} value={eventToUpdateInfo.price} type='number' fluid label='Price' placeholder='Price' />
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/> */}
                 <label style={{fontWeight:"bold"}}>Location</label>
+                {/* <Dropdown
+                  placeholder='Select City'
+                  fluid
+                  search
+                  selection
+                  options={countryOptions}
+                  value={eventInfo.location}
+                  onChange={(e)=>{console.log(e.target.textContent); setEventInfo({...eventInfo, location: e.target.textContent})}}
+                /> */}
                 <Dropdown
                   placeholder='Select City'
                   fluid
                   search
                   selection
                   options={countryOptions}
-                  onChange={(e)=>{console.log(e.target.textContent); setEventInfo({...eventInfo, location: e.target.textContent})}}
+                  value={eventInfo.location}
+                  onChange={(e)=>{console.log(e.target.textContent); seteventToUpdateInfo({...eventToUpdateInfo, location: e.target.textContent})}}
                 />
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' value={eventInfo.date}/> */}
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' value={eventInfo.photo}/> */}
@@ -548,7 +647,7 @@ function Promoters() {
                     </section>
                   )}
                 </Dropzone> */}
-                <StyledDropzone eventInfo={eventInfo} setEventInfo={setEventInfo}/>
+                <StyledDropzone eventInfo={eventToUpdateInfo} setEventInfo={seteventToUpdateInfo}/>
                 </Form.Input>
             </Form.Group>
           </Form>
@@ -564,7 +663,7 @@ function Promoters() {
           icon='checkmark'
           onClick={async() => {
 
-            const{date, details, location, photo ,price, title}= eventInfo
+            const{date, details, location, photo ,price, title}= eventToUpdateInfo
             let eventBodySend = {id:eventToEditID }
             if(date || details || location || photo || price || title){
               if(details.length<=1000 || location.length<=200 || title.length<=1000){
