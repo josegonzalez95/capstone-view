@@ -3,6 +3,9 @@
     /* height: 50rem; */
     height: 100vh;
 }
+.eye:hover{
+    cursor: pointer;
+}
 
 .banner{
     /* background-color: #82A5FF; */

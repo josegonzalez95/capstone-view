@@ -3,7 +3,7 @@
 
 import DatePicker from 'react-date-picker';
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, redirect } from "react-router-dom";
 import { Form, Modal, Button, Icon, Label } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import styles from "./RegisterForm.module.css"
@@ -32,6 +32,7 @@ function RegisterForm() {
   const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
   const [invalidFields, setInvalidFields] = useState([])
+  const navigate = useNavigate()
 
 
  
@@ -325,7 +326,10 @@ function RegisterForm() {
 
     setNumOfParticipants(1)
     setParticipantsInfo([{name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
-    window.location.reload()
+    // window.location.reload()
+    // redirect(`/registerParticipant/${eventId}`)
+    // window.location.replace(`/registerParticipant/${eventId}`)
+    navigate(`/registerParticipant/${eventId}`, {state:{isRegister: true}})
     // create tickets
   }
 

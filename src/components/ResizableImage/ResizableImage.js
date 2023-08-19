@@ -30,7 +30,7 @@ function ResizableImage({ src, aspectRatio }) {
         marginBottom:"2rem"
       }}
     >
-    {console.log(width, containerRef)}
+    {/* {console.log(width, containerRef)} */}
 
       {width && (
         <img

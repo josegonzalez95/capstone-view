@@ -3,7 +3,7 @@
 
 // import DatePicker from 'react-date-picker';
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Button } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import styles from "./Register.module.css"
@@ -16,6 +16,7 @@ import MyMapComponent from "../Map/MyMapComponent";
 // const { useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
 import ResizableImage from "../ResizableImage/ResizableImage";
+import MessageBar from "../MessageBar/MessageBar";
 
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
@@ -30,7 +31,7 @@ function Event() {
   // const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
-
+  const location = useLocation()
   console.log(window.location)
 
 
@@ -40,6 +41,7 @@ function Event() {
   console.log(eventId)
   console.log(window.location.pathname)
   const [event, setEvent] = useState()
+  const [showRegisterMessgeBar, setShowRegisterMessageBar] = useState(false)
   // const [numOfParticipants, setNumOfParticipants] = useState(1)
 
     const { isLoaded } = useJsApiLoader({
@@ -150,10 +152,24 @@ function Event() {
       console.log(eventResponse)
       console.log(eventResponse)
       setEvent(eventResponse.event)
+      
+      if(location.state && location.state.isRegister){
+        setShowRegisterMessageBar(true)
+      }
     }
     event().catch(console.error)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
+  useEffect(()=>{
+    setTimeout(()=> {
+      if(showRegisterMessgeBar){
+        navigate('', {replace: true})
+
+        setShowRegisterMessageBar(false)
+      }
+    }, 5000);
+  }, [showRegisterMessgeBar])
 
     const datetime = event ? event.date:"";
 const [date] = datetime.split('T');
@@ -162,14 +178,13 @@ const [date] = datetime.split('T');
 // console.log('Time:', time.slice(0, -5)); // Time: 08:00:00
   return (
     // console.log(event)
-
-
-
-    
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
       {/* {console.log(participantsInfo)} */}
+
       <div className={styles.container}>
+      {showRegisterMessgeBar && <MessageBar message={'Participants registered successfully'}/>}
+
         <p className={styles.title}>{event.title}</p>
         	
         {/* The following section enables and controls the Social Media Buttons  */}

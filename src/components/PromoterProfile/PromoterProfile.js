@@ -4,10 +4,12 @@ import React, { useEffect, useState } from 'react'
 import { getPromoterById, updatePromoter } from '../../api/Promoters/promotersRoutes';
 import { Card, Button, Modal, Form, Label } from 'semantic-ui-react';
 import styles from './PromoterProfile.module.css'
+import MessageBar from '../MessageBar/MessageBar'
 
 const PromoterProfile = ({id}) => {
     const [userInfo, setUserInfo] = useState({name:"", password:"",email:"", address:""})
     const [editInfo, setEditInfo] = useState({name:"", password:"",email:"", address:""})
+    const [showMessageBar, setShowMessageBar] = useState(false)
 
     
     const [validationErrors, setValidationErrors] = useState({});
@@ -68,6 +70,14 @@ const PromoterProfile = ({id}) => {
         }
         getPromoter()
     },[])
+
+    useEffect(()=>{
+      setTimeout(()=> {
+        if(showMessageBar){
+          setShowMessageBar(false)
+        }
+      }, 5000);
+    }, [showMessageBar])
 
 
     return(
@@ -162,9 +172,14 @@ const PromoterProfile = ({id}) => {
 
                 await updatePromoter({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
               console.log({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
-                setEditInfo({name:"", password:"",email:"", address:""})
+              const promoterResponse = await getPromoterById({id: JSON.parse(localStorage.getItem('user')).id})
+            // const promoter = JSON.parse(localStorage.getItem('user'))
+            const promoter = promoterResponse.promoter
+                setUserInfo(promoter)
+                setEditInfo(promoter)
                 setOpen(false)
-                window.location.reload()
+                // window.location.reload()
+                setShowMessageBar(true)
               }
                 
             }
@@ -173,6 +188,8 @@ const PromoterProfile = ({id}) => {
         />
       </Modal.Actions>
     </Modal>
+    {showMessageBar && <MessageBar message={'Profile updated successfully'}/>}
+
         </div>
     )
 };

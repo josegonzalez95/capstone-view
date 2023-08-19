@@ -1,10 +1,15 @@
   // show events by promoters and provides a form for promoters to create an event
 
 
+
+
+  // google photo and location functions commented
+
+
 import styles from './Promoters.module.css'
-import { Button, Grid, Card, Icon, Modal, Form, Label, Popup } from 'semantic-ui-react'
+import { Button, Grid, Card, Icon, Modal, Form, Label } from 'semantic-ui-react'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation, redirect} from 'react-router-dom'
 import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
 import { uploadPhoto } from '../../api/photoUpload/photoUpload'
 import { Dropdown } from 'semantic-ui-react'
@@ -14,14 +19,20 @@ import 'react-calendar/dist/Calendar.css';
 import StyledDropzone from '../FileUpload/FileUpload'
 // import Image from '../Image/Image.js'
 import ResizableImage from '../ResizableImage/ResizableImage'
+import MessageBar from '../MessageBar/MessageBar'
 
 
 
 
 
-function Promoters() {
+function Promoters(props) {
 
   const [eventsLst, setEvents] = useState([])
+  const [showLoginMessageBar, setShowLoginMessageBar] = useState(false)
+  const [showUpdateMessageBar, setShowUpdateMessageBar] = useState(false)
+  const [showDeleteMessageBar, setShowDeleteMessageBar] = useState(false)
+
+  const location = useLocation();
 
     // use effect hook used to load events data by promoter before rendering component
   useEffect(()=>{
@@ -32,7 +43,7 @@ function Promoters() {
       let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
       // let allEvents = response.events.reverse()
       let allEvents = response.events.sort((a, b) => new Date(b.date) - new Date(a.date));
-      console.log('evnts', allEvents)
+      // console.log('evnts', allEvents)
       allEvents.forEach((evnt, i)=>{
         // console.log(evnt)
         if(tempLst.length < 3){
@@ -44,7 +55,18 @@ function Promoters() {
         }
         if(i === allEvents.length -1) events.push(tempLst)
       })
+      console.log(location)
+      // console.log("location", location.state.isLogin)
       // console.log("events", events)
+      if(location.state && location.state.isLogin){
+        setShowLoginMessageBar(true)
+      }
+      if(location.state && location.state.isEventUpdate){
+        setShowUpdateMessageBar(true)
+      }
+      if(location.state && location.state.isEventDelete){
+        setShowDeleteMessageBar(true)
+      }
       setEvents(events)
     }
     evnts().catch(console.error)
@@ -95,15 +117,22 @@ function Promoters() {
     if(isFormValid()) setOpen(false)
   }, [validationErrors])
 
-  const handleValidation = () => {
-    const newErrors = validateParticipant(eventInfo)
+  const handleValidation = (event) => {
+    console.log(event);
+    const newErrors = validateParticipant(event)
     console.log('new errors', newErrors);
     
     setValidationErrors(newErrors);
+    return newErrors
   };
 
   const isFormValid = () => {
-    return Object.keys(validationErrors).length === 0;
+    return validationErrors ? Object.keys(validationErrors).length === 0:null;
+  };
+
+  const isFormValidArg = (newErrors) => {
+    console.log(newErrors);
+    return newErrors ? Object.keys(newErrors).length === 0:null;
   };
  
 
@@ -151,14 +180,14 @@ function Promoters() {
   const [update, setUpdate] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [open, setOpen] = useState(false)
-  const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", 
+  const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"Yauco", 
                                                           // date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
                                                           date: new Date(), 
-                                                          photo:""})
-  const [eventToUpdateInfo, seteventToUpdateInfo] = useState({title:"", details:"", price:"", location:"", 
+                                                          photo:"https://storage.googleapis.com/capstone-photos/default.png"})
+  const [eventToUpdateInfo, seteventToUpdateInfo] = useState({title:"", details:"", price:"", location:"Yauco", 
                                                           // date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
                                                           date: new Date(), 
-                                                          photo:""})
+                                                          photo:"https://storage.googleapis.com/capstone-photos/default.png"})
   const navigate = useNavigate()
   const [eventToEditID, setEventToEditID] = useState(null)
   const [eventToDelID, setEventToDelID] = useState()
@@ -308,6 +337,23 @@ function Promoters() {
     }
   }
 
+  useEffect(()=>{
+    setTimeout(()=> {
+      if(showUpdateMessageBar){
+        navigate('', {replace: true})
+        setShowUpdateMessageBar(false)
+      }
+      if(showLoginMessageBar){
+        navigate('', {replace: true})
+        setShowLoginMessageBar(false)
+      }
+      if(showDeleteMessageBar){
+        navigate('', {replace: true})
+        setShowDeleteMessageBar(false)
+      }
+    }, 5000);
+  }, [showUpdateMessageBar, showLoginMessageBar, showDeleteMessageBar])
+
   return (
     <div>
     {/* {console.log(eventsLst)} */}
@@ -316,8 +362,15 @@ function Promoters() {
         <Button className={styles.sbmtBtn} type='submit'>SignUp</Button>
       </nav> */}
       <div className={styles.events}>
+        <p className={styles.message}>{showLoginMessageBar && <div style={{width:"14.25rem"}}> <MessageBar message={"Logged in successfully"}/></div>}</p>
+        <p className={styles.message}>{showUpdateMessageBar && <div style={{width:"17rem"}}> <MessageBar message={"Event updated successfully"}/></div>}</p>
+        <p className={styles.message}>{showDeleteMessageBar && <div style={{width:"16.5rem"}}> <MessageBar message={"Event deleted successfully"}/></div>}</p>
+
+
+
       <div className={styles.eventsHeader}>
             {/* <Grid.Column> */}
+
               <p className={styles.title}>Events</p>
             {/* </Grid.Column> */}
             {/* <Grid.Column> */}
@@ -336,7 +389,9 @@ function Promoters() {
           {/* <Grid.Row> */}
 
             {
-          <div className={styles.eventsContainer}>{
+          <div className={styles.eventsContainer}>
+
+            {
               eventsLst.map(eventRow =>{
                 // console.log(eventRow)
                 return(
@@ -350,7 +405,7 @@ function Promoters() {
                           {/* <img src={event.photo} alt='some'></img> */}
                           <ResizableImage src={event.photo} aspectRatio={1/1}/>
                           {/* <Image src={event.photo} width={200} height={400}/> */}
-                          <Card.Content>
+                          <Card.Content >
                           <Card.Header>{event.title}</Card.Header>
                             <Card.Meta>
                               {/* <span className='date'>Joined in 2015</span> */}
@@ -360,13 +415,13 @@ function Promoters() {
                               {event.details}
                             </Card.Description>
                           </Card.Content>
-                          <Card.Content extra>
+                          {/* <Card.Content extra>
                               <Icon name='user' />
-                          </Card.Content>
-                          <Grid columns ={2}>
-                            <Grid.Row>
+                          </Card.Content> */}
+                          <Grid columns ={2} className={styles.actionsRow}>
+                            <Grid.Row >
                               <Grid.Column>
-                          <Button onClick={async(e)=>{ 
+                          <Icon onClick={async(e)=>{ 
                                     e.stopPropagation(); 
                                     
                                     setEventToEditID(event.id);
@@ -376,17 +431,19 @@ function Promoters() {
                                     setUpdate(true); 
                                     }
                                   } 
-                            className={styles.sbmtBtn} type='submit'>Edit Event</Button>
+                            className={styles.sbmtBtn} 
+                            type='submit' name='edit outline'></Icon>
                           </Grid.Column>
                           <Grid.Column>
-                            <Button onClick={async(e)=>{
+                            <Icon onClick={async(e)=>{
                               e.stopPropagation(); 
                               //const eventBodySend = {id: event.id }
                               setEventToDelID(event.id);
                               //console.log(eventBodySend)
                               setIsDelete(true);
                             }} 
-                            className={styles.sbmtBtn} type='submit'>Delete Event</Button>
+                            className={styles.sbmtBtn} 
+                            type='submit' name='trash alternate outline'></Icon>
                             </Grid.Column>
                             </Grid.Row>
                           </Grid>
@@ -443,6 +500,7 @@ function Promoters() {
             const eventBodySend = {id: eventToDelID }
             const result = await deleteEvent(eventBodySend)
             console.log(result)
+            navigate(`../promoters`, {state:{isEventDelete: true}, relative: "path", replace: true})
             window.location.reload(true)
             }
           }
@@ -451,7 +509,7 @@ function Promoters() {
       </Modal.Actions>
     </Modal>
           <Modal
-      onClose={() => setOpen(false)}
+      onClose={() => {setValidationErrors({});setOpen(false)}}
       onOpen={() => setOpen(true)}
       open={open}
       // trigger={<Button>Show Modal</Button>}
@@ -551,29 +609,32 @@ function Promoters() {
           labelPosition='right'
           icon='checkmark'
           onClick={async() => {
-              handleValidation()
+              handleValidation(eventInfo)
               console.log("create event call on button")
               const{date, details, location, photo ,price, title}= eventInfo
               if(date && details && location && photo && price && title){
                 if(details.length<=1000 && location.length<=200 && title.length<=1000){
                   console.log(eventInfo)
 
-                  const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
-                  const { lat, lng } = geoCodeResponse.results[0].geometry.location
+                  // const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
+                  // const { lat, lng } = geoCodeResponse.results[0].geometry.location
               
-                  console.log(eventInfo.photo[0])
-                  const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
-                  const photoURL = photoUploadResponse.data
+                  // console.log(eventInfo.photo[0])
+                  // const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+                  // const photoURL = photoUploadResponse.data
+                  const photoURL = photo
                   // const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
                   // console.log(eventBodySend)
               
-                  const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng}), photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+                  const eventBodySend = {...eventInfo, location: JSON.stringify({lat: 0, lng:0}), photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
               
                   // console.log(eventBodySend)
                   const result = await createEvent(eventBodySend)
                   // console.log(result)
                   // console.log(result.newEvent)
-                  window.location.replace(`event/${result.newEvent.event.id}`)
+                  // window.location.replace(`event/${result.newEvent.event.id}`)
+                  // redirect(`/event/${result.newEvent.event.id}`)
+                navigate(`../event/${result.newEvent.event.id}`, {state:{isEventCreate: true}, relative: "path"})
                   setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
                 }
               }
@@ -587,7 +648,7 @@ function Promoters() {
       </Modal.Actions>
     </Modal>
     <Modal
-      onClose={() => setUpdate(false)}
+      onClose={() => {setValidationErrors();setUpdate(false)}}
       onOpen={() => setUpdate(true)}
       open={update}
       // trigger={<Button>Show Modal</Button>}
@@ -611,9 +672,36 @@ function Promoters() {
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} value={eventInfo.title} fluid label='Title' placeholder='Title'/>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} value={eventInfo.details} fluid label='Details' placeholder='Details' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} value={eventInfo.price} type='number' fluid label='Price' placeholder='Price' /> */}
-                <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, title:e.target.value})}} value={eventToUpdateInfo.title} fluid label='Title' placeholder='Title'/>
-                <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, details:e.target.value})}} value={eventToUpdateInfo.details} fluid label='Details' placeholder='Details' />
-                <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, price:Number(e.target.value)})}} value={eventToUpdateInfo.price} type='number' fluid label='Price' placeholder='Price' />
+                <Form.Field inline>
+                  <label>Title</label>
+                  {validationErrors && validationErrors.title &&
+                    <Label basic color='red' pointing='left'>
+                      {validationErrors.title}
+                    </Label>
+                  }
+                  <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, title:e.target.value})}} value={eventToUpdateInfo.title} fluid placeholder='Title'/>
+                </Form.Field>
+
+                <Form.Field inline>
+                  <label>Details</label>
+                  {validationErrors && validationErrors.details &&
+                    <Label basic color='red' pointing='left'>
+                      {validationErrors.details}
+                    </Label>
+                  }
+                  <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, details:e.target.value})}} value={eventToUpdateInfo.details} fluid placeholder='Details' />
+                </Form.Field>
+
+
+                <Form.Field inline>
+                  <label>Price</label>
+                  {validationErrors && validationErrors.price &&
+                    <Label basic color='red' pointing='left'>
+                      {validationErrors.price}
+                    </Label>
+                  }
+                  <Form.Input onChange={(e)=>{seteventToUpdateInfo({...eventToUpdateInfo, price:Number(e.target.value)})}} value={eventToUpdateInfo.price} type='number' fluid placeholder='Price' />
+                </Form.Field>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/> */}
                 <label style={{fontWeight:"bold"}}>Location</label>
                 {/* <Dropdown
@@ -665,7 +753,10 @@ function Promoters() {
 
             const{date, details, location, photo ,price, title}= eventToUpdateInfo
             let eventBodySend = {id:eventToEditID }
-            if(date || details || location || photo || price || title){
+            const newErrors = handleValidation(eventToUpdateInfo)
+            console.log(newErrors);
+            console.log(isFormValidArg(newErrors))
+            if((date || details || location || photo || price || title)){
               if(details.length<=1000 || location.length<=200 || title.length<=1000){
                 console.log("Location event to update",eventToUpdateInfo)
                 console.log("Location event info",eventInfo)
@@ -676,10 +767,10 @@ function Promoters() {
                   eventBodySend = {...eventBodySend,details: details}
                 }
                 if(location){
-                  const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
-                 const { lat, lng } = geoCodeResponse.results[0].geometry.location
-                 console.log("Locationg geo code",geoCodeResponse.results[0].geometry.location)
-                 eventBodySend = {...eventBodySend, location: JSON.stringify({lat: lat, lng:lng})}
+                //   const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
+                //  const { lat, lng } = geoCodeResponse.results[0].geometry.location
+                //  console.log("Locationg geo code",geoCodeResponse.results[0].geometry.location)
+                 eventBodySend = {...eventBodySend, location: JSON.stringify({lat: 0, lng:0})}
                  console.log("Location event to update",eventToUpdateInfo)
 
                 }
@@ -687,8 +778,9 @@ function Promoters() {
                  console.log("what aare",photo)
                 if(photo){
                   
-                  const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
-                  photoURL = photoUploadResponse.data
+                  // const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+                  // photoURL = photoUploadResponse.data
+                  photoURL = photo
                   eventBodySend = {...eventBodySend,photo: photoURL}
                 }
                 if(price){
@@ -718,6 +810,10 @@ function Promoters() {
                 //const result = await updateEventCall(eventBodySend);
                 const result = await updateEvent(eventBodySend)
                  console.log(result)
+                 setUpdate(false)
+                 navigate(`../promoters`, {state:{isEventUpdate: true}, relative: "path", replace: true})
+
+              window.location.reload()
                 // console.log(result.newEvent)
                 //window.location.replace(`event/${result.newEvent.event.id}`)
                 //window.location.reload(true)
@@ -727,8 +823,8 @@ function Promoters() {
             }
               
               //console.log(eventInfo);
-              setUpdate(false)
-              window.location.reload()
+              // setUpdate(false)
+              // window.location.reload()
             }
           }
           positive

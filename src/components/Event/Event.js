@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import styles from "./Event.module.css"
 import { numberOfParticipants } from "../../api/Participants/participantsRoute";
@@ -12,6 +12,7 @@ import { useJsApiLoader } from '@react-google-maps/api';
 import { Button } from "semantic-ui-react";
 import ResizableImage from "../ResizableImage/ResizableImage";
 import PaginatedTable from "../PaginatedTable/PaginatedTable";
+import MessageBar from "../MessageBar/MessageBar";
 
 
 
@@ -19,10 +20,14 @@ import PaginatedTable from "../PaginatedTable/PaginatedTable";
 function Event() {
   const [numberParticipants, setnumberOfParticipants] = useState()
   const {id} = useParams()
+  const navigate = useNavigate()
+  const location = useLocation()
   console.log(window.location.pathname)
   // console.log(useLoaderData())
   console.log(id)
   const [event, setEvent] = useState()
+  const [showMessageBar, setShowMessageBar] = useState(false)
+
   const [participants, setParticipants] = useState([])
   const position = {lat:0, lng:0}
 
@@ -31,7 +36,7 @@ function Event() {
     // geocoder = window.google ? window.google.maps.Geocoder():null
     let lat;
     let lng
-  
+    
     const successCallback = async(position) => {
       // console.log("position",position);
       lat = String(position.coords.latitude) 
@@ -43,6 +48,10 @@ function Event() {
     };
   
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+
+    if(location.state && location.state.isEventCreate){
+      setShowMessageBar(true)
+    }
     console.log('use effect', lat, lng)
   },[])
 
@@ -53,6 +62,16 @@ function Event() {
     }
     getParts().catch(console.error);
   },[])
+
+  useEffect(()=>{
+    setTimeout(()=> {
+      if(showMessageBar){
+        navigate('', {replace: true})
+
+        setShowMessageBar(false)
+      }
+    }, 5000);
+  }, [showMessageBar])
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -140,7 +159,10 @@ const [date] = datetime.split('T');
     // console.log(event)
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
+
       <div className={styles.container}>
+      {showMessageBar && <MessageBar message={'Event created successfully'}/>}
+
         <p className={styles.title}>{event.title}</p>
         <div className={styles.dtls}>
         {/* <p className={styles.title}>{event.title}</p>  */}

@@ -4,6 +4,16 @@
     height: 100vh;
 }
 
+.eye:hover{
+    cursor: pointer;
+}
+
+.message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .banner{
     /* background-color: #82A5FF; */
     background-color: #82A5FF;

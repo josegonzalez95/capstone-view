@@ -6,7 +6,16 @@
     justify-content: space-between;
 
 } */
+.message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.actionsRow{
+    text-align: center;
+
+}
 .eventsContainer{
     /* background-color: red; */
     width: 100%;
@@ -19,14 +28,15 @@
 
 .sbmtBtn{
     background-color: #82A5FF !important;
-    padding: 0.25rem !important;
-    height: 3rem !important;
-    width: 9rem !important;
-    border-radius: 0.5rem !important;
+    padding: 1rem !important;
+    height: fit-content !important;
+    width: fit-content !important;
+    border-radius: 0.15rem !important;
     /* margin-left: 19rem !important; */
-    font-weight: bold !important;
+    /* font-weight: bold !important; */
     color: white !important;
     z-index: 0 !important;
+    margin-bottom: 1rem !important;
 }
 
 .sbmtBtnn{

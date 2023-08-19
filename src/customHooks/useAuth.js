@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     console.log("useAuth log in call")
     // const userData = {...data, promoterId: promoterId}
     setUser(data);
-    navigate("promoters");
+    navigate("promoters",  {state: {isLogin: true} });
   };
 
   // call this function to sign out logged in user
