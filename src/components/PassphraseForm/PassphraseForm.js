@@ -6,7 +6,7 @@ const PassphraseForm = ({ onPassphraseCorrect }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (passphrase === correctPassphrase) {
+    if (`${correctPassphrase}` === passphrase) {
       onPassphraseCorrect();
     } else {
       alert('Incorrect passphrase. Please try again.');

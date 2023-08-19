@@ -155,7 +155,7 @@ const Login = () => {
                             </span>
                         </div>
                     </Form.Field>
-                <Button className={styles.sbmtBtn} type='submit'>Submit</Button>
+                <Button className={styles.sbmtBtn} type='submit'>Login</Button>
                 <p>Not registered yet ? <a href='/signup'>Create an Account</a></p>
                 {showErrorMessage && <Message negative>
                     <Message.Header>Email or Password is incorrect</Message.Header>
