@@ -13,11 +13,25 @@ import { createOrder } from "../../api/Orders/ordersRoutes";
 import { Dropdown } from 'semantic-ui-react'
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
+import { createTotalOrder } from '../../api/TotalOrder/TotalOrder';
 
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import {loadStripe} from '@stripe/stripe-js';
+import {
+  Elements,
+} from '@stripe/react-stripe-js';
+
+import CheckoutForm from '../Stripe/CheckoutForm'
+
+// import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
 // import { useJsApiLoader } from '@react-google-maps/api';
+
+import StripeCheckoutButton from '../StripeBtn/StripeBtn';
+// import PayPalCheckout from '../PayPalBtn/PayPalBtn';
+// import AthMovilCheckoutForm from '../AthMovil/AthMovil'
+// import ReactDOM from 'react-dom';
+import PayPal from '../PayPal/PayPal'
 
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
@@ -44,6 +58,19 @@ function RegisterForm() {
 
   const [disabled, setDisabled] = useState(true) //this controls the clickability of the order confirmation button
   const [paymentMethod, setPaymentMehtod] = useState("") //this controls what payment method the order receives
+
+
+  const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+
+        const options = {
+          mode: 'payment',
+          amount: 1099,
+          currency: 'usd',
+          // Fully customizable with appearance API.
+          appearance: {
+            /*...*/
+          },
+        };
 
   const onDateChange=(e, i)=>{
     console.log(new Date(e))
@@ -274,52 +301,65 @@ function RegisterForm() {
   //   participants creation, first it creates participants and collect their ids
   //   then it create the order and collect its id
   //   finally it create the tickets for the participants and the order
-  const handleSubmit =async(e)=>{
-    let participantInfoEmail = ""
-    let emailData = {
-      "service_id": process.env.REACT_APP_service_id,
-      "user_id": process.env.REACT_APP_user_id,
-      "template_id": process.env.REACT_APP_template_id,
-      "template_params":{
-          "destination":`"${orderCreator}"`,
-          "name":`"${orderCreator}"`,
-          "subject": "Order confirmation email",
-          "from_name":"PUR Cycling registration platform",
-      }}
+  const getTotalParticipants=()=>{
+    console.log(numOfParticipants)
+    return numOfParticipants
+  }
+  const handleSubmit =async(paymentMethod, orderEmail)=>{
+    // let participantInfoEmail = ""
+    // let emailData = {
+    //   "service_id": process.env.REACT_APP_service_id,
+    //   "user_id": process.env.REACT_APP_user_id,
+    //   "template_id": process.env.REACT_APP_template_id,
+    //   "template_params":{
+    //       "destination":`"${orderCreator}"`,
+    //       "name":`"${orderCreator}"`,
+    //       "subject": "Order confirmation email",
+    //       "from_name":"PUR Cycling registration platform",
+    //   }}
     // setOpen(true)
     let listOfParticipantId = []
-    e.preventDefault()
+    // e.preventDefault()
 
     console.log(participantsInfo)
     console.log(orderCreator)
 
-    participantsInfo.forEach(async (participant, i) => {
-      if(participant.name && participant.email && participant.address && participant.birthdate && participant.category && participant.phone && participant.gender){
-        if(participant.name.length <= 50 && participant.email.length<=255 && participant.address.length<=200 && participant.category.length<=255 && participant.phone.length<=10 && participant.gender.length===1){
-          participantInfoEmail+= `- Participant ${i+1}\n 
-                                  name: ${participant.name}\n  
-                                  email: ${participant.email}\n 
-                                  phone: ${participant.phone}\n
-                                  birthdate: ${participant.birthdate.toLocaleDateString()}\n
-                                  category: ${participant.category}\n\n`
-          const participantResponse = await createParticipant(participant)
-          console.log('new participant created');
-          listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
-        }
-      }
-    });
+    // participantsInfo.forEach(async (participant, i) => {
+    //   if(participant.name && participant.email && participant.address && participant.birthdate && participant.category && participant.phone && participant.gender){
+    //     if(participant.name.length <= 50 && participant.email.length<=255 && participant.address.length<=200 && participant.category.length<=255 && participant.phone.length<=10 && participant.gender.length===1){
+    //       participantInfoEmail+= `- Participant ${i+1}\n 
+    //                               name: ${participant.name}\n  
+    //                               email: ${participant.email}\n 
+    //                               phone: ${participant.phone}\n
+    //                               birthdate: ${participant.birthdate.toLocaleDateString()}\n
+    //                               category: ${participant.category}\n\n`
+    //       const participantResponse = await createParticipant(participant)
+    //       console.log('new participant created');
+    //       listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
+    //     }
+    //   }
+    // });
     // console.log(participantInfoEmail)
-    emailData["template_params"]["participants"] = participantInfoEmail
+    // emailData["template_params"]["participants"] = participantInfoEmail
     // create order
-    const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:paymentMethod})
+    // const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:paymentMethod})
     // console.log(listOfParticipantId)
 
-    const orderId = orderResponse.newOrder.order.id
-    listOfParticipantId.forEach(async id=>{
-      await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
-    })
-    console.log(emailData)
+    // const orderId = orderResponse.newOrder.order.id
+    // listOfParticipantId.forEach(async id=>{
+    //   await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
+    // })
+    // console.log(emailData)
     // await sendEmail(emailData)
+    const orderBodySend = {
+      "participants":participantsInfo,
+      "eventId":Number(eventId),
+      "paymentMethod": paymentMethod, 
+      "orderCreatorEmail": orderEmail
+    }
+
+    const orderResponse = await createTotalOrder(orderBodySend)
+
 
     setPaymentMehtod("") //resets the payment method back to blank
     setDisabled(true) //disables the order confirmation button after a successful confirmation
@@ -579,6 +619,8 @@ function RegisterForm() {
           </div>
           )
         })}
+        {/* <StripeCheckoutButton price={event.price} numOfParticipants={numOfParticipants} handleSubmit={handleSubmit}/> */}
+        {/* <PayPal price={event.price*numOfParticipants} numOfParticipants={numOfParticipants} getTotalParticipants={getTotalParticipants}/> */}
         {/* {console.log("participantsFormHTML", participantsFormHTML.length)}
           {console.log("numOfParticipants",numOfParticipants)}
           {console.log("participantsInfo",participantsInfo.length)} */}
@@ -622,14 +664,14 @@ function RegisterForm() {
           </div> */}
           {/* {renderParticipantsForm()} */}
         </Modal.Description>
-        <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' />
+        <Form.Input onChange={(e)=>{console.log(e.target.value);setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' />
 
       </Modal.Content>
       <Modal.Actions>
 
         {/* PAYPAL START! */}
-        <PayPalScriptProvider options={{ "client-id": "test", "disable-funding":"venmo"}}> {/* Has to changed to a PayPal Business ID for deployment */}
-            <PayPalButtons
+        {/* <PayPalScriptProvider options={{ "client-id": "test", "disable-funding":"venmo"}}> Has to changed to a PayPal Business ID for deployment */}
+            {/* <PayPalButtons
                 createOrder={(data, actions) => {
                     return actions.order.create({
                         purchase_units: [
@@ -649,14 +691,20 @@ function RegisterForm() {
                         setPaymentMehtod("PayPal"); //Sets the Payment Method type for the order
                     });
                 }}
-            />
-          </PayPalScriptProvider>
+            /> */}
+          {/* </PayPalScriptProvider> */}
           {/* PAYPAL END! */}
+          <PayPal orderEmail={orderCreator} price={event.price*numOfParticipants} numOfParticipants={numOfParticipants} getTotalParticipants={getTotalParticipants} handleSubmit={handleSubmit} setPaymentMehtod={setPaymentMehtod}/>
+          
+
+          <Elements stripe={stripePromise} options={options}>
+            <CheckoutForm />
+          </Elements>
           
         <Button color='black' onClick={() => setOpen(false)}>
         Cancel
         </Button>
-        <Button 
+        {/* <Button 
           // disabled = {disabled}
           content="Confirm Order"
           labelPosition='right'
@@ -671,7 +719,7 @@ function RegisterForm() {
             }
           }
           positive
-        />
+        /> */}
       </Modal.Actions>
     </Modal>
     </div>):<>Loading Event</>
