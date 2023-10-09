@@ -59,13 +59,17 @@ function RegisterForm() {
   const [disabled, setDisabled] = useState(true) //this controls the clickability of the order confirmation button
   const [paymentMethod, setPaymentMehtod] = useState("") //this controls what payment method the order receives
 
+  // pk_test_6pRNASCoBOKtIshFeQd4XMUh
+  const stripePromise = loadStripe(process.env.REACT_APP_PUBLIC_KEY);
+  
 
-  const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+  const amount = event ? event.price*numOfParticipants:0
 
         const options = {
           mode: 'payment',
-          amount: 1099,
+          amount: 1009,
           currency: 'usd',
+          paymentMethodOrder:['paypal'],
           // Fully customizable with appearance API.
           appearance: {
             /*...*/
@@ -140,6 +144,8 @@ function RegisterForm() {
 
     if (!participant.phone) {
       errors.phone = "Phone is required";
+    }else if(participant.phone.length != 10){
+      errors.phone = "Wrong phone number"
     }else{
       delete errors.phone
     }
@@ -305,18 +311,19 @@ function RegisterForm() {
     console.log(numOfParticipants)
     return numOfParticipants
   }
-  const handleSubmit =async(paymentMethod, orderEmail)=>{
-    // let participantInfoEmail = ""
-    // let emailData = {
-    //   "service_id": process.env.REACT_APP_service_id,
-    //   "user_id": process.env.REACT_APP_user_id,
-    //   "template_id": process.env.REACT_APP_template_id,
-    //   "template_params":{
-    //       "destination":`"${orderCreator}"`,
-    //       "name":`"${orderCreator}"`,
-    //       "subject": "Order confirmation email",
-    //       "from_name":"PUR Cycling registration platform",
-    //   }}
+  const handleSubmit =async(paymentIntentId, receipt_url)=>{
+    let participantInfoEmail = ""
+    let emailData = {
+      "service_id": process.env.REACT_APP_service_id,
+      "user_id": process.env.REACT_APP_user_id,
+      "template_id": process.env.REACT_APP_template_id,
+      "template_params":{
+          "destination":`"${orderCreator}"`,
+          "name":`"${orderCreator}"`,
+          "subject": "Order confirmation email",
+          "from_name":"PUR Cycling registration platform",
+          "message": `click here to see recipt: ${receipt_url}`
+      }}
     // setOpen(true)
     let listOfParticipantId = []
     // e.preventDefault()
@@ -324,23 +331,36 @@ function RegisterForm() {
     console.log(participantsInfo)
     console.log(orderCreator)
 
-    // participantsInfo.forEach(async (participant, i) => {
-    //   if(participant.name && participant.email && participant.address && participant.birthdate && participant.category && participant.phone && participant.gender){
-    //     if(participant.name.length <= 50 && participant.email.length<=255 && participant.address.length<=200 && participant.category.length<=255 && participant.phone.length<=10 && participant.gender.length===1){
-    //       participantInfoEmail+= `- Participant ${i+1}\n 
-    //                               name: ${participant.name}\n  
-    //                               email: ${participant.email}\n 
-    //                               phone: ${participant.phone}\n
-    //                               birthdate: ${participant.birthdate.toLocaleDateString()}\n
-    //                               category: ${participant.category}\n\n`
-    //       const participantResponse = await createParticipant(participant)
-    //       console.log('new participant created');
-    //       listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
-    //     }
-    //   }
-    // });
+    participantsInfo.forEach(async (participant, i) => {
+      if(participant.name && participant.email && participant.address && participant.birthdate && participant.category && participant.phone && participant.gender){
+        if(participant.name.length <= 50 && participant.email.length<=255 && participant.address.length<=200 && participant.category.length<=255 && participant.phone.length<=10 && participant.gender.length===1){
+          // participantInfoEmail+= `- Participant ${i+1}\n 
+          //                         name: ${participant.name}\n  
+          //                         email: ${participant.email}\n 
+          //                         phone: ${participant.phone}\n
+          //                         birthdate: ${participant.birthdate.toLocaleDateString()}\n
+          //                         category: ${participant.category}\n\n`
+            participantInfoEmail += `*Participant ${i + 1}*\n`;
+            participantInfoEmail += `|------------------------------------|\n`;
+            participantInfoEmail += `|      Name:         ${participant.name} \n`;
+            participantInfoEmail += `|------------------------------------|\n`;
+            participantInfoEmail += `|      Email:        ${participant.email} \n`;
+            participantInfoEmail += `|------------------------------------|\n`;
+            participantInfoEmail += `|      Phone:        ${participant.phone} \n`;
+            participantInfoEmail += `|------------------------------------|\n`;
+            participantInfoEmail += `|   Birthdate:       ${participant.birthdate.toLocaleDateString()} \n`;
+            participantInfoEmail += `|------------------------------------|\n`;
+            participantInfoEmail += `|    Category:       ${participant.category} \n`;
+            participantInfoEmail += `|------------------------------------|\n\n`;
+                            
+          // const participantResponse = await createParticipant(participant)
+          console.log('new participant created');
+          // listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
+        }
+      }
+    });
     // console.log(participantInfoEmail)
-    // emailData["template_params"]["participants"] = participantInfoEmail
+    emailData["template_params"]["participants"] = participantInfoEmail
     // create order
     // const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:paymentMethod})
     // console.log(listOfParticipantId)
@@ -350,12 +370,13 @@ function RegisterForm() {
     //   await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
     // })
     // console.log(emailData)
-    // await sendEmail(emailData)
+    await sendEmail(emailData)
     const orderBodySend = {
       "participants":participantsInfo,
       "eventId":Number(eventId),
       "paymentMethod": paymentMethod, 
-      "orderCreatorEmail": orderEmail
+      "orderCreatorEmail": orderCreator,
+      "paymentIntentId": paymentIntentId
     }
 
     const orderResponse = await createTotalOrder(orderBodySend)
@@ -530,11 +551,15 @@ function RegisterForm() {
                 <Form.Input value={participantsInfo[i].phone} onChange={(e)=>{
                   // participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
                   // setParticipantsInfo(participantsInfo)
-                  setParticipantsInfo(prevParticipantsInfo => {
-                    const updatedInfo = [...prevParticipantsInfo];
-                    updatedInfo[i] = { ...updatedInfo[i], phone: e.target.value };
-                    return updatedInfo;
-                  });
+                  console.log(participantsInfo[i].phone)
+                  const phoneChange = e.target.value.replace(/\D/g, '') // remove non-number character from string
+                  if(phoneChange.length < 11){
+                    setParticipantsInfo(prevParticipantsInfo => {
+                      const updatedInfo = [...prevParticipantsInfo];
+                      updatedInfo[i] = { ...updatedInfo[i], phone: phoneChange };
+                      return updatedInfo;
+                    });
+                  }
                 }} fluid placeholder='Phone' />
                 
                 </Form.Field>
@@ -694,11 +719,16 @@ function RegisterForm() {
             /> */}
           {/* </PayPalScriptProvider> */}
           {/* PAYPAL END! */}
-          <PayPal orderEmail={orderCreator} price={event.price*numOfParticipants} numOfParticipants={numOfParticipants} getTotalParticipants={getTotalParticipants} handleSubmit={handleSubmit} setPaymentMehtod={setPaymentMehtod}/>
+          {/* <PayPal orderEmail={orderCreator} price={event.price*numOfParticipants} numOfParticipants={numOfParticipants} getTotalParticipants={getTotalParticipants} handleSubmit={handleSubmit} setPaymentMehtod={setPaymentMehtod}/> */}
           
 
           <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm />
+            <CheckoutForm amount={event.price*numOfParticipants} submitParticipants={handleSubmit} orderBodySend={
+      {"participants":participantsInfo,
+      "eventId":Number(eventId),
+      "paymentMethod": paymentMethod, 
+      "orderCreatorEmail": orderCreator}
+    }/>
           </Elements>
           
         <Button color='black' onClick={() => setOpen(false)}>

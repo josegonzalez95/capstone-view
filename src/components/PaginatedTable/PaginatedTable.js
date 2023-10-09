@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Button } from 'semantic-ui-react';
+import { useStripe } from '@stripe/react-stripe-js';
 
 function PaginatedTable({ participants }) {
     const itemsPerPage = 10;
@@ -9,7 +10,14 @@ function PaginatedTable({ participants }) {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = participants.slice(indexOfFirstItem, indexOfLastItem);
 
-  
+  // stripe
+  // .retrievePaymentIntent('{PAYMENT_INTENT_CLIENT_SECRET}')
+  // .then(function(result) {
+  //   // Handle result.error or result.paymentIntent
+  // });
+
+  // const stripe = useStripe();
+
 
   const totalPages = Math.ceil(participants.length / itemsPerPage);
 
@@ -44,6 +52,7 @@ function PaginatedTable({ participants }) {
           <Table.HeaderCell>Name</Table.HeaderCell>
         <Table.HeaderCell>Phone</Table.HeaderCell>
         <Table.HeaderCell>Category</Table.HeaderCell>
+        <Table.HeaderCell>paymentdetails</Table.HeaderCell>
         </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -54,6 +63,7 @@ function PaginatedTable({ participants }) {
                 <Table.Cell>{part.name}</Table.Cell>
                 <Table.Cell>{part.phone}</Table.Cell>
                 <Table.Cell>{part.category}</Table.Cell>
+                <Table.Cell>{part.paymentdetails}</Table.Cell>
           </Table.Row>)
           })}
         </Table.Body>

@@ -13,6 +13,7 @@ import { Button } from "semantic-ui-react";
 import ResizableImage from "../ResizableImage/ResizableImage";
 import PaginatedTable from "../PaginatedTable/PaginatedTable";
 import MessageBar from "../MessageBar/MessageBar";
+// import { useStripe } from "@stripe/react-stripe-js";
 
 
 
@@ -23,6 +24,7 @@ function Event() {
   const navigate = useNavigate()
   const location = useLocation()
   console.log(window.location.pathname)
+  // const stripe = useStripe()
   // console.log(useLoaderData())
   console.log(id)
   const [event, setEvent] = useState()
@@ -58,6 +60,46 @@ function Event() {
   useEffect(()=>{
     const getParts =async()=>{
       const participants = await asyncGetParticipants()
+      // const res = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
+      //   method: 'POST',
+      //   body:JSON.stringify({
+      //     paymentId:"pi_3Nyd3JDhrjzxPiXM48vQZ7B5"
+      //   }),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+      // const {paymentIntent} = await res.json()
+      // console.log(paymentIntent.status)
+      // let participantsResult = []
+      // async function processList() {
+      //   const results = await Promise.all(participants.map(async (item) => {
+      //     // console.log(item)
+
+      //     const result = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
+      //       method: 'POST',
+      //       body:JSON.stringify({
+      //         paymentId:item.paymentdetails
+      //       }),
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //     });
+      //     const response = await result.json()
+      //     // return response.paymentIntent.status
+      //     let status = response.paymentIntent.status
+      //     // ==='succeeded' ? response.paymentIntent.status:"failed"
+      //     return {...item, paymentdetails: status}
+      //   }));
+      
+      //   console.log(results);
+      //   participantsResult = results
+      // }
+      
+      // // Call the async function to start processing the list
+      // await processList();
+      
+      // setParticipants(participantsResult)
       setParticipants(participants)
     }
     getParts().catch(console.error);
@@ -126,6 +168,44 @@ function Event() {
     const participantsResponse = await getAllParticipantsByEvent({eventid: Number(id)})
 
     console.log(participantsResponse)
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
+      method: 'POST',
+      body:JSON.stringify({
+        paymentId:"pi_3Nyd3JDhrjzxPiXM48vQZ7B5"
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const {paymentIntent} = await res.json()
+    console.log(paymentIntent.status)
+    let participantsResult = []
+    async function processList() {
+      const results = await Promise.all(participantsResponse.participants.map(async (item) => {
+        // console.log(item)
+
+        const result = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
+          method: 'POST',
+          body:JSON.stringify({
+            paymentId:item.paymentdetails
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const response = await result.json()
+        // return response.paymentIntent.status
+        let status = response.paymentIntent.status
+        // ==='succeeded' ? response.paymentIntent.status:"failed"
+        return {...item, paymentdetails: status}
+      }));
+    
+      console.log(results);
+      participantsResult = results
+    }
+    
+    // Call the async function to start processing the list
+    await processList();
 
 
     // participants.forEach(client => {
@@ -137,7 +217,8 @@ function Event() {
     //     allClientsData.push(newClient);
     //   }
     // })
-    return Promise.resolve(participantsResponse.participants);
+    // return Promise.resolve(participantsResponse.participants);
+    return participantsResult
   }
 
   useEffect(()=>{
