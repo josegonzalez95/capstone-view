@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import {loadStripe} from '@stripe/stripe-js';
 import { useNavigate } from "react-router-dom";
+import { Button  } from "semantic-ui-react";
+import styles from './CheckoutForm.module.css'
 
 import {
   PaymentElement,
@@ -10,10 +12,11 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 
-const CheckoutForm = ({amount, submitParticipants, orderBodySend}) => {
+const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen}) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const options = {
     mode: 'payment',
@@ -141,9 +144,55 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend}) => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement options={options}/>
-      <button onClick={handleSubmit} type="submit" disabled={!stripe || !elements}>
+      {/* <button onClick={handleSubmit} type="submit" disabled={!stripe || !elements}>
         Pay
-      </button>
+      </button> */}
+      <div style={{display:'flex', justifyContent:"flex-end"}}>
+      {loading ?
+      
+        <Button color='black' 
+        onClick={(e)=>{
+          if(!loading){
+            handleSubmit(e)
+            setLoading(true)
+          }
+  
+        }} 
+        type="submit" disabled={!stripe || !elements || loading} 
+        style={{marginTop:"1rem", marginBottom:"1rem", 
+                width:"6rem", height:"2.7rem", 
+                display:'flex', 
+                justifyContent:"center", alignItems:'center',
+                marginRight:"1rem"
+                }}>
+        <div className={styles.arc}></div>
+        </Button>:
+        <Button color='black' 
+        onClick={(e)=>{
+          if(!loading){
+            handleSubmit(e)
+            setLoading(true)
+          }
+  
+        }} 
+        type="submit" disabled={!stripe || !elements} 
+        style={{marginTop:"1rem", marginBottom:"1rem", 
+                width:"6rem", height:"2.7rem", 
+                display:'flex', 
+                justifyContent:"center", alignItems:'center',
+                marginRight:"1rem"
+                }}>
+         <p>Pay</p> 
+          </Button>}
+        <Button style={{marginTop:"1rem", marginBottom:"1rem", 
+              width:"6rem", height:"2.7rem", 
+              display:'flex', 
+              justifyContent:"center", alignItems:'center',
+              }} color='black' onClick={() => setOpen(false)}>
+        Cancel
+        </Button>
+      </div>
+      
       {/* Show error message to your customers */}
       {errorMessage && <div>{errorMessage}</div>}
     </form>

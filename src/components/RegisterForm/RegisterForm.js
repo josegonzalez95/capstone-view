@@ -723,7 +723,7 @@ function RegisterForm() {
           
 
           <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm amount={event.price*numOfParticipants} submitParticipants={handleSubmit} orderBodySend={
+            <CheckoutForm amount={event.price*numOfParticipants} submitParticipants={handleSubmit} setOpen={setOpen} orderBodySend={
       {"participants":participantsInfo,
       "eventId":Number(eventId),
       "paymentMethod": paymentMethod, 
@@ -731,9 +731,9 @@ function RegisterForm() {
     }/>
           </Elements>
           
-        <Button color='black' onClick={() => setOpen(false)}>
+        {/* <Button color='black' onClick={() => setOpen(false)}>
         Cancel
-        </Button>
+        </Button> */}
         {/* <Button 
           // disabled = {disabled}
           content="Confirm Order"
