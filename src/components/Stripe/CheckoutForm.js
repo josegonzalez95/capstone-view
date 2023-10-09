@@ -46,6 +46,7 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen}) => {
       // Show error to your customer
       console.log('this error occured first')
       setErrorMessage(submitError.message);
+      setLoading(false)
       return;
     }
 
