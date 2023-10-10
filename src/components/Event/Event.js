@@ -240,6 +240,7 @@ const [date] = datetime.split('T');
     // console.log(event)
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
+                  {/* /event/:id/orders/ */}
 
       <div className={styles.container}>
       {showMessageBar && <MessageBar message={'Event created successfully'}/>}
@@ -286,11 +287,16 @@ const [date] = datetime.split('T');
         <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Participants:</p> {numberParticipants}</p> 
 
         </div>
-        <Button className={styles.export}>
+        <div style={{display:"flex", flexDirection:"column", width:"fit-content"}}>
+
+        
+        <Button className={styles.export} style={{marginTop:"0.5rem"}}>
           <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
               Export to CSV
           </CsvDownloader>
           </Button>
+          <Button className={styles.export} onClick={()=>{navigate(`/event/${event.id}/orders`)}} type='submit'>Orders</Button>
+          </div>
         </div>
         {/* <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p> */}
         <div className={styles.details}>

@@ -47,6 +47,6 @@
         font-weight: bold !important;
         color: white !important;
         background-color: #82A5FF !important;
-        margin-bottom: 1rem !important;
-        margin-top: 1rem !important;
+        margin-bottom: 0.5rem !important;
+        /* margin-top: 1rem !important; */
 }
