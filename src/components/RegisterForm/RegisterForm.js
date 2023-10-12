@@ -723,7 +723,7 @@ function RegisterForm() {
           
 
           <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm amount={event.price*numOfParticipants} submitParticipants={handleSubmit} setOpen={setOpen} orderBodySend={
+            <CheckoutForm amount={event.price*numOfParticipants} numOfParticipants={numOfParticipants} submitParticipants={handleSubmit} setOpen={setOpen} orderBodySend={
       {"participants":participantsInfo,
       "eventId":Number(eventId),
       "paymentMethod": paymentMethod, 

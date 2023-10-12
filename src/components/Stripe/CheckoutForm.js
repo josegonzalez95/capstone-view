@@ -12,7 +12,7 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 
-const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen}) => {
+const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen, numOfParticipants}) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate()
@@ -54,7 +54,7 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen}) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/create-intent`, {
       method: 'POST',
       body:JSON.stringify({
-        amount: amount,
+        amount: amount + amount*0.06 + numOfParticipants,
         orderBodySend
       }),
       headers: {
@@ -76,22 +76,7 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen}) => {
       },
       redirect: "if_required"
     });
-    // console.log(paymentIntent)
 
-    // const res2 = await fetch(`${process.env.REACT_APP_API_URL}/confirm-payment`, {
-    //   method: 'POST',
-    //   body:JSON.stringify({
-    //     pi: pi,
-    //     paymentId
-    //   }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-
-    // const {status} = await res2.json();
-
-    // console.log(status)
     if (error) {
       // This point will only be reached if there is an immediate error when
       // confirming the payment. Show error to your customer (for example, payment
@@ -99,10 +84,6 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen}) => {
       console.log("error was here")
       setErrorMessage(error.message);
     } else {
-      // const {paymentIntent, error} = await stripe.retrievePaymentIntent(
-      //   clientSecret,
-      // );
-      // const { latest_charge } = paymentIntent
 
       const res = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
         method: 'POST',
@@ -145,10 +126,15 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen}) => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement options={options}/>
-      {/* <button onClick={handleSubmit} type="submit" disabled={!stripe || !elements}>
-        Pay
-      </button> */}
-      <div style={{display:'flex', justifyContent:"flex-end"}}>
+      <h3>Order summary</h3>
+      <h4>Ticket cost: ${amount}</h4>
+      <h4>Transaction fee: ${numOfParticipants}</h4>
+      <h4>Service fee: ${amount*0.06} (6%)</h4>
+      <hr/>
+      <h3 >Total to be charged: ${amount + amount*0.06 + 1}</h3>
+
+      <div style={{display:'flex', justifyContent:"flex-end", alignItems:"center"}}>
+
       {loading ?
       
         <Button color='black' 

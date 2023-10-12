@@ -54,11 +54,6 @@ const Signup = () => {
     };
   
   
-    // useEffect(()=>{
-    //   console.log("is form valid", isFormValid());
-    //   if(isFormValid()) setOpen(false)
-    // }, [validationErrors])
-  
     const handleValidation = () => {
       const newErrors = validateParticipant(userInfo)
       console.log('new errors', newErrors);

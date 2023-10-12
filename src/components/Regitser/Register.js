@@ -1,34 +1,16 @@
 // this component show event information to participants and provides a form to registed as many participants the client wants
-
-
-// import DatePicker from 'react-date-picker';
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Button } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import styles from "./Register.module.css"
-// import {createParticipant} from "../../api/Participants/participantsRoute.js"
-// import { createTicket } from "../../api/Tickets/ticketsRoutes";
-// import { createOrder } from "../../api/Orders/ordersRoutes";
 import MyMapComponent from "../Map/MyMapComponent";
-// import Image from "../Image/Image.js";
-
-// const { useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
 import ResizableImage from "../ResizableImage/ResizableImage";
 import MessageBar from "../MessageBar/MessageBar";
 
-
-// const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
-
-
-
 function Event() {
-  // const [orderCreator, setOrderCreator] = useState('')
-  // const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
-  // const [position, setPosition] = useState({lat:0, lng:0})
   const position = {lat:0, lng:0}
-  // const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
@@ -42,7 +24,6 @@ function Event() {
   console.log(window.location.pathname)
   const [event, setEvent] = useState()
   const [showRegisterMessgeBar, setShowRegisterMessageBar] = useState(false)
-  // const [numOfParticipants, setNumOfParticipants] = useState(1)
 
     const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -198,15 +179,15 @@ const [date] = datetime.split('T');
         </div>
         {/* The buttons for Twitter, WhatsApp and Gmail also share the price and date of the event
             The Facebook buttons don't work the same way because of how they're formatted */}
-        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F&linkname=${event.title}`} className='fa fa-facebook'>acebook </a>
+        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F&linkname=${event.title}`} className='fa fa-facebook'> </a>
         
-        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-twitter'>Twitter </a>
+        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-twitter'> </a>
         
-        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-whatsapp'>WhatsApp </a>
+        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-whatsapp'> </a>
         
-        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F&linkname=${event.title}`} className='fa fa-facebook-square'>Messegener </a>
+        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F&linkname=${event.title}`} className='fa fa-facebook-square'> </a>
 
-        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-google'>mail </a>
+        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-google'> </a>
         </div>
 
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>

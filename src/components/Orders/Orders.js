@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import useFetch from '../../hooks/useFetch'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Table, Button } from 'semantic-ui-react';
+import CsvDownloader from 'react-csv-downloader';
+
 
 
 const Orders = () => {
@@ -18,6 +20,44 @@ const Orders = () => {
     const currentItems = !loading ? data.paymentIntent.data.slice(indexOfFirstItem, indexOfLastItem):[];
   
     const totalPages = Math.ceil(orders.length / itemsPerPage);
+
+    let totalRevenue = 0
+    if(!loading){
+      data.paymentIntent.data.forEach(payment=>{
+        totalRevenue += payment.amount
+      })
+    }
+
+    const exportDocument=async()=>{
+      // let result = [
+      //   "Total Revenue", `$${totalRevenue/100}`,
+        console.log('la mierda')
+      // ]
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/search-payments`, {
+        method: 'POST',
+        body:JSON.stringify({eventId: Number(eventId)}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(res)
+      const data = await res.json()
+      // return data
+      console.log(data)
+      // return JSON.parse(data)
+      // const result = data.json()
+      const result = data.paymentIntent.data.map(order=>{
+        const {metadata, created,...newOrder} = order
+        return (
+          {
+            ...newOrder,order_id: metadata.order_id, created: new Date(created*1000).toLocaleString('default', { month: 'long', day: '2-digit', year: 'numeric' }),
+            
+          }
+        )
+      })
+      // console.log(result)
+      return result
+    }
   
     const handlePageChange = (newPage) => {
       if (newPage >= 1 && newPage <= totalPages) {
@@ -25,14 +65,14 @@ const Orders = () => {
       }
     };
     // console.log(data.paymentIntent.data)
-    const getOrderDates = async () => {
+    // const getOrderDates = async () => {
       
-    };
+    // };
     
 
-    if(loading && orders.length ===0){
-      getOrderDates()
-    }
+    // if(loading && orders.length ===0){
+    //   getOrderDates()
+    // }
 
   return (
     <div style={{display:"flex", alignItems:"center", flexDirection:'column'}}>
@@ -40,6 +80,30 @@ const Orders = () => {
         <div style={{width: "50%", marginBottom: "2rem"}}>
              {console.log(data.paymentIntent.data)}
         <h1>Orders</h1>
+        {/* <CsvDownloader className='export-container' datas={exportDocument} filename='orders-export.csv' >
+          Export to CSV
+        </CsvDownloader> */}
+        <Table definition>
+        <Table.Body>
+      <Table.Row>
+        <Table.Cell>Num. of orders</Table.Cell>
+        <Table.Cell>{data.paymentIntent.data.length}</Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell>Total Revenue</Table.Cell>
+        <Table.Cell>${totalRevenue/100}</Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell>Service fees</Table.Cell>
+        <Table.Cell>${(totalRevenue/100)*0.04}</Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell>Profit after expenses</Table.Cell>
+        <Table.Cell>${totalRevenue/100 - (totalRevenue/100)*0.04}</Table.Cell>
+      </Table.Row>
+      
+    </Table.Body>
+        </Table>
         <Table celled selectable>
         <Table.Header>
           {/* Header cells */}

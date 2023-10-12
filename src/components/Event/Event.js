@@ -259,15 +259,15 @@ const [date] = datetime.split('T');
         </div>
         {/* The buttons for Twitter, WhatsApp and Gmail also share the price and date of the event
             The Facebook buttons don't work the same way because of how they're formatted */}
-        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook'>acebook </a>
+        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook'> </a>
         
-        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-twitter'>Twitter </a>
+        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-twitter'> </a>
         
-        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-whatsapp'>WhatsApp </a>
+        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-whatsapp'> </a>
         
-        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook-square'>Messegener </a>
+        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook-square'> </a>
 
-        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-google'>mail </a>
+        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`} className='fa fa-google'> </a>
 
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
 

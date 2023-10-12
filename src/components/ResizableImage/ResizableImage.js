@@ -4,13 +4,6 @@ function ResizableImage({ src, aspectRatio }) {
   const [width, setWidth] = useState(null);
   const containerRef = useRef(null);
 
-//   const handleLoad=()=> {
-//     console.log(containerRef.current)
-//     if (containerRef.current) {
-//       const containerWidth = containerRef.current.offsetWidth;
-//       setWidth(containerWidth);
-//     }
-//   }
 
 
     useEffect(()=>{
@@ -30,13 +23,11 @@ function ResizableImage({ src, aspectRatio }) {
         marginBottom:"2rem"
       }}
     >
-    {/* {console.log(width, containerRef)} */}
 
       {width && (
         <img
           src={src}
           alt='some'
-        //   onLoad={handleLoad}
           style={{
             position: 'absolute',
             top: 0,
