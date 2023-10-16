@@ -14,6 +14,8 @@ import { Dropdown } from 'semantic-ui-react'
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
 import { createTotalOrder } from '../../api/TotalOrder/TotalOrder';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStripe } from '@fortawesome/free-brands-svg-icons';
 
 import {loadStripe} from '@stripe/stripe-js';
 import {
@@ -46,6 +48,7 @@ function RegisterForm() {
   const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
   const [invalidFields, setInvalidFields] = useState([])
+  const [isEmailValid, setIsEmailValid] = useState(true)
   const navigate = useNavigate()
 
 
@@ -126,6 +129,13 @@ function RegisterForm() {
   ];
 
   const [validationErrors, setValidationErrors] = useState([]);
+
+  const validateEmail=(email)=> {
+    // const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
+    setIsEmailValid(regex.test(email))
+    return regex.test(email);
+ }
 
   const validateParticipant = (participant) => {
     const errors = {};
@@ -673,8 +683,14 @@ function RegisterForm() {
       open={open}
       // trigger={<Button>Show Modal</Button>}
     >
-      <Modal.Header>Confirm Order</Modal.Header>
+      <Modal.Header>
+        <div style={{display:"flex", justifyContent:"space-between", height:"1.5rem"}}> 
+          <p >Confirm Order</p>
+            <p style={{display:"flex", justifyContent:"center", alignContent:"center", height:"min-content"}}><span style={{fontSize:"1rem", marginRight:"0.25rem"}}>Powered by </span><FontAwesomeIcon icon={faStripe} size="xl"/></p>
+       </div>
+      </Modal.Header>
       <Modal.Content >
+
         {/* <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped /> */}
         <Modal.Description>
           {/* <Header>Default Profile Image</Header> */}
@@ -689,7 +705,27 @@ function RegisterForm() {
           </div> */}
           {/* {renderParticipantsForm()} */}
         </Modal.Description>
-        <Form.Input onChange={(e)=>{console.log(e.target.value);setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' />
+        <Form.Field>
+              <label style={{fontWeight:"bold"}}>Order confirmation email</label>
+              {!isEmailValid &&<Label basic color='red' pointing='left'>
+                  {/* {validationErrors[i].name} */}
+                  Invalid email address
+                </Label>}
+                <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid placeholder='Order confirmation email' />
+
+                </Form.Field>
+        {/* <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' /> */}
+        {/* <input
+          type="email"
+          value={orderCreator}
+          onChange={(e)=>{console.log(e.target.validity);console.log(validateEmail(e.target.value));setOrderCreator(e.target.value)}}
+        ></input> */}
+         {/* {orderCreator && !isEmailValid && <p>Invalid email address</p>} */}
+         {/* {!isEmailValid &&<Label basic color='red' pointing='above'> */}
+                  {/* {validationErrors[i].name} */}
+                  {/* Invalid email address */}
+                {/* </Label>} */}
+         {console.log('is email valid', isEmailValid)}
 
       </Modal.Content>
       <Modal.Actions>
@@ -723,7 +759,7 @@ function RegisterForm() {
           
 
           <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm amount={event.price*numOfParticipants} numOfParticipants={numOfParticipants} submitParticipants={handleSubmit} setOpen={setOpen} orderBodySend={
+            <CheckoutForm setIsEmailValid={setIsEmailValid} validateEmail={validateEmail} amount={event.price*numOfParticipants} numOfParticipants={numOfParticipants} submitParticipants={handleSubmit} setOpen={setOpen} orderBodySend={
       {"participants":participantsInfo,
       "eventId":Number(eventId),
       "paymentMethod": paymentMethod, 

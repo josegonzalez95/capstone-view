@@ -22,7 +22,13 @@ export const getAllParticipantsByEvent=async(bodySend)=>{
         console.log('from api call', bodySend)
         const queryResponse = await axios.post(process.env.REACT_APP_API_URL + "/participantsByEvent",
         bodySend,
-            { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
+            // { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
+             { headers: { 
+                "Authorization": `${sessionStorage.getItem("jwtToken")}` ,
+                "Content-Type": "application/json", 
+                "Access-Control-Allow-Origin": "true",
+                // "x-auth-token": `${sessionStorage.getItem("jwtToken")}`
+             } },
         )
         const data = queryResponse.data
         console.log(data)
@@ -63,10 +69,15 @@ export const getEvent = async (eventBodySend) => {
 
 export const getEventsByPromoter = async (eventBodySend) => {
     try {
-        // console.log('get all from api call')
         const eventResponse = await axios.post(process.env.REACT_APP_API_URL + "/getEventsByPomoter",
         eventBodySend,
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
+            // { headers: { 
+            //     "Authorization": `${sessionStorage.getItem("jwtToken")}` ,
+            //     "Content-Type": "application/json", 
+            //     "Access-Control-Allow-Origin": "true",
+            //     // "x-auth-token": `${sessionStorage.getItem("jwtToken")}`
+            //  } },
         )
         const data = eventResponse.data
         //console.log(data)

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {loadStripe} from '@stripe/stripe-js';
 import { useNavigate } from "react-router-dom";
@@ -11,12 +11,17 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStripe } from '@fortawesome/free-brands-svg-icons';
 
-const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen, numOfParticipants}) => {
+const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen, numOfParticipants, validateEmail, setIsEmailValid}) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  useEffect(()=>{
+    setIsEmailValid(true)
+  }, [])
 
   const options = {
     mode: 'payment',
@@ -36,6 +41,7 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen, numOf
     event.preventDefault();
     console.log('submit')
 
+
     if (elements == null) {
       return;
     }
@@ -48,6 +54,12 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen, numOf
       setErrorMessage(submitError.message);
       setLoading(false)
       return;
+    }
+
+    const isValidEmail = validateEmail(orderBodySend.orderCreatorEmail)
+    if(!isValidEmail){
+      setLoading(false)
+      return
     }
 
     // Create the PaymentIntent and obtain clientSecret from your server endpoint
@@ -127,9 +139,9 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen, numOf
     <form onSubmit={handleSubmit}>
       <PaymentElement options={options}/>
       <h3>Order summary</h3>
-      <h4>Ticket cost: ${amount}</h4>
-      <h4>Transaction fee: ${numOfParticipants}</h4>
-      <h4>Service fee: ${amount*0.06} (6%)</h4>
+      <h4 style={{margin:"0 0 1rem 0"}}>Ticket cost: ${amount}</h4>
+      <h4 style={{margin:"0 0 1rem 0"}}>Transaction fee: ${numOfParticipants}</h4>
+      <h4 style={{margin:"0 0 1rem 0"}}>Service fee: ${amount*0.06} (6%)</h4>
       <hr/>
       <h3 >Total to be charged: ${amount + amount*0.06 + 1}</h3>
 
@@ -178,10 +190,15 @@ const CheckoutForm = ({amount, submitParticipants, orderBodySend, setOpen, numOf
               }} color='black' onClick={() => setOpen(false)}>
         Cancel
         </Button>
+       
       </div>
+      <p>
+        {/* Powered by <FontAwesomeIcon icon={faStripe} size="2xl"/> */}
+
+        </p>
       
       {/* Show error message to your customers */}
-      {errorMessage && <div>{errorMessage}</div>}
+      {/* {errorMessage && <div>{errorMessage}</div>} */}
     </form>
   );
 };

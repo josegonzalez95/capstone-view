@@ -90,6 +90,7 @@ const Login = () => {
                 console.log(result)
                 console.log(result.status === "success" ? true:false)
                 if(result.status ==="success"){
+                    sessionStorage.setItem('jwtToken', response.token);
                     login(result.promoter)
                 }else{
                     console.log(result)

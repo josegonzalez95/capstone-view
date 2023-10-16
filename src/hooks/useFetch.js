@@ -13,9 +13,15 @@ const useFetch = (url, body) => {
                     res = await fetch(url, {
                         method: 'POST',
                         body:JSON.stringify(body),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        // },
+                        headers: { 
+                            "Authorization": `${sessionStorage.getItem("jwtToken")}` ,
+                            "Content-Type": "application/json", 
+                            "Access-Control-Allow-Origin": "true",
+                            // "x-auth-token": `${sessionStorage.getItem("jwtToken")}`
+                         }
                     });
                 }else{
                     res = await fetch(url)

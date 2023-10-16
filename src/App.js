@@ -44,8 +44,8 @@ function App() {
         <Route path="/event/:id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
         <Route path="/registerParticipant/:eventId" element={<Register/>} />
         <Route path="/registerParticipant/:eventId/registerForm" element={<RegisterForm/>} />
-        <Route path="/event/:eventId/orders" element={<Orders/>}/>
-        <Route path="/event/:eventId/orders/:orderId/:paymentId" element={<Order/>}/>
+        <Route path="/event/:eventId/orders" element={<ProtectedRoute><Orders/></ProtectedRoute>}/>
+        <Route path="/event/:eventId/orders/:orderId/:paymentId" element={<ProtectedRoute><Order/></ProtectedRoute>}/>
       </Routes>
     </>
   );
