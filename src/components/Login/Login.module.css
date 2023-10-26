@@ -1,74 +1,76 @@
-.container{
-    display: flex;
-    /* height: 50rem; */
-    height: 100vh;
+.container {
+	display: flex;
+	/* height: 50rem; */
+	height: 100vh;
 }
 
-.eye:hover{
-    cursor: pointer;
+.eye:hover {
+	cursor: pointer;
 }
 
-.message{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.banner{
-    /* background-color: #82A5FF; */
-    background-color: #82A5FF;
-    width: 60%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+.banner {
+	/* background-color: #82A5FF; */
+	background-color: #0c3c60;
+	width: 60%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
 }
 
-.form{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(239, 233, 233, 0.583);
-    flex-direction: column;
+.form {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(239, 233, 233, 0.583);
+	/* background-color: #38729b; */
+	flex-direction: column;
 }
 
-.inputs{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-    width: 100%;
+.inputs {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+	width: 100%;
 }
 
-.title{
-    /* margin-top: 5rem; */
-    /* margin-bottom: 10rem; */
-    position: absolute;
-    top: 10rem;
-    font-weight: bold;
+.title {
+	/* margin-top: 5rem; */
+	/* margin-bottom: 10rem; */
+	position: absolute;
+	top: 10rem;
+	font-weight: bold;
 }
 
-.labels{
-    margin-bottom: .5rem;
-    font-weight: bold;
+.labels {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
 }
 
-.sbmtBtn{
-    background-color: #82A5FF !important;
-    /* padding: 0.25rem !important; */
-    /* width: 10rem !important; */
-    /* border-radius: 0.5rem !important; */
-    /* position: relative !important;
+.sbmtBtn {
+	background-color: #0c3c60 !important;
+	/* padding: 0.25rem !important; */
+	/* width: 10rem !important; */
+	/* border-radius: 0.5rem !important; */
+	/* position: relative !important;
     align-self: center !important; */
-    /*margin-top: 5rem !important; */
-    margin-left: 4rem !important;
+	/*margin-top: 5rem !important; */
+	color: white !important;
+	margin-left: 4rem !important;
 }
-.sbmtBtn:hover{
-    cursor: pointer;
+.sbmtBtn:hover {
+	cursor: pointer;
 }
 
-.inputFields{
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    width: 20rem;
+.inputFields {
+	border-radius: 0.5rem;
+	padding: 0.75rem;
+	width: 20rem;
 }

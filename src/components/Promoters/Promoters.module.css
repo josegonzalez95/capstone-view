@@ -6,91 +6,115 @@
     justify-content: space-between;
 
 } */
-.message{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.actionsRow{
-    text-align: center;
-
+.actionsRow {
+	text-align: center;
 }
-.eventsContainer{
-    /* background-color: red; */
-    width: 100%;
-    margin-top: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.sbmtBtn{
-    background-color: #82A5FF !important;
-    padding: 1rem !important;
-    height: fit-content !important;
-    width: fit-content !important;
-    border-radius: 0.15rem !important;
-    /* margin-left: 19rem !important; */
-    /* font-weight: bold !important; */
-    color: white !important;
-    z-index: 0 !important;
-    margin-bottom: 1rem !important;
+.eventsContainer {
+	/* background-color: red; */
+	width: 100%;
+	margin-top: 3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
-.sbmtBtnn{
-    background-color: #82A5FF !important;
-    padding: 0.25rem !important;
-    height: 3rem !important;
-    width: 9rem !important;
-    border-radius: 0.5rem !important;
-    /* margin-left: 19rem !important; */
-    font-weight: bold !important;
-    color: white !important;
-    z-index: 0 !important;
+.sbmtBtn {
+	/* background-color: #82a5ff !important; */
+	/* style={{ backgroundColor: '#38729b' }} */
+	background-color: #0c3c60 !important;
+
+	padding: 1rem !important;
+	height: 2.5rem !important;
+	width: 7rem !important;
+	border-radius: 0.35rem !important;
+	/* margin-left: 19rem !important; */
+	/* font-weight: bold !important; */
+	color: white !important;
+	z-index: 0 !important;
+	margin-bottom: 1rem !important;
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+.row {
+	/* background-color: #ff82c1 !important; */
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	padding-left: 1.5rem !important;
+}
+.sbmtBtnnn {
+	background-color: #38729b !important;
+	padding: 1rem !important;
+	height: fit-content !important;
+	width: fit-content !important;
+	border-radius: 0.15rem !important;
+	/* margin-left: 19rem !important; */
+	/* font-weight: bold !important; */
+	color: white !important;
+	z-index: 0 !important;
+	margin-bottom: 1rem !important;
 }
 
-.title{
-    /* margin-left: 19rem !important; */
-    /* margin-left: 5% !important; */
-    margin-top: 2rem !important;
-    font-weight: bold !important;
-    color: #525252 !important;
-    font-size: 2rem;
+.sbmtBtnn {
+	background-color: #82a5ff !important;
+	padding: 0.25rem !important;
+	height: 3rem !important;
+	width: 9rem !important;
+	border-radius: 0.5rem !important;
+	/* margin-left: 19rem !important; */
+	font-weight: bold !important;
+	color: white !important;
+	z-index: 0 !important;
 }
 
-.eventsHeader{
-    /* display: flex !important;
+.title {
+	/* margin-left: 19rem !important; */
+	/* margin-left: 5% !important; */
+	margin-top: 2rem !important;
+	font-weight: bold !important;
+	color: #ffffff !important;
+	font-size: 2rem;
+}
+
+.eventsHeader {
+	/* display: flex !important;
     flex-direction: column !important; */
-    height: 6rem !important;
-    align-items: center !important;
-    margin-left: 20% !important;
-    margin-bottom: 2rem;
-    /* background-color: red; */
-    z-index: 0;
-    /* justify-content: space-between !important; */
-    /* justify-content: center !important; */
+	height: 6rem !important;
+	align-items: center !important;
+	margin-left: 20% !important;
+	margin-bottom: 2rem;
+	/* background-color: red; */
+	z-index: 0;
+	/* justify-content: space-between !important; */
+	/* justify-content: center !important; */
 }
 
-.eventRow{
-    display: flex !important;
-    justify-content: space-evenly !important;
-    align-items: center !important;
-    /* background-color: red !important; */
-    width: 75%;
-    /* margin-bottom: 2rem; */
+.eventRow {
+	display: flex !important;
+	justify-content: space-evenly !important;
+	align-items: center !important;
+	/* background-color: red !important; */
+	width: 75%;
+	/* margin-bottom: 2rem; */
 }
 
-.eventForm{
-    display: flex !important;
-    flex-direction: column !important;
+.eventForm {
+	display: flex !important;
+	flex-direction: column !important;
 }
 
 @media only screen and (max-width: 1180px) {
-    /* CSS styles for small screens go here */
-    .eventRow{
-        display: flex;
-        flex-direction: column;
-    }
-  }
+	/* CSS styles for small screens go here */
+	.eventRow {
+		display: flex;
+		flex-direction: column;
+	}
+}

@@ -1,60 +1,59 @@
-.parent{
-    /* background-color: blue; */
-    display: flex;
-    justify-content: center;
+.parent {
+	/* background-color: blue; */
+	display: flex;
+	justify-content: center;
+	background-color: #0c3c60;
+	color: white;
 }
 
-.container{
-    /* background-color: red; */
-    width: min-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.container {
+	/* background-color: red; */
+	width: min-content;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-.title{
-    position: relative;
-    align-self: self-start;
-    font-size: 4rem;
-    font-weight: bold;
+.title {
+	position: relative;
+	align-self: self-start;
+	font-size: 4rem;
+	font-weight: bold;
 }
 
-.details{
-    display: flex;
-    /* background-color: rebeccapurple; */
-    align-self: flex-start;
+.details {
+	display: flex;
+	/* background-color: rebeccapurple; */
+	align-self: flex-start;
 }
 
-.eventForm{
-    display: flex !important;
-    flex-direction: column !important;
-    /* background-color: red !important; */
-    width: 30rem !important;
+.eventForm {
+	display: flex !important;
+	flex-direction: column !important;
+	/* background-color: red !important; */
+	width: 30rem !important;
 }
 
-.emailCreator{
-    width: 50% !important;
-    font-weight: bold !important;
-    margin-bottom: 3rem !important;
-    margin-top: 3rem !important;
+.emailCreator {
+	width: 50% !important;
+	font-weight: bold !important;
+	margin-bottom: 3rem !important;
+	margin-top: 3rem !important;
 }
 
-.rgtsBtn{
-    margin-right: 1rem !important;
-    font-weight: bold !important;
-    color: white !important;
-    background-color: #82A5FF !important;
+.rgtsBtn {
+	margin-right: 1rem !important;
+	font-weight: bold !important;
+	color: white !important;
+	background-color: #38729b !important;
 }
-
-
 
 @media only screen and (max-width: 1180px) {
-    /* CSS styles for small screens go here */
-    .title{
-        position: relative;
-        align-self: self-start;
-        font-size: 2rem;
-        font-weight: bold;
-    }
-  }
-
+	/* CSS styles for small screens go here */
+	.title {
+		position: relative;
+		align-self: self-start;
+		font-size: 2rem;
+		font-weight: bold;
+	}
+}

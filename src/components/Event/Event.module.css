@@ -1,52 +1,70 @@
-.parent{
-    /* background-color: blue; */
-    display: flex;
-    justify-content: center;
+.parent {
+	/* background-color: blue; */
+	display: flex;
+	justify-content: center;
+	background-color: #0c3c60;
+	color: white;
 }
 
-.container{
-    /* background-color: red; */
-    width: min-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.container {
+	/* background-color: red; */
+	width: min-content;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-.title{
-    position: relative;
-    align-self: self-start;
-    font-size: 4rem;
-    font-weight: bold;
+.title {
+	position: relative;
+	align-self: self-start;
+	font-size: 4rem;
+	font-weight: bold;
 }
 
-.details{
-    display: flex;
-    /* background-color: rebeccapurple; */
-    align-self: flex-start;
+.details {
+	display: flex;
+	/* background-color: rebeccapurple; */
+	align-self: flex-start;
 }
 
-.eventForm{
-    display: flex !important;
-    flex-direction: column !important;
+.eventForm {
+	display: flex !important;
+	flex-direction: column !important;
 }
 
-.rgtsBtn{
-    margin-right: 1rem !important;
-    font-weight: bold !important;
-    color: white !important;
-    background-color: #82A5FF !important;
+.rgtsBtn {
+	margin-right: 1rem !important;
+	font-weight: bold !important;
+	color: white !important;
+	background-color: #82a5ff !important;
 }
 
-.dtls{
-    /* background-color: red; */
-    width: 100%;
+.dtls {
+	/* background-color: red; */
+	width: 100%;
 }
 
-.export{
-        margin-right: 1rem !important;
-        font-weight: bold !important;
-        color: white !important;
-        background-color: #82A5FF !important;
-        margin-bottom: 0.5rem !important;
-        /* margin-top: 1rem !important; */
+.export {
+	margin-right: 1rem !important;
+	font-weight: bold !important;
+	color: white !important;
+	background-color: #38729b !important;
+	margin-bottom: 0.5rem !important;
+	/* margin-top: 1rem !important; */
+}
+
+.published:hover {
+	cursor: pointer;
+}
+
+.selectableCell {
+	padding-left: 1rem !important;
+}
+
+.selectableCell:hover {
+	cursor: pointer;
+}
+
+.actionsCell {
+	padding: 1rem !important;
 }
