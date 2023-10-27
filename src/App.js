@@ -14,6 +14,7 @@ import RegisterForm from './components/RegisterForm/RegisterForm.js';
 import Orders from './components/Orders/Orders.js';
 import Order from './components/Order/Order.js';
 import ResizableImage from './components/ResizableImage/ResizableImage.js';
+import FormFields from './components/FormFIelds/FormFields.js';
 
 function App() {
 	const navigate = useNavigate();
@@ -139,6 +140,14 @@ function App() {
 					element={
 						<ProtectedRoute>
 							<Order />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path='/event/:eventId/formfields'
+					element={
+						<ProtectedRoute>
+							<FormFields />
 						</ProtectedRoute>
 					}
 				/>

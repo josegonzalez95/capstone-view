@@ -1,0 +1,22 @@
+.container {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	color: white;
+}
+
+.table {
+	width: 50vw !important;
+}
+
+.actionsCell {
+	display: flex;
+	justify-content: space-between;
+	padding: 0.5rem 1rem !important;
+	align-items: center;
+}
+
+.btn {
+	background-color: #38729b !important;
+	color: white !important;
+}

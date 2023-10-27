@@ -436,14 +436,15 @@ function Event() {
 							<Button
 								className={styles.export}
 								onClick={async () => {
-									const getCustomFieldsResponse = await getCustomField({
-										eventid: id,
-									});
-									console.log(getCustomFieldsResponse);
-									setCustomFields(
-										getCustomFieldsResponse.eventCustomFields.customFields
-									);
-									setOpen(true);
+									// const getCustomFieldsResponse = await getCustomField({
+									// 	eventid: id,
+									// });
+									// console.log(getCustomFieldsResponse);
+									// setCustomFields(
+									// 	getCustomFieldsResponse.eventCustomFields.customFields
+									// );
+									// setOpen(true);
+									navigate(`/event/${event.id}/formfields`);
 								}}>
 								Form Fields
 							</Button>
