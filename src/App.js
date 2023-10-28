@@ -43,10 +43,12 @@ function App() {
 						className='title'
 						href='/'>
 						PURCycling
-						<p style={{ color: 'white' }}>
-							Registered Participants: <Icon name='user' />
-							{state.totalTickets}
-						</p>
+						{JSON.parse(localStorage.getItem('user')) !== null && (
+							<p style={{ color: 'white' }}>
+								Registered Participants: <Icon name='user' />
+								{state.totalTickets}
+							</p>
+						)}
 					</a>
 
 					<div className='btns'>
