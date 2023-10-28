@@ -53,6 +53,12 @@
 	/* margin-top: 1rem !important; */
 }
 
+.card {
+	font-weight: bold !important;
+	color: white !important;
+	background-color: #38729b !important;
+}
+
 .published:hover {
 	cursor: pointer;
 }

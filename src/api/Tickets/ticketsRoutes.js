@@ -1,6 +1,6 @@
 // //   param  req.body - body to be sent to the endpoint.
 
-// import axios from 'axios'
+import axios from 'axios';
 // export const createTicket = async (ticketBodySend) => {
 //     try {
 //         // console.log('from api call', signUpBodySend)
@@ -15,3 +15,25 @@
 //         console.log(error)
 //     }
 // }
+
+// //   param  req.body - body to be sent to the endpoint.
+
+export const totalTickets = async (ticketBodySend) => {
+	try {
+		// console.log('from api call', signUpBodySend)
+		const ticketResponse = await axios.post(
+			process.env.REACT_APP_API_URL + '/get-total-participants',
+			ticketBodySend,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': 'true',
+				},
+			}
+		);
+		const data = ticketResponse.data;
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+};

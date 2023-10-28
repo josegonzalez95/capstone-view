@@ -415,7 +415,7 @@ function RegisterForm() {
 					</p>
 				</div>
 				<div className={styles.details}>
-					<p style={{ display: 'flex' }}>
+					<p style={{ display: 'flex', marginBottom: '2rem' }}>
 						<p style={{ fontWeight: 'bold', marginRight: '1rem' }}>Date:</p>{' '}
 						{new Date(date).toLocaleString('default', {
 							month: 'long',
@@ -425,58 +425,38 @@ function RegisterForm() {
 					</p>
 				</div>
 
-				<div className={styles.btnContainer}>
-					<Button
-						className={styles.btns}
-						onClick={() => {
-							setNumOfParticipants(numOfParticipants + 1);
-							setParticipantsInfo([
-								...participantsInfo,
-								{
-									name: '',
-									email: '',
-									phone: '',
-									address: '',
-									birthdate: new Date(),
-									category: '',
-									customValues: [],
-								},
-							]);
-						}}>
-						Add Participant
-					</Button>
-				</div>
 				{console.log(customFields)}
 				{participantsInfo.map((participant, i) => {
 					return (
 						<div className={styles.form}>
 							<div className={styles.partTitle}>
 								<h3>Participant {i + 1}</h3>
-								<Icon
-									name='trash alternate outline'
-									className={styles.trash}
-									size='large'
-									onClick={(e) => {
-										const clickedCard = e;
-										console.log('clickedCard', clickedCard.target.accessKey);
-										if (numOfParticipants > 1) {
-											setParticipantsInfo((prevState) => {
-												const updatedParticipants = prevState.filter(
-													(_, index) => index !== i
-												);
-												return updatedParticipants;
-											});
-
-											setNumOfParticipants(numOfParticipants - 1);
-										}
-									}}></Icon>
+								{numOfParticipants > 1 && (
+									<Icon
+										name='trash alternate outline'
+										className={styles.trash}
+										size='large'
+										onClick={(e) => {
+											const clickedCard = e;
+											console.log('clickedCard', clickedCard.target.accessKey);
+											if (numOfParticipants > 1) {
+												setParticipantsInfo((prevState) => {
+													const updatedParticipants = prevState.filter(
+														(_, index) => index !== i
+													);
+													return updatedParticipants;
+												});
+												setNumOfParticipants(numOfParticipants - 1);
+											}
+										}}></Icon>
+								)}
 							</div>
 
 							<Form.Group
 								widths='equal'
 								className={styles.eventForm}>
-								<Form.Field>
-									<label style={{ fontWeight: 'bold' }}>Name</label>
+								<Form.Field style={{ marginBottom: '1rem' }}>
+									<label style={{ fontWeight: 'bold' }}>Name *</label>
 									{validationErrors[i] && validationErrors[i].name && (
 										<Label
 											basic
@@ -502,8 +482,8 @@ function RegisterForm() {
 									/>
 								</Form.Field>
 
-								<Form.Field>
-									<label style={{ fontWeight: 'bold' }}>Email</label>
+								<Form.Field style={{ marginBottom: '1rem' }}>
+									<label style={{ fontWeight: 'bold' }}>Email *</label>
 									{validationErrors[i] && validationErrors[i].email && (
 										<Label
 											basic
@@ -530,7 +510,9 @@ function RegisterForm() {
 								</Form.Field>
 
 								<Form.Field>
-									<label style={{ fontWeight: 'bold' }}>Phone</label>
+									<label style={{ fontWeight: 'bold', marginBottom: '1rem' }}>
+										Phone *
+									</label>
 									{validationErrors[i] && validationErrors[i].phone && (
 										<Label
 											basic
@@ -540,6 +522,7 @@ function RegisterForm() {
 										</Label>
 									)}
 									<Form.Input
+										style={{ marginBottom: '1rem' }}
 										value={participantsInfo[i].phone}
 										onChange={(e) => {
 											console.log(participantsInfo[i].phone);
@@ -556,12 +539,17 @@ function RegisterForm() {
 											}
 										}}
 										fluid
-										placeholder='Phone'
+										placeholder='Phone *'
 									/>
 								</Form.Field>
 
-								<div style={{ display: 'flex', flexDirection: 'column' }}>
-									<label style={{ fontWeight: 'bold' }}>Birthdate</label>
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'column',
+										marginBottom: '1rem',
+									}}>
+									<label style={{ fontWeight: 'bold' }}>Birthdate *</label>
 									{console.log(participantsInfo[i].birthdate)}
 									<DatePicker
 										onChange={(e) => onDateChange(e, i)}
@@ -577,8 +565,8 @@ function RegisterForm() {
 									)}
 								</div>
 
-								<Form.Field>
-									<label style={{ fontWeight: 'bold' }}>Address</label>
+								<Form.Field style={{ marginBottom: '1rem' }}>
+									<label style={{ fontWeight: 'bold' }}>Address *</label>
 									{validationErrors[i] && validationErrors[i].address && (
 										<Label
 											basic
@@ -604,8 +592,8 @@ function RegisterForm() {
 									/>
 								</Form.Field>
 
-								<div>
-									<label style={{ fontWeight: 'bold' }}>Category</label>
+								<div style={{ marginBottom: '1rem' }}>
+									<label style={{ fontWeight: 'bold' }}>Category *</label>
 									{validationErrors[i] && validationErrors[i].category && (
 										<Label
 											basic
@@ -643,8 +631,10 @@ function RegisterForm() {
 										return null;
 									}
 									return (
-										<Form.Field>
-											<label style={{ fontWeight: 'bold' }}>{field.name}</label>
+										<Form.Field style={{ marginBottom: '1rem' }}>
+											<label style={{ fontWeight: 'bold' }}>
+												{field.name} *
+											</label>
 											{validationErrors[i] && validationErrors[i].values && (
 												<Label
 													basic
@@ -798,6 +788,31 @@ function RegisterForm() {
 						</div>
 					);
 				})}
+				<div className={styles.btnContainer}>
+					<Button
+						className={styles.btns}
+						onClick={() => {
+							setNumOfParticipants(numOfParticipants + 1);
+							setParticipantsInfo([
+								...participantsInfo,
+								{
+									name: '',
+									email: '',
+									phone: '',
+									address: '',
+									birthdate: new Date(),
+									category: '',
+									customValues: [],
+								},
+							]);
+						}}>
+						Add Participant{' '}
+						<Icon
+							style={{ marginLeft: '0.5rem' }}
+							name='plus'
+						/>
+					</Button>
+				</div>
 
 				<div className={styles.btnContainer}>
 					<Button

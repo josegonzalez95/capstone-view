@@ -12,7 +12,15 @@ import MyMapComponent from '../Map/MyMapComponent';
 // import Image from "../Image/Image";
 // const { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
-import { Button, Modal, Table, Form, Input, Select } from 'semantic-ui-react';
+import {
+	Button,
+	Modal,
+	Table,
+	Form,
+	Input,
+	Select,
+	Card,
+} from 'semantic-ui-react';
 import ResizableImage from '../ResizableImage/ResizableImage';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import MessageBar from '../MessageBar/MessageBar';
@@ -92,7 +100,6 @@ function Event() {
 			// const getCustomFieldsResponse = await getCustomField({ eventid: id });
 			// setCustomFields(getCustomFieldsResponse.eventCustomFields.customFields);
 			// setParticipants(participants);
-
 			// const res = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
 			//   method: 'POST',
 			//   body:JSON.stringify({
@@ -108,7 +115,6 @@ function Event() {
 			// async function processList() {
 			//   const results = await Promise.all(participants.map(async (item) => {
 			//     // console.log(item)
-
 			//     const result = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
 			//       method: 'POST',
 			//       body:JSON.stringify({
@@ -124,16 +130,13 @@ function Event() {
 			//     // ==='succeeded' ? response.paymentIntent.status:"failed"
 			//     return {...item, paymentdetails: status}
 			//   }));
-
 			//   console.log(results);
 			//   participantsResult = results
 			// }
-
 			// // Call the async function to start processing the list
 			// await processList();
-
 			// setParticipants(participantsResult)
-			console.log(participants);
+			// console.log(participants);
 			// setParticipants(participants);
 		};
 		// getParts().catch(console.error);
@@ -378,6 +381,16 @@ function Event() {
 							}}>
 							Details
 						</p>
+						<Button
+							className={styles.export}
+							style={{ marginTop: '0.5rem' }}>
+							<CsvDownloader
+								className='export-container'
+								datas={asyncGetParticipants}
+								filename='participants-export.csv'>
+								Export to CSV
+							</CsvDownloader>
+						</Button>
 
 						<div className={styles.details}>
 							<p style={{ display: 'flex' }}>
@@ -409,31 +422,50 @@ function Event() {
 								{numberParticipants}
 							</p>
 						</div>
+
 						<div
 							style={{
 								display: 'flex',
-								flexDirection: 'column',
-								width: 'fit-content',
+								// flexDirection: 'column',
+								// width: 'fit-content',
+								// backgroundColor: 'red',
+								justifyContent: 'space-evenly',
+								width: '100%',
+								alignItems: 'center',
+								marginTop: '1rem',
 							}}>
-							<Button
-								className={styles.export}
-								style={{ marginTop: '0.5rem' }}>
-								<CsvDownloader
-									className='export-container'
-									datas={asyncGetParticipants}
-									filename='participants-export.csv'>
-									Export to CSV
-								</CsvDownloader>
-							</Button>
-							<Button
+							{/* <Button
 								className={styles.export}
 								onClick={() => {
 									navigate(`/event/${event.id}/orders`);
 								}}
 								type='submit'>
 								Orders
-							</Button>
-							<Button
+							</Button> */}
+							{/* <Card
+								onClick={() => {
+									navigate(`/event/${event.id}/orders`);
+								}}
+								style={{ height: '8rem' }}
+								className={styles.card}
+								header='Orders'
+								description='View details of orders for this event.'
+							/> */}
+							<Card
+								onClick={() => {
+									navigate(`/event/${event.id}/orders`);
+								}}
+								className={styles.card}
+								style={{ height: '8rem' }}>
+								<Card.Content>
+									<Card.Header className={styles.card}>Orders</Card.Header>
+									<Card.Description className={styles.card}>
+										View details of orders for this event.
+									</Card.Description>
+								</Card.Content>
+							</Card>
+
+							{/* <Button
 								className={styles.export}
 								onClick={async () => {
 									// const getCustomFieldsResponse = await getCustomField({
@@ -447,7 +479,21 @@ function Event() {
 									navigate(`/event/${event.id}/formfields`);
 								}}>
 								Form Fields
-							</Button>
+							</Button> */}
+
+							<Card
+								onClick={() => {
+									navigate(`/event/${event.id}/formfields`);
+								}}
+								className={styles.card}
+								style={{ height: '8rem', marginBottom: '2rem' }}>
+								<Card.Content>
+									<Card.Header className={styles.card}>Form Fields</Card.Header>
+									<Card.Description className={styles.card}>
+										Customize the fields of your registration form.
+									</Card.Description>
+								</Card.Content>
+							</Card>
 						</div>
 					</div>
 					{/* <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p> */}

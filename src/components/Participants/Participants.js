@@ -55,7 +55,11 @@ function Participants() {
 						{eventRow.map((event) => {
 							// console.log(event)
 							return (
-								<Card style={{ backgroundColor: '#38729b' }}>
+								<Card
+									style={{ backgroundColor: '#38729b' }}
+									onClick={() => {
+										navigate(`/registerParticipant/${event.id}`);
+									}}>
 									{/* <img  src={event.photo} alt="some"/> */}
 									<ResizableImage
 										src={event.photo}
@@ -82,8 +86,9 @@ function Participants() {
 										<Icon name='user' />
 									</Card.Content>
 									<Button
-										onClick={() => {
-											navigate(`/registerParticipant/${event.id}`);
+										onClick={(e) => {
+											e.stopPropagation();
+											navigate(`/registerParticipant/${event.id}/registerForm`);
 										}}
 										className={styles.sbmtBtn}
 										type='submit'>

@@ -150,12 +150,16 @@ const CheckoutForm = ({
 		<form onSubmit={handleSubmit}>
 			<PaymentElement options={options} />
 			<h3>Order summary</h3>
-			<h4 style={{ margin: '0 0 1rem 0' }}>Ticket cost: ${amount}</h4>
+
 			<h4 style={{ margin: '0 0 1rem 0' }}>
 				Transaction fee: ${numOfParticipants}
 			</h4>
 			<h4 style={{ margin: '0 0 1rem 0' }}>
 				Service fee: ${amount * 0.06} (6%)
+			</h4>
+			<h4 style={{ margin: '0 0 1rem 0' }}>
+				Tickets cost: ${amount} (${amount / numOfParticipants}x
+				{numOfParticipants})
 			</h4>
 			<hr />
 			<h3>Total to be charged: ${amount + amount * 0.06 + 1}</h3>

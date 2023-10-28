@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import Promoters from './components/Promoters/Promoters.js';
 import Participants from './components/Participants/Participants';
 import Login from './components/Login/Login.js';
@@ -15,10 +15,25 @@ import Orders from './components/Orders/Orders.js';
 import Order from './components/Order/Order.js';
 import ResizableImage from './components/ResizableImage/ResizableImage.js';
 import FormFields from './components/FormFIelds/FormFields.js';
+import { useEffect, useState } from 'react';
+import { totalTickets } from './api/Tickets/ticketsRoutes.js';
 
 function App() {
 	const navigate = useNavigate();
 	const pathName = window.location.pathname;
+	const [state, setState] = useState({ totalTickets: 0 });
+	useEffect(() => {
+		const getAllTickets = async () => {
+			const response = await totalTickets({
+				promoterid: JSON.parse(localStorage.getItem('user')).id,
+			});
+			console.log(response);
+			setState((prevState) => {
+				return { ...prevState, totalTickets: response.result.count };
+			});
+		};
+		getAllTickets().catch((err) => console.log(err));
+	}, []);
 
 	return (
 		<>
@@ -28,6 +43,10 @@ function App() {
 						className='title'
 						href='/'>
 						PURCycling
+						<p style={{ color: 'white' }}>
+							Registered Participants: <Icon name='user' />
+							{state.totalTickets}
+						</p>
 					</a>
 
 					<div className='btns'>
