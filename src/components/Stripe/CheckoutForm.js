@@ -162,7 +162,9 @@ const CheckoutForm = ({
 				{numOfParticipants})
 			</h4>
 			<hr />
-			<h3>Total to be charged: ${amount + amount * 0.06 + 1}</h3>
+			<h3>
+				Total to be charged: ${(amount * 1.06 + numOfParticipants).toFixed(2)}
+			</h3>
 
 			<div
 				style={{

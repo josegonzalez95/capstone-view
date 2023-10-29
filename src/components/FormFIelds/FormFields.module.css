@@ -3,10 +3,13 @@
 	align-items: center;
 	flex-direction: column;
 	color: white;
+	margin-top: 1rem;
 }
 
 .table {
 	width: 50vw !important;
+	height: fit-content;
+	margin-right: 1rem !important;
 }
 
 .actionsCell {

@@ -34,8 +34,10 @@ import PayPal from '../PayPal/PayPal';
 
 function RegisterForm() {
 	const [orderCreator, setOrderCreator] = useState('');
-	const [participantsInfo, setParticipantsInfo] = useState([
-		{
+	const { eventId, numOfTickets } = useParams();
+
+	const generateParticipants = (length) => {
+		const defaultParticipant = {
 			name: '',
 			email: '',
 			phone: '',
@@ -50,8 +52,31 @@ function RegisterForm() {
 					col_name: '',
 				},
 			],
-		},
-	]);
+		};
+
+		return Array.from({ length }).map(() => defaultParticipant);
+	};
+	const [participantsInfo, setParticipantsInfo] = useState(
+		generateParticipants(numOfTickets)
+	); // Initializes with 5 participants
+	// const [participantsInfo, setParticipantsInfo] = useState([
+	// 	{
+	// 		name: '',
+	// 		email: '',
+	// 		phone: '',
+	// 		gender: '',
+	// 		address: '',
+	// 		birthdate: new Date(),
+	// 		category: '',
+	// 		customValues: [
+	// 			{
+	// 				value: '',
+	// 				cfid: '',
+	// 				col_name: '',
+	// 			},
+	// 		],
+	// 	},
+	// ]);
 	// const [participantsFormHTML, setParticipantsFormHTML] = useState([])
 	// const [position, setPosition] = useState({lat:0, lng:0})
 	// const position = {lat:0, lng:0}
@@ -61,8 +86,6 @@ function RegisterForm() {
 	const [isEmailValid, setIsEmailValid] = useState(true);
 	const navigate = useNavigate();
 	const [customFields, setCustomFields] = useState([]);
-
-	const { eventId } = useParams();
 
 	useEffect(() => {
 		const getFields = async () => {
@@ -76,7 +99,7 @@ function RegisterForm() {
 	// console.log(eventId)
 	// console.log(window.location.pathname)
 	const [event, setEvent] = useState();
-	const [numOfParticipants, setNumOfParticipants] = useState(1);
+	const [numOfParticipants, setNumOfParticipants] = useState(numOfTickets);
 
 	const [disabled, setDisabled] = useState(true); //this controls the clickability of the order confirmation button
 	const [paymentMethod, setPaymentMehtod] = useState(''); //this controls what payment method the order receives
@@ -431,7 +454,7 @@ function RegisterForm() {
 						<div className={styles.form}>
 							<div className={styles.partTitle}>
 								<h3>Participant {i + 1}</h3>
-								{numOfParticipants > 1 && (
+								{/* {numOfParticipants > 1 && (
 									<Icon
 										name='trash alternate outline'
 										className={styles.trash}
@@ -449,7 +472,7 @@ function RegisterForm() {
 												setNumOfParticipants(numOfParticipants - 1);
 											}
 										}}></Icon>
-								)}
+								)} */}
 							</div>
 
 							<Form.Group
@@ -788,7 +811,7 @@ function RegisterForm() {
 						</div>
 					);
 				})}
-				<div className={styles.btnContainer}>
+				{/* <div className={styles.btnContainer}>
 					<Button
 						className={styles.btns}
 						onClick={() => {
@@ -812,7 +835,7 @@ function RegisterForm() {
 							name='plus'
 						/>
 					</Button>
-				</div>
+				</div> */}
 
 				<div className={styles.btnContainer}>
 					<Button
@@ -887,8 +910,8 @@ function RegisterForm() {
 						<CheckoutForm
 							setIsEmailValid={setIsEmailValid}
 							validateEmail={validateEmail}
-							amount={event.price * numOfParticipants}
-							numOfParticipants={numOfParticipants}
+							amount={event.price * Number(numOfTickets)}
+							numOfParticipants={Number(numOfTickets)}
 							submitParticipants={handleSubmit}
 							setOpen={setOpen}
 							orderBodySend={{

@@ -88,7 +88,7 @@ function Participants() {
 									<Button
 										onClick={(e) => {
 											e.stopPropagation();
-											navigate(`/registerParticipant/${event.id}/registerForm`);
+											navigate(`/registerParticipant/${event.id}`);
 										}}
 										className={styles.sbmtBtn}
 										type='submit'>

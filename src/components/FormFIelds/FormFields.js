@@ -12,6 +12,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { Table, Button, Modal, Form, Input, Select } from 'semantic-ui-react';
 import styles from './FormFields.module.css';
+import FormPreview from '../FormPreview/FormPreview';
 
 const FormFields = () => {
 	const [state, setState] = useState({
@@ -51,9 +52,10 @@ const FormFields = () => {
 				<div
 					style={{
 						display: 'flex',
-						justifyContent: 'space-between',
+						justifyContent: 'flex-start',
 						alignItems: 'center',
 						// backgroundColor: 'red',
+						marginBottom: '1rem',
 					}}>
 					<h1
 						style={{
@@ -64,7 +66,7 @@ const FormFields = () => {
 						Custom Form Fields
 					</h1>
 					<Button
-						// style={{ marginLeft: '1rem' }}
+						style={{ marginLeft: '1rem' }}
 						// color='black'
 						className={styles.btn}
 						onClick={() => {
@@ -193,7 +195,7 @@ const FormFields = () => {
 				{/* End Create Custom Field Form */}
 
 				{/* Custom Fields Table */}
-				{
+				<div style={{ display: 'flex' }}>
 					<Table
 						className={styles.table}
 						celled>
@@ -279,7 +281,9 @@ const FormFields = () => {
 							})}
 						</Table.Body>
 					</Table>
-				}
+
+					<FormPreview customFields={state.customFields} />
+				</div>
 			</div>
 			{/*End Custom Fields Table */}
 
@@ -340,157 +344,160 @@ const FormFields = () => {
 					</Form>
 
 					{/* Options Table */}
-					<div
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-						}}>
-						<p style={{ marginTop: '1rem', fontWeight: 'bold' }}>
-							Manage Field Options
-						</p>
-						<Button
-							style={{ marginLeft: '1rem' }}
-							// color='black'
-							className={styles.btn}
-							onClick={() => {
-								// setIsOptionCreate(true);
-								setState((prevState) => {
-									return { ...prevState, isOptionCreate: true };
-								});
-							}}>
-							Create Option
-						</Button>
-					</div>
-					{state.isOptionCreate && (
-						<div>
-							<Form>
-								<Form.Group widths='equal'>
-									<Form.Field
-										id='form-input-control-first-name'
-										control={Input}
-										label='Option Value'
-										placeholder='Option Value'
-										onChange={(e) => {
-											// setEventInfo((prev) => {
-											// 	return { ...prev, name: e.target.value };
-											// });
+					{state.fieldToUpdate.type === 'string' && (
+						<>
+							{' '}
+							<div
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+								}}>
+								<p style={{ marginTop: '1rem', fontWeight: 'bold' }}>
+									Manage Field Options
+								</p>
+								<Button
+									style={{ marginLeft: '1rem' }}
+									// color='black'
+									className={styles.btn}
+									onClick={() => {
+										// setIsOptionCreate(true);
+										setState((prevState) => {
+											return { ...prevState, isOptionCreate: true };
+										});
+									}}>
+									Create Option
+								</Button>
+							</div>
+							{state.isOptionCreate && (
+								<div>
+									<Form>
+										<Form.Group widths='equal'>
+											<Form.Field
+												id='form-input-control-first-name'
+												control={Input}
+												label='Option Value'
+												placeholder='Option Value'
+												onChange={(e) => {
+													// setEventInfo((prev) => {
+													// 	return { ...prev, name: e.target.value };
+													// });
+													setState((prevState) => {
+														return {
+															...prevState,
+															optionValue: e.target.value,
+														};
+													});
+												}}
+											/>
+										</Form.Group>
+									</Form>
+									<Button
+										// color='black'
+										className={styles.btn}
+										onClick={async () => {
+											if (state.optionValue === '') {
+												setState((prevState) => {
+													return { ...prevState, isOptionCreate: false };
+												});
+												return;
+											}
+											const optResponse = await createOption({
+												cfid: state.fieldToUpdate.id,
+												value: state.optionValue,
+											});
+											console.log(state.fieldToUpdate.id);
 											setState((prevState) => {
 												return {
 													...prevState,
-													optionValue: e.target.value,
+													isOptionCreate: false,
+													options: [
+														...prevState.options,
+														{
+															id: optResponse.option.id,
+															value: state.optionValue,
+															cfid: state.fieldToUpdate.id,
+														},
+													],
 												};
 											});
-										}}
-									/>
-								</Form.Group>
-							</Form>
-							<Button
-								// color='black'
-								className={styles.btn}
-								onClick={async () => {
-									if (state.optionValue === '') {
-										setState((prevState) => {
-											return { ...prevState, isOptionCreate: false };
-										});
-										return;
-									}
-									const optResponse = await createOption({
-										cfid: state.fieldToUpdate.id,
-										value: state.optionValue,
-									});
-									console.log(state.fieldToUpdate.id);
-									setState((prevState) => {
-										return {
-											...prevState,
-											isOptionCreate: false,
-											options: [
-												...prevState.options,
-												{
-													id: optResponse.option.id,
-													value: state.optionValue,
-													cfid: state.fieldToUpdate.id,
-												},
-											],
-										};
-									});
-								}}>
-								Create
-							</Button>
-							<Button
-								color='black'
-								// className={styles.btn}
-								onClick={() => {
-									// setIsOptionCreate(false);
-									setState((prevState) => {
-										return { ...prevState, isOptionCreate: false };
-									});
-								}}>
-								Close
-							</Button>
-						</div>
-					)}
-					<Table celled>
-						<Table.Header>
-							<Table.Row>
-								<Table.HeaderCell>Value</Table.HeaderCell>
-								{/* <Table.HeaderCell>Actions</Table.HeaderCell> */}
-							</Table.Row>
-						</Table.Header>
-						<Table.Body>
-							{state.options.map((opt) => {
-								{
-									// console.log(opt);
-								}
-								return (
-									<>
-										<Table.Row>
-											<Table.Cell
-												className={styles.actionsCell}
-												// selectable
-												// onClick={() => {
-												// 	setState((prevState) => {
-												// 		return {
-												// 			...prevState,
-												// 			isUpdateOption: true,
-												// 			idOptionToUpdate: opt.id,
-												// 		};
-												// 	});
-												// }}
-											>
-												{opt.value}
-												<div>
-													<Button
-														onClick={() => {
-															setState((prevState) => {
-																return {
-																	...prevState,
-																	isUpdateOption: true,
-																	idOptionToUpdate: opt.id,
-																	optionToUpdate: opt,
-																};
-															});
-														}}
-														// color='black'
-														className={styles.btn}>
-														Edit
-													</Button>
-													<Button
-														onClick={() => {
-															setState((prevState) => {
-																return {
-																	...prevState,
-																	isDeleteOption: true,
-																	idOptionToUpdate: opt.id,
-																	optionToUpdate: opt,
-																};
-															});
-														}}
-														color='black'>
-														Delete
-													</Button>
-												</div>
-											</Table.Cell>
-											{/* <Table.Cell
+										}}>
+										Create
+									</Button>
+									<Button
+										color='black'
+										// className={styles.btn}
+										onClick={() => {
+											// setIsOptionCreate(false);
+											setState((prevState) => {
+												return { ...prevState, isOptionCreate: false };
+											});
+										}}>
+										Close
+									</Button>
+								</div>
+							)}
+							<Table celled>
+								<Table.Header>
+									<Table.Row>
+										<Table.HeaderCell>Value</Table.HeaderCell>
+										{/* <Table.HeaderCell>Actions</Table.HeaderCell> */}
+									</Table.Row>
+								</Table.Header>
+								<Table.Body>
+									{state.options.map((opt) => {
+										{
+											// console.log(opt);
+										}
+										return (
+											<>
+												<Table.Row>
+													<Table.Cell
+														className={styles.actionsCell}
+														// selectable
+														// onClick={() => {
+														// 	setState((prevState) => {
+														// 		return {
+														// 			...prevState,
+														// 			isUpdateOption: true,
+														// 			idOptionToUpdate: opt.id,
+														// 		};
+														// 	});
+														// }}
+													>
+														{opt.value}
+														<div>
+															<Button
+																onClick={() => {
+																	setState((prevState) => {
+																		return {
+																			...prevState,
+																			isUpdateOption: true,
+																			idOptionToUpdate: opt.id,
+																			optionToUpdate: opt,
+																		};
+																	});
+																}}
+																// color='black'
+																className={styles.btn}>
+																Edit
+															</Button>
+															<Button
+																onClick={() => {
+																	setState((prevState) => {
+																		return {
+																			...prevState,
+																			isDeleteOption: true,
+																			idOptionToUpdate: opt.id,
+																			optionToUpdate: opt,
+																		};
+																	});
+																}}
+																color='black'>
+																Delete
+															</Button>
+														</div>
+													</Table.Cell>
+													{/* <Table.Cell
 												// className={styles.actionsCell}
 												style={{ paddingLeft: '1rem' }}
 												selectable
@@ -505,12 +512,14 @@ const FormFields = () => {
 												}}>
 												<Button color='black'>Delete</Button>
 											</Table.Cell> */}
-										</Table.Row>
-									</>
-								);
-							})}
-						</Table.Body>
-					</Table>
+												</Table.Row>
+											</>
+										);
+									})}
+								</Table.Body>
+							</Table>
+						</>
+					)}
 					{/*End Options Table */}
 				</Modal.Content>
 				<Modal.Actions>

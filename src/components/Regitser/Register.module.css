@@ -57,3 +57,40 @@
 		font-weight: bold;
 	}
 }
+
+/* Styles to mimic Semantic UI select component */
+.select-container {
+	position: relative;
+	display: inline-block;
+	width: 65px;
+}
+
+.select-container select {
+	display: block;
+	width: 100%;
+	padding: 10px 30px 10px 10px;
+	box-sizing: border-box;
+	background-color: #fff;
+	border: 1px solid rgba(34, 36, 38, 0.15);
+	border-radius: 4px;
+	font-size: 14px;
+	color: rgba(0, 0, 0, 0.87);
+	cursor: pointer;
+	appearance: none; /* Remove default select styling */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+	background-repeat: no-repeat;
+	background-position-x: right 10px;
+	background-position-y: center;
+	transition: border-color 0.1s ease;
+}
+
+.select-container select:hover {
+	border-color: rgba(34, 36, 38, 0.35);
+}
+
+.select-container select:focus {
+	border-color: #85b7d9;
+	outline: none;
+}

@@ -123,15 +123,17 @@ const Orders = () => {
 								</Table.Row>
 								<Table.Row>
 									<Table.Cell>Total Revenue</Table.Cell>
-									<Table.Cell>${totalRevenue}</Table.Cell>
+									<Table.Cell>${totalRevenue.toFixed(2)}</Table.Cell>
 								</Table.Row>
 								<Table.Row>
 									<Table.Cell>Service fees</Table.Cell>
-									<Table.Cell>${totalRevenue * 0.04}</Table.Cell>
+									<Table.Cell>${(totalRevenue * 0.04).toFixed(2)}</Table.Cell>
 								</Table.Row>
 								<Table.Row>
 									<Table.Cell>Profit after expenses</Table.Cell>
-									<Table.Cell>${totalRevenue - totalRevenue * 0.04}</Table.Cell>
+									<Table.Cell>
+										${(totalRevenue - totalRevenue * 0.04).toFixed(2)}
+									</Table.Cell>
 								</Table.Row>
 							</Table.Body>
 						</Table>

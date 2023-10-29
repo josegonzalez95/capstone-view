@@ -145,7 +145,7 @@ function App() {
 					element={<Register />}
 				/>
 				<Route
-					path='/registerParticipant/:eventId/registerForm'
+					path='/registerParticipant/:eventId/registerForm/:numOfTickets'
 					element={<RegisterForm />}
 				/>
 				<Route
