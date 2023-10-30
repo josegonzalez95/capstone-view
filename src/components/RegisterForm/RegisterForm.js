@@ -41,10 +41,10 @@ function RegisterForm() {
 			name: '',
 			email: '',
 			phone: '',
-			gender: '',
-			address: '',
+			gender: 'X',
+			address: 'X',
 			birthdate: new Date(),
-			category: '',
+			category: 'X',
 			customValues: [
 				{
 					value: '',
@@ -143,7 +143,7 @@ function RegisterForm() {
 		// setParticipantsFormHTML(formHTML)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [participantsInfo]);
+	}, []);
 
 	const categoryOptions = [
 		{
@@ -360,10 +360,6 @@ function RegisterForm() {
 					participantInfoEmail += `|------------------------------------|\n`;
 					participantInfoEmail += `|      Phone:        ${participant.phone} \n`;
 					participantInfoEmail += `|------------------------------------|\n`;
-					participantInfoEmail += `|   Birthdate:       ${participant.birthdate.toLocaleDateString()} \n`;
-					participantInfoEmail += `|------------------------------------|\n`;
-					participantInfoEmail += `|    Category:       ${participant.category} \n`;
-					participantInfoEmail += `|------------------------------------|\n\n`;
 
 					console.log('new participant created');
 				}
@@ -566,7 +562,7 @@ function RegisterForm() {
 									/>
 								</Form.Field>
 
-								<div
+								{/* <div
 									style={{
 										display: 'flex',
 										flexDirection: 'column',
@@ -647,142 +643,40 @@ function RegisterForm() {
 											});
 										}}
 									/>
-								</div>
+								</div> */}
 
-								{customFields.map((field, index) => {
-									if (!field.published) {
-										return null;
-									}
-									return (
-										<Form.Field style={{ marginBottom: '1rem' }}>
-											<label style={{ fontWeight: 'bold' }}>
-												{field.name} *
-											</label>
-											{validationErrors[i] && validationErrors[i].values && (
-												<Label
-													basic
-													color='red'
-													pointing='left'>
-													{validationErrors[i].values}
-												</Label>
-											)}
-											{field.type === 'boolean' ? (
-												<Form.Field
-													control={Select}
-													style={{ width: '100%' }}
-													onChange={(e) => {
-														console.log(e.target.textContent.toLowerCase());
-														setParticipantsInfo((prevParticipantsInfo) => {
-															const updatedInfo = [...prevParticipantsInfo];
-															const propName = field.name;
-															updatedInfo[i]['customValues'][index] = {
-																value: e.target.textContent.toLowerCase(),
-																cfid: field.id,
-																col_name: `${field.type}_value`,
-															};
-															// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
-															return updatedInfo;
-														});
-													}}
-													options={[
-														{ key: 't', text: 'True', value: 'true' },
-														{ key: 'f', text: 'False', value: 'false' },
-													]}
-													placeholder={field.name}
-													search
-													searchInput={{ id: 'form-select-control-gender' }}
-												/>
-											) : null}
-											{field.type === 'string' ? (
-												<>
-													{field.options.length ? (
-														<Form.Input
-															value={participantsInfo[i][field.name]}
-															onChange={(e) => {
-																setParticipantsInfo((prevParticipantsInfo) => {
-																	const updatedInfo = [...prevParticipantsInfo];
-																	const propName = field.name;
-																	updatedInfo[i]['customValues'][index] = {
-																		value: e.target.textContent,
-																		cfid: field.id,
-																		col_name: `${field.type}_value`,
-																	};
-																	// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
-																	return updatedInfo;
-																});
-															}}
-															control={Select}
-															options={field.options.map((opt) => {
-																return { key: opt, text: opt, value: opt };
-															})}
-															searchInput={{ id: 'form-select-control-gender' }}
-															fluid
-															placeholder={`${field.name}`}
-														/>
-													) : (
-														<Form.Input
-															value={participantsInfo[i][field.name]}
-															onChange={(e) => {
-																setParticipantsInfo((prevParticipantsInfo) => {
-																	const updatedInfo = [...prevParticipantsInfo];
-																	const propName = field.name;
-																	updatedInfo[i]['customValues'][index] = {
-																		value: e.target.value,
-																		cfid: field.id,
-																		col_name: `${field.type}_value`,
-																	};
-																	// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
-																	return updatedInfo;
-																});
-															}}
-															fluid
-															placeholder={`${field.name}`}
-														/>
-													)}
-												</>
-											) : null}
-											{field.type === 'number' ? (
-												<Form.Input
-													value={
-														participantsInfo[i]['customValues'][index]
-															? participantsInfo[i]['customValues'][index][
-																	'value'
-															  ]
-															: null
-													}
-													onChange={(e) => {
-														let value = e.target.value.replace(/\D/g, '');
-														setParticipantsInfo((prevParticipantsInfo) => {
-															const updatedInfo = [...prevParticipantsInfo];
-															const propName = field.name;
-															updatedInfo[i]['customValues'][index] = {
-																value,
-																cfid: field.id,
-																col_name: `${field.type}_value`,
-															};
-															// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
-															return updatedInfo;
-														});
-													}}
-													fluid
-													placeholder={`${field.name}`}
-												/>
-											) : null}
-											{field.type === 'date' ? (
-												<div
-													style={{ display: 'flex', flexDirection: 'column' }}>
-													<DatePicker
+								{customFields
+									.filter((fld) => {
+										return fld.published === true;
+									})
+									.map((field, index) => {
+										// if (!field.published) {
+										// 	return null;
+										// }
+										return (
+											<Form.Field style={{ marginBottom: '1rem' }}>
+												<label style={{ fontWeight: 'bold' }}>
+													{field.name} *
+												</label>
+												{validationErrors[i] && validationErrors[i].values && (
+													<Label
+														basic
+														color='red'
+														pointing='left'>
+														{validationErrors[i].values}
+													</Label>
+												)}
+												{field.type === 'boolean' ? (
+													<Form.Field
+														control={Select}
+														style={{ width: '100%' }}
 														onChange={(e) => {
-															// participantsInfo[i] = { ...participantsInfo[i], birthdate: e };
-															console.log(participantsInfo);
-															// setParticipantsInfo(participantsInfo);
-															setChangeState(!changeState);
-
+															console.log(e.target.textContent.toLowerCase());
 															setParticipantsInfo((prevParticipantsInfo) => {
 																const updatedInfo = [...prevParticipantsInfo];
 																const propName = field.name;
 																updatedInfo[i]['customValues'][index] = {
-																	value: e,
+																	value: e.target.textContent.toLowerCase(),
 																	cfid: field.id,
 																	col_name: `${field.type}_value`,
 																};
@@ -790,22 +684,141 @@ function RegisterForm() {
 																return updatedInfo;
 															});
 														}}
-														value={participantsInfo[i].birthdate}
+														options={[
+															{ key: 't', text: 'True', value: 'true' },
+															{ key: 'f', text: 'False', value: 'false' },
+														]}
+														placeholder={field.name}
+														search
+														searchInput={{ id: 'form-select-control-gender' }}
 													/>
-													{validationErrors[i] &&
-														validationErrors[i].birthdate && (
-															<Label
-																basic
-																color='red'
-																pointing>
-																{validationErrors[i].birthdate}
-															</Label>
+												) : null}
+												{field.type === 'string' ? (
+													<>
+														{field.options.length ? (
+															<Form.Input
+																value={participantsInfo[i][field.name]}
+																onChange={(e) => {
+																	setParticipantsInfo(
+																		(prevParticipantsInfo) => {
+																			const updatedInfo = [
+																				...prevParticipantsInfo,
+																			];
+																			const propName = field.name;
+																			updatedInfo[i]['customValues'][index] = {
+																				value: e.target.textContent,
+																				cfid: field.id,
+																				col_name: `${field.type}_value`,
+																			};
+																			// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
+																			return updatedInfo;
+																		}
+																	);
+																}}
+																control={Select}
+																options={field.options.map((opt) => {
+																	return { key: opt, text: opt, value: opt };
+																})}
+																searchInput={{
+																	id: 'form-select-control-gender',
+																}}
+																fluid
+																placeholder={`${field.name}`}
+															/>
+														) : (
+															<Form.Input
+																value={participantsInfo[i][field.name]}
+																onChange={(e) => {
+																	setParticipantsInfo(
+																		(prevParticipantsInfo) => {
+																			const updatedInfo = [
+																				...prevParticipantsInfo,
+																			];
+																			const propName = field.name;
+																			updatedInfo[i]['customValues'][index] = {
+																				value: e.target.value,
+																				cfid: field.id,
+																				col_name: `${field.type}_value`,
+																			};
+																			// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
+																			return updatedInfo;
+																		}
+																	);
+																}}
+																fluid
+																placeholder={`${field.name}`}
+															/>
 														)}
-												</div>
-											) : null}
-										</Form.Field>
-									);
-								})}
+													</>
+												) : null}
+												{field.type === 'number' ? (
+													<Form.Input
+														value={
+															participantsInfo[i]['customValues'][index]
+																? participantsInfo[i]['customValues'][index][
+																		'value'
+																  ]
+																: null
+														}
+														onChange={(e) => {
+															let value = e.target.value.replace(/\D/g, '');
+															setParticipantsInfo((prevParticipantsInfo) => {
+																const updatedInfo = [...prevParticipantsInfo];
+																const propName = field.name;
+																updatedInfo[i]['customValues'][index] = {
+																	value,
+																	cfid: field.id,
+																	col_name: `${field.type}_value`,
+																};
+																// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
+																return updatedInfo;
+															});
+														}}
+														fluid
+														placeholder={`${field.name}`}
+													/>
+												) : null}
+												{field.type === 'date' ? (
+													<div
+														style={{
+															display: 'flex',
+															flexDirection: 'column',
+														}}>
+														<DatePicker
+															onChange={(e) => {
+																// participantsInfo[i] = { ...participantsInfo[i], birthdate: e };
+																console.log(participantsInfo);
+																// setParticipantsInfo(participantsInfo);
+																setChangeState(!changeState);
+
+																setParticipantsInfo((prevParticipantsInfo) => {
+																	const updatedInfo = [...prevParticipantsInfo];
+																	const propName = field.name;
+																	updatedInfo[i]['customValues'][index] = {
+																		value: e,
+																		cfid: field.id,
+																		col_name: `${field.type}_value`,
+																	};
+																	// updatedInfo[i] = { ...updatedInfo[i], address: e.target.value };
+																	return updatedInfo;
+																});
+															}}
+															value={participantsInfo[i].birthdate}
+														/>
+														{validationErrors[i] &&
+															validationErrors[i].birthdate && (
+																<Label
+																	basic
+																	color='red'
+																	pointing>
+																	{validationErrors[i].birthdate}
+																</Label>
+															)}
+													</div>
+												) : null}
+											</Form.Field>
+										);
+									})}
 							</Form.Group>
 							<br />
 						</div>
@@ -841,7 +854,7 @@ function RegisterForm() {
 					<Button
 						className={styles.btns}
 						onClick={(e) => {
-							// handleSubmit()
+							// handleSubmit();
 							handleValidation();
 						}}>
 						Submit

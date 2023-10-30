@@ -7,6 +7,7 @@ import { useAuth } from '../../customHooks/useAuth';
 import styles from './Login.module.css';
 import MessageBar from '../MessageBar/MessageBar';
 import { useLocation, useNavigate } from 'react-router-dom';
+import image from '../../assets/cyQN0U01(1).svg';
 
 const Login = () => {
 	//   user info state initialization, this will be used to store and update user info
@@ -113,7 +114,11 @@ const Login = () => {
 
 			<div className={styles.container}>
 				<div className={styles.banner}>
-					PUR Cycling
+					{/* PUR Cycling */}
+					<img
+						width={'300rem'}
+						src={image}
+					/>
 					{/* <img  src={mainLogo} alt="fireSpot"/> */}
 				</div>
 				<div className={styles.form}>

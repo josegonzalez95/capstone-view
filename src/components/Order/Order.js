@@ -87,7 +87,7 @@ const Order = () => {
 									<Table.HeaderCell>Name</Table.HeaderCell>
 									<Table.HeaderCell>Email</Table.HeaderCell>
 									<Table.HeaderCell>Phone</Table.HeaderCell>
-									<Table.HeaderCell>Category</Table.HeaderCell>
+									{/* <Table.HeaderCell>Category</Table.HeaderCell> */}
 									{/* <Table.HeaderCell>Date created</Table.HeaderCell>
         <Table.HeaderCell>Amount payed</Table.HeaderCell>
         <Table.HeaderCell>Status</Table.HeaderCell> */}
@@ -105,7 +105,7 @@ const Order = () => {
 											<Table.Cell>{order.name}</Table.Cell>
 											<Table.Cell>{order.email}</Table.Cell>
 											<Table.Cell>{order.phone}</Table.Cell>
-											<Table.Cell>{order.category}</Table.Cell>
+											{/* <Table.Cell>{order.category}</Table.Cell> */}
 										</Table.Row>
 									);
 								})}

@@ -34,7 +34,7 @@ const FormPreview = ({ customFields }) => {
 					/>
 				</Form.Field>
 
-				<div
+				{/* <div
 					style={{
 						display: 'flex',
 						flexDirection: 'column',
@@ -60,7 +60,7 @@ const FormPreview = ({ customFields }) => {
 						search
 						selection
 					/>
-				</div>
+				</div> */}
 
 				{customFields.map((field, index) => {
 					if (!field.published) {

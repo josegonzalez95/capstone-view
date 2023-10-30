@@ -289,14 +289,21 @@ function Event() {
 							margin: '50px auto',
 							fontSize: '1.15rem',
 						}}>
-						<h2>Entradas</h2>
+						<h2>Entries</h2>
 						<span>
-							Precio: ${PRICE.toFixed(2)} + ${FEE.toFixed(2)} Service Fee + $
-							{transactionFee} Transaction Fee
+							<strong>Price:</strong> ${PRICE.toFixed(2)} + ${FEE.toFixed(2)}{' '}
+							Service Fee + ${transactionFee} Transaction Fee
 						</span>
 						<br />
 						<label>
-							<p>Cantidad:</p>
+							<p
+								style={{
+									marginTop: '1rem',
+									marginBottom: '0.25rem',
+									fontWeight: 'bold',
+								}}>
+								Quantity:
+							</p>
 							<div className={styles['select-container']}>
 								<select
 									value={quantity}
@@ -317,7 +324,9 @@ function Event() {
 						</label>
 						<br />
 						<br />
-						<label>Total: ${total.toFixed(2)}</label>
+						<label>
+							<strong>Total:</strong> ${total.toFixed(2)}
+						</label>
 						<br />
 						<br />
 						<Button
