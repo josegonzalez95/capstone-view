@@ -61,7 +61,7 @@ function App() {
 								Calendar
 							</Button>
 						)} */}
-						{pathName !== '/' && (
+						{/* {pathName !== '/' && (
 							<Button
 								className='calendarbtn'
 								onClick={() => {
@@ -69,7 +69,7 @@ function App() {
 								}}>
 								Events
 							</Button>
-						)}
+						)} */}
 						{JSON.parse(localStorage.getItem('user')) !== null ? (
 							<>
 								<Button
