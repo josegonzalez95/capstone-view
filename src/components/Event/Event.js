@@ -381,7 +381,7 @@ function Event() {
 							}}>
 							Details
 						</p>
-						<Button
+						{/* <Button
 							className={styles.export}
 							style={{ marginTop: '0.5rem' }}>
 							<CsvDownloader
@@ -390,7 +390,7 @@ function Event() {
 								filename='participants-export.csv'>
 								Export to CSV
 							</CsvDownloader>
-						</Button>
+						</Button> */}
 
 						<div className={styles.details}>
 							<p style={{ display: 'flex' }}>
@@ -429,7 +429,7 @@ function Event() {
 								// flexDirection: 'column',
 								// width: 'fit-content',
 								// backgroundColor: 'red',
-								justifyContent: 'space-evenly',
+								justifyContent: 'space-between',
 								width: '100%',
 								alignItems: 'center',
 								marginTop: '1rem',
@@ -458,8 +458,8 @@ function Event() {
 								className={styles.card}
 								style={{ height: '8rem' }}>
 								<Card.Content>
-									<Card.Header className={styles.card}>Orders</Card.Header>
-									<Card.Description className={styles.card}>
+									<Card.Header className={styles.content}>Orders</Card.Header>
+									<Card.Description className={styles.content}>
 										View details of orders for this event.
 									</Card.Description>
 								</Card.Content>
@@ -486,14 +486,41 @@ function Event() {
 									navigate(`/event/${event.id}/formfields`);
 								}}
 								className={styles.card}
-								style={{ height: '8rem', marginBottom: '2rem' }}>
+								style={{
+									height: '8rem',
+									marginBottom: '2rem',
+									margin: '0px, 1rem',
+								}}>
 								<Card.Content>
-									<Card.Header className={styles.card}>Form Fields</Card.Header>
-									<Card.Description className={styles.card}>
+									<Card.Header className={styles.content}>
+										Form Fields
+									</Card.Header>
+									<Card.Description className={styles.content}>
 										Customize the fields of your registration form.
 									</Card.Description>
 								</Card.Content>
 							</Card>
+
+							{/* <div> */}
+							<CsvDownloader
+								className='export-container'
+								datas={asyncGetParticipants}
+								filename='participants-export.csv'>
+								<Card
+									className={styles.card}
+									style={{ height: '8rem', marginBottom: '1rem' }}
+									onClick={() => {
+										console.log('export');
+									}}>
+									<Card.Content>
+										<Card.Header className={styles.content}>Export</Card.Header>
+										<Card.Description className={styles.content}>
+											Click to export participants list in CSV format.
+										</Card.Description>
+									</Card.Content>
+								</Card>
+							</CsvDownloader>
+							{/* </div> */}
 						</div>
 					</div>
 					{/* <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p> */}

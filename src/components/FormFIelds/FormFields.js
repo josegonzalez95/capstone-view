@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { Table, Button, Modal, Form, Input, Select } from 'semantic-ui-react';
 import styles from './FormFields.module.css';
 import FormPreview from '../FormPreview/FormPreview';
+import { getEvent } from '../../api/Events/eventsRoutes';
 
 const FormFields = () => {
 	const [state, setState] = useState({
@@ -28,6 +29,7 @@ const FormFields = () => {
 		idOptionToUpdate: null,
 		optionToUpdate: { id: 0, value: '' },
 		isUpdateOption: false,
+		event: { title: '' },
 	});
 	const { eventId } = useParams();
 	useEffect(() => {
@@ -35,10 +37,12 @@ const FormFields = () => {
 			const getCustomFieldsResponse = await getCustomField({
 				eventid: eventId,
 			});
+			const eventResponse = await await getEvent({ id: Number(eventId) });
 			setState((prevState) => {
 				return {
 					...prevState,
 					customFields: getCustomFieldsResponse.eventCustomFields.customFields,
+					event: eventResponse.event,
 				};
 			});
 		};
@@ -46,9 +50,12 @@ const FormFields = () => {
 			console.error(err);
 		});
 	}, []);
+	console.log(state.customFields);
 	return (
 		<div className={styles.container}>
 			<div>
+				<p className={styles.title}>{state.event.title}</p>
+
 				<div
 					style={{
 						display: 'flex',
@@ -407,9 +414,21 @@ const FormFields = () => {
 											});
 											console.log(state.fieldToUpdate.id);
 											setState((prevState) => {
+												const updatedFields = state.customFields.map(
+													(field) => {
+														if (field.id === state.fieldToUpdate.id) {
+															return {
+																...field,
+																options: [...field.options, state.optionValue],
+															};
+														}
+														return field;
+													}
+												);
 												return {
 													...prevState,
 													isOptionCreate: false,
+													customFields: updatedFields,
 													options: [
 														...prevState.options,
 														{
@@ -565,7 +584,8 @@ const FormFields = () => {
 										return {
 											...field,
 											name: state.fieldToUpdate.name,
-											published: state.fieldToUpdate.published,
+											published:
+												state.fieldToUpdate.published === 'true' ? true : false,
 										};
 									}
 									return field;
@@ -625,13 +645,33 @@ const FormFields = () => {
 
 							// });
 							setState((prevState) => {
-								const optons = prevState.options.map((opt) => {
+								const options = prevState.options.map((opt) => {
 									if (opt.id === state.optionToUpdate.id) {
 										return { ...opt, value: state.optionToUpdate.value };
 									}
 									return opt;
 								});
-								return { ...prevState, isUpdateOption: false, options: optons };
+								const updatedFields = state.customFields.map((field) => {
+									if (field.id === state.fieldToUpdate.id) {
+										const optToDel = prevState.options.filter((opt) => {
+											return opt.id === state.optionToUpdate.id;
+										})[0];
+										const updatedOptions = field.options.filter((opt) => {
+											return opt !== optToDel.value;
+										});
+										return {
+											...field,
+											options: [...updatedOptions, state.optionToUpdate.value],
+										};
+									}
+									return field;
+								});
+								return {
+									...prevState,
+									isUpdateOption: false,
+									customFields: updatedFields,
+									options: options,
+								};
 							});
 						}}
 						positive
@@ -673,6 +713,21 @@ const FormFields = () => {
 							// 	});
 							// });
 							setState((prevState) => {
+								const updatedFields = state.customFields.map((field) => {
+									if (field.id === state.fieldToUpdate.id) {
+										const optToDel = prevState.options.filter((opt) => {
+											return opt.id === state.optionToUpdate.id;
+										})[0];
+										const updatedOptions = field.options.filter((opt) => {
+											return opt !== optToDel.value;
+										});
+										return {
+											...field,
+											options: updatedOptions,
+										};
+									}
+									return field;
+								});
 								const options = prevState.options.filter((opt) => {
 									return opt.id !== state.optionToUpdate.id;
 								});
@@ -680,6 +735,7 @@ const FormFields = () => {
 									...prevState,
 									isDeleteOption: false,
 									options: options,
+									customFields: updatedFields,
 								};
 							});
 						}}

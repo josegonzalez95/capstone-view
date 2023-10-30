@@ -23,3 +23,10 @@
 	background-color: #38729b !important;
 	color: white !important;
 }
+
+.title {
+	position: relative;
+	align-self: self-start;
+	font-size: 4rem;
+	font-weight: bold;
+}

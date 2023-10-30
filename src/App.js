@@ -17,23 +17,11 @@ import ResizableImage from './components/ResizableImage/ResizableImage.js';
 import FormFields from './components/FormFIelds/FormFields.js';
 import { useEffect, useState } from 'react';
 import { totalTickets } from './api/Tickets/ticketsRoutes.js';
+import image from './assets/cyQN0U01(1).svg';
 
 function App() {
 	const navigate = useNavigate();
 	const pathName = window.location.pathname;
-	const [state, setState] = useState({ totalTickets: 0 });
-	useEffect(() => {
-		const getAllTickets = async () => {
-			const response = await totalTickets({
-				promoterid: JSON.parse(localStorage.getItem('user')).id,
-			});
-			console.log(response);
-			setState((prevState) => {
-				return { ...prevState, totalTickets: response.result.count };
-			});
-		};
-		getAllTickets().catch((err) => console.log(err));
-	}, []);
 
 	return (
 		<>
@@ -42,13 +30,11 @@ function App() {
 					<a
 						className='title'
 						href='/'>
-						PURCycling
-						{JSON.parse(localStorage.getItem('user')) !== null && (
-							<p style={{ color: 'white' }}>
-								Registered Participants: <Icon name='user' />
-								{state.totalTickets}
-							</p>
-						)}
+						{/* PURCycling */}
+						<img
+							width={'125rem'}
+							src={image}
+						/>
 					</a>
 
 					<div className='btns'>

@@ -301,7 +301,7 @@ function Event() {
 								<select
 									value={quantity}
 									onChange={(e) => setQuantity(Number(e.target.value))}>
-									{Array.from({ length: 51 }).map((_, index) => (
+									{Array.from({ length: 11 }).map((_, index) => (
 										<option
 											key={index}
 											value={index}>

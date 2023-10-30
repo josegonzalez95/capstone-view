@@ -45,18 +45,25 @@
 }
 
 .export {
-	margin-right: 1rem !important;
+	/* margin-right: 1rem !important;
 	font-weight: bold !important;
 	color: white !important;
 	background-color: #38729b !important;
-	margin-bottom: 0.5rem !important;
+	margin-bottom: 0.5rem !important; */
 	/* margin-top: 1rem !important; */
+	appearance: none !important;
 }
 
 .card {
 	font-weight: bold !important;
 	color: white !important;
 	background-color: #38729b !important;
+	border: none !important;
+	box-shadow: none !important;
+	width: 18rem !important;
+}
+.content {
+	color: white !important;
 }
 
 .published:hover {
