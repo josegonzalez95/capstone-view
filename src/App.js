@@ -52,7 +52,7 @@ function App() {
 					</a>
 
 					<div className='btns'>
-						{pathName !== '/calendar' && (
+						{/* {pathName !== '/calendar' && (
 							<Button
 								className='calendarbtn'
 								onClick={() => {
@@ -60,7 +60,7 @@ function App() {
 								}}>
 								Calendar
 							</Button>
-						)}
+						)} */}
 						{pathName !== '/' && (
 							<Button
 								className='calendarbtn'
