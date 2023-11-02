@@ -40,12 +40,14 @@ function Participants() {
 	}, []);
 	return (
 		<div
-			style={{
-				display: 'flex',
-				alignItems: 'center',
-				flexDirection: 'column',
-				backgroundColor: '#0c3c60',
-			}}>
+			className={styles.container}
+			// style={{
+			// 	display: 'flex',
+			// 	alignItems: 'center',
+			// 	flexDirection: 'column',
+			// 	backgroundColor: '#0c3c60',
+			// }}
+		>
 			{console.log(eventsLst)}
 			{eventsLst.map((eventRow) => {
 				// console.log(eventRow)
@@ -56,7 +58,7 @@ function Participants() {
 							// console.log(event)
 							return (
 								<Card
-									style={{ backgroundColor: '#38729b' }}
+									className={styles.cardContainer}
 									onClick={() => {
 										navigate(`/registerParticipant/${event.id}`);
 									}}>

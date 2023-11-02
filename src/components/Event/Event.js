@@ -433,6 +433,7 @@ function Event() {
 								width: '100%',
 								alignItems: 'center',
 								marginTop: '1rem',
+								marginBottom: '1rem',
 							}}>
 							{/* <Button
 								className={styles.export}
@@ -456,7 +457,8 @@ function Event() {
 									navigate(`/event/${event.id}/orders`);
 								}}
 								className={styles.card}
-								style={{ height: '8rem' }}>
+								// style={{ height: '8rem' }}
+							>
 								<Card.Content>
 									<Card.Header className={styles.content}>Orders</Card.Header>
 									<Card.Description className={styles.content}>
@@ -486,11 +488,13 @@ function Event() {
 									navigate(`/event/${event.id}/formfields`);
 								}}
 								className={styles.card}
-								style={{
-									height: '8rem',
-									marginBottom: '2rem',
-									margin: '0px, 1rem',
-								}}>
+								style={
+									{
+										// height: '8rem',
+										// marginBottom: '2rem',
+										// margin: '0px, 1rem',
+									}
+								}>
 								<Card.Content>
 									<Card.Header className={styles.content}>
 										Form Fields
@@ -508,7 +512,7 @@ function Event() {
 								filename='participants-export.csv'>
 								<Card
 									className={styles.card}
-									style={{ height: '8rem', marginBottom: '1rem' }}
+									// style={{ height: '8rem', marginBottom: '1rem' }}
 									onClick={() => {
 										console.log('export');
 									}}>

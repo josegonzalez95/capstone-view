@@ -6,6 +6,20 @@
 	margin-bottom: 2rem !important;
 }
 
+.form {
+	border: none !important;
+	box-shadow: none !important;
+	background-color: #38729b !important;
+	/* background: rgba(209, 236, 255, 0.483) !important; */
+	border-radius: 10px !important;
+	box-shadow: 0 1rem 1.25rem rgba(0, 0, 0, 0.288) !important;
+	padding: 0.15rem !important;
+	margin: 1rem !important;
+	width: 30rem !important;
+	padding: 1rem !important;
+	margin-bottom: 3rem !important;
+}
+
 .parent {
 	display: flex;
 	flex-direction: column;
@@ -24,21 +38,32 @@
 	justify-content: space-between;
 	margin-bottom: 1rem;
 }
-.form {
-	background-color: #38729b;
+.eventForm {
+	/* background-color: #38729b; */
 
 	/* From https://css.glass */
 	/* From https://css.glass */
-	background: rgba(209, 236, 255, 0.483);
-	border-radius: 16px;
-	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-	backdrop-filter: blur(4.6px);
-	-webkit-backdrop-filter: blur(4.6px);
-	border: 1px solid rgba(255, 227, 209, 0.15);
-	margin-bottom: 2rem;
-	width: 30rem;
-	padding: 1rem;
-	color: black;
+	/* background: rgba(209, 236, 255, 0.483) !important;
+	border-radius: 16px !important;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+	backdrop-filter: blur(4.6px) !important;
+	-webkit-backdrop-filter: blur(4.6px) !important;
+	border: 1px solid rgba(255, 227, 209, 0.15) !important;
+	margin-bottom: 2rem !important;
+	color: black !important;
+	margin: 1rem !important;
+	width: 30rem !important;
+	padding: 1rem !important; */
+	/* border: none !important;
+	box-shadow: none !important;
+	background-color: #38729b !important;
+	background: rgba(209, 236, 255, 0.483) !important;
+	border-radius: 10px !important;
+	box-shadow: 0 1rem 1.25rem rgba(0, 0, 0, 0.288) !important;
+	padding: 0.15rem !important;
+	margin: 1rem !important;
+	width: 30rem !important;
+	padding: 1rem !important; */
 }
 
 .btnContainer {

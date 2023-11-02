@@ -111,6 +111,17 @@
 	flex-direction: column !important;
 }
 
+.eventCard {
+	border: none !important;
+	box-shadow: none !important;
+	background-color: #38729b !important;
+	/* background: rgba(209, 236, 255, 0.483) !important; */
+	border-radius: 10px !important;
+	box-shadow: 0 1rem 1.25rem rgba(0, 0, 0, 0.288) !important;
+	margin: 1rem !important;
+	/* width: 30rem !important; */
+}
+
 @media only screen and (max-width: 1180px) {
 	/* CSS styles for small screens go here */
 	.eventRow {

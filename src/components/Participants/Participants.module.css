@@ -7,6 +7,23 @@
 	margin-bottom: 2rem;
 }
 
+.cardContainer {
+	border: none !important;
+	box-shadow: none !important;
+	background-color: #38729b !important;
+	border-radius: 10px !important;
+	box-shadow: 0 1rem 1.25rem rgba(0, 0, 0, 0.288) !important;
+	/* padding: 0.15rem !important; */
+	margin: 1rem !important;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	background-color: #0c3c60;
+}
+
 .eventRowShort {
 	display: flex !important;
 	width: 75%;

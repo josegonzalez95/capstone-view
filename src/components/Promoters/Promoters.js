@@ -434,10 +434,11 @@ function Promoters(props) {
 											// console.log(event)
 											return (
 												<Card
-													style={{
-														backgroundColor: '#38729b',
-														borderColor: '#38729b',
-													}}
+													// style={{
+													// 	backgroundColor: '#38729b',
+													// 	borderColor: '#38729b',
+													// }}
+													className={styles.eventCard}
 													onClick={(e) => {
 														e.stopPropagation();
 														navigate(`/event/${event.id}`);
@@ -761,7 +762,14 @@ function Promoters(props) {
 									console.log('create event call on button');
 									const { date, details, location, photo, price, title } =
 										eventInfo;
-									if (date && details && location && photo && price && title) {
+									if (
+										date &&
+										details &&
+										location &&
+										photo &&
+										price >= 0 &&
+										title
+									) {
 										if (
 											details.length <= 1000 &&
 											location.length <= 200 &&

@@ -285,7 +285,13 @@ function RegisterForm() {
 	};
 
 	useEffect(() => {
-		if (isFormValid()) setOpen(true);
+		if (isFormValid()) {
+			if (event.price > 0) {
+				setOpen(true);
+			} else {
+				handleSubmit('free', 'free', 'free', 0);
+			}
+		}
 	}, [validationErrors]);
 
 	const handleValidation = () => {
@@ -368,13 +374,28 @@ function RegisterForm() {
 		emailData['template_params']['participants'] = participantInfoEmail;
 
 		console.log(participantsInfo);
+		if (customFields.length === 0) delete participantsInfo['customValues'];
 
 		await sendEmail(emailData);
 		const orderBodySend = {
-			participants: participantsInfo,
+			participants:
+				customFields.length === 0
+					? participantsInfo.map((prt) => {
+							return {
+								name: prt.name,
+								email: prt.email,
+								phone: prt.phone,
+								gender: 'X',
+								address: 'X',
+								birthdate: new Date(),
+								category: 'X',
+							};
+					  })
+					: participantsInfo,
 			eventId: Number(eventId),
-			paymentMethod: paymentMethod,
-			orderCreatorEmail: orderCreator,
+			paymentMethod: paymentMethod === '' ? 'free' : paymentMethod,
+			orderCreatorEmail:
+				orderCreator === '' ? 'jggm9090@gmail.com' : orderCreator,
 			paymentIntentId: paymentIntentId,
 			status: status,
 			totalCharge: totalCharge,

@@ -61,6 +61,12 @@
 	border: none !important;
 	box-shadow: none !important;
 	width: 18rem !important;
+	border: none !important;
+	box-shadow: none !important;
+	background-color: #38729b !important;
+	/* background: rgba(209, 236, 255, 0.483) !important; */
+	box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.288) !important;
+	margin: 0.75rem !important;
 }
 .content {
 	color: white !important;

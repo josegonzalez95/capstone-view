@@ -139,10 +139,10 @@ function Event() {
 	}, []);
 
 	useEffect(() => {
+		navigate('', { replace: true });
+
 		setTimeout(() => {
 			if (showRegisterMessgeBar) {
-				navigate('', { replace: true });
-
 				setShowRegisterMessageBar(false);
 			}
 		}, 5000);
@@ -157,7 +157,7 @@ function Event() {
 
 	const PRICE = event && event.price;
 	const FEE = event && event.price * 0.06;
-	const transactionFee = 1;
+	const transactionFee = event && event.price === 0 ? 0 : 1;
 
 	const total = quantity + (PRICE + FEE) * quantity;
 	return (
@@ -176,7 +176,7 @@ function Event() {
 
 					{/* The following section enables and controls the Social Media Buttons  */}
 					<div className={styles.dtls}>
-						<div
+						{/* <div
 							className='container'
 							id='contact'>
 							<link
@@ -184,10 +184,10 @@ function Event() {
 								//Here's the host for the Font Awesome icons we're using
 								href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
 							/>
-						</div>
+						</div> */}
 						{/* The buttons for Twitter, WhatsApp and Gmail also share the price and date of the event
             The Facebook buttons don't work the same way because of how they're formatted */}
-						<a
+						{/* <a
 							href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F&linkname=${event.title}`}
 							className='fa fa-facebook'>
 							{' '}
@@ -215,7 +215,7 @@ function Event() {
 							href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F%0DDate:${event.date}%0DPrice:$${event.price}&linkname=${event.title}`}
 							className='fa fa-google'>
 							{' '}
-						</a>
+						</a> */}
 					</div>
 
 					<p
@@ -282,63 +282,67 @@ function Event() {
 							Register
 						</Button> */}
 					</div>
-					<div
-						style={{
-							fontFamily: 'Arial, sans-serif',
-							width: '100%',
-							margin: '50px auto',
-							fontSize: '1.15rem',
-						}}>
-						<h2>Entries</h2>
-						<span>
-							<strong>Price:</strong> ${PRICE.toFixed(2)} + ${FEE.toFixed(2)}{' '}
-							Service Fee + ${transactionFee} Transaction Fee
-						</span>
-						<br />
-						<label>
-							<p
-								style={{
-									marginTop: '1rem',
-									marginBottom: '0.25rem',
-									fontWeight: 'bold',
-								}}>
-								Quantity:
-							</p>
-							<div className={styles['select-container']}>
-								<select
-									value={quantity}
-									onChange={(e) => setQuantity(Number(e.target.value))}>
-									{Array.from({ length: 11 }).map((_, index) => (
-										<option
-											key={index}
-											value={index}>
-											{index}
-										</option>
-									))}
-									{/* <option value='0'>0</option>
+					<div style={{ width: '100%' }}>
+						<div
+							// style={{
+							// 	fontFamily: 'Arial, sans-serif',
+							// 	width: '100%',
+							// 	margin: '50px auto',
+							// 	fontSize: '1.15rem',
+							// 	backgroundColor: 'red',
+							// }}
+							className={styles.entries}>
+							<h2>Entries</h2>
+							<span>
+								<strong>Price:</strong> ${PRICE.toFixed(2)} + ${FEE.toFixed(2)}{' '}
+								Service Fee + ${transactionFee} Transaction Fee
+							</span>
+							<br />
+							<label>
+								<p
+									style={{
+										marginTop: '1rem',
+										marginBottom: '0.25rem',
+										fontWeight: 'bold',
+									}}>
+									Quantity:
+								</p>
+								<div className={styles['select-container']}>
+									<select
+										value={quantity}
+										onChange={(e) => setQuantity(Number(e.target.value))}>
+										{Array.from({ length: 11 }).map((_, index) => (
+											<option
+												key={index}
+												value={index}>
+												{index}
+											</option>
+										))}
+										{/* <option value='0'>0</option>
 								<option value='1'>1</option>
 								<option value='2'>2</option>
 								<option value='3'>3</option> */}
-								</select>
-							</div>
-						</label>
-						<br />
-						<br />
-						<label>
-							<strong>Total:</strong> ${total.toFixed(2)}
-						</label>
-						<br />
-						<br />
-						<Button
-							className={styles.rgtsBtn}
-							onClick={() => {
-								if (total > 0) {
-									navigate(`registerForm/${quantity}`);
-								}
-							}}>
-							Confirmar pedido
-						</Button>
-						{/* <button
+									</select>
+								</div>
+							</label>
+							<br />
+							<br />
+							<label>
+								<strong>Total:</strong>{' '}
+								{event.price === 0 ? `$ ${0}` : `$${total.toFixed(2)}`}
+							</label>
+							<br />
+							<br />
+							<Button
+								className={styles.rgtsBtn}
+								onClick={() => {
+									if (total > 0) {
+										navigate(`registerForm/${quantity}`);
+									}
+								}}>
+								Confirmar pedido
+							</Button>
+							{/* <button
 							className={styles.rgtsBtn}
 							onClick={() =>
 								// total > 0
@@ -352,8 +356,8 @@ function Event() {
 							}>
 							Confirmar pedido
 						</button> */}
+						</div>
 					</div>
-
 					{/* <Image src={event.photo} width={800} height={800}/> */}
 					<ResizableImage
 						src={event.photo}
