@@ -26,7 +26,10 @@
 
 .eventRowShort {
 	display: flex !important;
-	width: 75%;
+	width: 62.5%;
+	/* background-color: red; */
+	justify-content: space-evenly !important;
+	/* align-items: center !important; */
 }
 
 .sbmtBtn {
@@ -46,5 +49,10 @@
 	.eventRow {
 		display: flex;
 		flex-direction: column;
+	}
+	.eventRowShort {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 }

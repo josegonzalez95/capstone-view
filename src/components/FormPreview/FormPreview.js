@@ -84,7 +84,7 @@ const FormPreview = ({ customFields }) => {
 							) : null}
 							{field.type === 'string' ? (
 								<>
-									{field.options.length ? (
+									{field.options && field.options.length ? (
 										<Form.Input
 											control={Select}
 											options={field.options.map((opt) => {

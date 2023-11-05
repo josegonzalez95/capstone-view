@@ -1006,6 +1006,7 @@ function Promoters(props) {
 											);
 											console.log('Location event info', eventInfo);
 											if (date) {
+												console.log('newww date', date);
 												eventBodySend = { ...eventBodySend, date: date };
 											}
 											if (details) {
@@ -1072,13 +1073,13 @@ function Promoters(props) {
 
 											// uncomment-----------!!!!!!
 
-											navigate(`../promoters`, {
-												state: { isEventUpdate: true },
-												relative: 'path',
-												replace: true,
-											});
+											// navigate(`../promoters`, {
+											// 	state: { isEventUpdate: true },
+											// 	relative: 'path',
+											// 	replace: true,
+											// });
 
-											window.location.reload();
+											// window.location.reload();
 
 											// console.log(result.newEvent)
 											//window.location.replace(`event/${result.newEvent.event.id}`)

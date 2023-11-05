@@ -18,8 +18,10 @@ function Participants() {
 			let tempLst = [];
 			const response = await getAllEvents();
 			let allEvents = response.events.sort(
-				(a, b) => new Date(b.date) - new Date(a.date)
+				(a, b) => new Date(a.date) - new Date(b.date)
 			);
+
+			allEvents = allEvents.filter((evnt) => new Date() < new Date(evnt.date));
 
 			console.log('evnts', allEvents);
 			allEvents.forEach((evnt, i) => {

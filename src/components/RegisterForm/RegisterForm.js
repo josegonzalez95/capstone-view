@@ -92,7 +92,11 @@ function RegisterForm() {
 			const getCustomFieldsResponse = await getCustomField({
 				eventid: eventId,
 			});
-			setCustomFields(getCustomFieldsResponse.eventCustomFields.customFields);
+			setCustomFields(
+				getCustomFieldsResponse.eventCustomFields.customFields.filter(
+					(field) => field.published === true
+				)
+			);
 		};
 		getFields().catch(console.error);
 	}, []);
@@ -320,7 +324,9 @@ function RegisterForm() {
 		paymentIntentId,
 		receipt_url,
 		status,
-		totalCharge
+		totalCharge,
+		service_fee,
+		transaction_fee
 	) => {
 		let participantInfoEmail = '';
 		let emailData = {
@@ -400,6 +406,8 @@ function RegisterForm() {
 			status: status,
 			totalCharge: totalCharge,
 			created: new Date(),
+			service_fee: service_fee,
+			transaction_fee: transaction_fee,
 		};
 
 		const orderResponse = await createTotalOrder(orderBodySend);
@@ -425,9 +433,11 @@ function RegisterForm() {
 
 	const datetime = event ? event.date : '';
 	const [date] = datetime.split('T');
+
 	return event ? (
 		<div className={styles.parent}>
 			{console.log(participantsInfo)}
+			{console.log('fields', customFields)}
 
 			<div className={styles.container}>
 				<p

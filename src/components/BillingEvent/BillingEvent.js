@@ -5,7 +5,7 @@ import { Table, Button } from 'semantic-ui-react';
 import CsvDownloader from 'react-csv-downloader';
 import { eventOrders } from '../../api/Orders/ordersRoutes';
 
-const Orders = () => {
+const BillingEvent = () => {
 	const { eventId } = useParams();
 	const { data, error } = useFetch(
 		`${process.env.REACT_APP_API_URL}/search-payments`,
@@ -29,6 +29,7 @@ const Orders = () => {
 
 	useEffect(() => {
 		const getOrders = async () => {
+			console.log(eventId);
 			const orders = await eventOrders({ eventId: Number(eventId) });
 			console.log(orders);
 			setOrders(orders.orders);
@@ -38,12 +39,6 @@ const Orders = () => {
 		getOrders().catch(console.error);
 	}, []);
 
-	// let totalRevenue = 0;
-	// if (!loading) {
-	// 	orders.forEach((order) => {
-	// 		totalRevenue += order.amount_payed;
-	// 	});
-	// }
 	let totalRevenue = 0;
 	let serviceFee = 0;
 	let transactionFee = 0;
@@ -113,43 +108,59 @@ const Orders = () => {
 				alignItems: 'center',
 				flexDirection: 'column',
 				color: 'white',
+				fontSize: '1.5rem',
 			}}>
 			{console.log(orders)}
 			{
 				loading ? (
 					<p>Loading orders...</p>
 				) : (
-					<div style={{ width: '50%', marginBottom: '2rem' }}>
+					<div style={{ width: '75%', marginBottom: '2rem' }}>
 						{/* {console.log(data.paymentIntent.data)} */}
 						<h1>Orders</h1>
 						{/* <CsvDownloader className='export-container' datas={exportDocument} filename='orders-export.csv' >
           Export to CSV
         </CsvDownloader> */}
-						<Table definition>
+						<Table>
 							<Table.Body>
 								<Table.Row>
 									<Table.Cell>Num. of orders</Table.Cell>
+									<Table.Cell>Total in tickets sales</Table.Cell>
+									<Table.Cell>Service fee</Table.Cell>
+									<Table.Cell>Transaction fee</Table.Cell>
+									<Table.Cell>Amount recoleted in the event</Table.Cell>
+									<Table.Cell>Amount payed to promoter</Table.Cell>
+									<Table.Cell>Disbursement fee</Table.Cell>
+									<Table.Cell>Purcycling revenue</Table.Cell>
+								</Table.Row>
+								<Table.Row>
 									<Table.Cell>{orders.length}</Table.Cell>
-								</Table.Row>
-								<Table.Row>
-									<Table.Cell>Total Revenue</Table.Cell>
 									<Table.Cell>${totalRevenue.toFixed(2)}</Table.Cell>
-								</Table.Row>
-								<Table.Row>
-									<Table.Cell>Disbursement fees</Table.Cell>
-									<Table.Cell>${(totalRevenue * 0.06).toFixed(2)}</Table.Cell>
-								</Table.Row>
-								<Table.Row>
-									<Table.Cell>Profit after expenses</Table.Cell>
+									<Table.Cell>${serviceFee.toFixed(2)}</Table.Cell>
+									<Table.Cell>${transactionFee.toFixed(2)}</Table.Cell>
 									<Table.Cell>
-										${(totalRevenue - totalRevenue * 0.06).toFixed(2)}
+										${(transactionFee + serviceFee + totalRevenue).toFixed(2)}
+									</Table.Cell>
+									<Table.Cell>
+										<p style={{ color: 'red' }}>
+											(-${(totalRevenue - totalRevenue * 0.06).toFixed(2)})
+										</p>
+									</Table.Cell>
+									<Table.Cell>${(totalRevenue * 0.06).toFixed(2)}</Table.Cell>
+									<Table.Cell>
+										<p style={{ color: 'green' }}>
+											$
+											{(
+												serviceFee +
+												transactionFee +
+												totalRevenue * 0.06
+											).toFixed(2)}
+										</p>
 									</Table.Cell>
 								</Table.Row>
 							</Table.Body>
 						</Table>
-						<Table
-							celled
-							selectable>
+						<Table celled>
 							<Table.Header>
 								{/* Header cells */}
 								<Table.Row>
@@ -158,29 +169,27 @@ const Orders = () => {
 									<Table.HeaderCell>Date created</Table.HeaderCell>
 									<Table.HeaderCell>Amount payed</Table.HeaderCell>
 									<Table.HeaderCell>Status</Table.HeaderCell>
+									<Table.HeaderCell>Service Fee</Table.HeaderCell>
+									<Table.HeaderCell>Transaction Fee</Table.HeaderCell>
 								</Table.Row>
 							</Table.Header>
 							<Table.Body>
 								{/* Map over currentItems to render table rows */}
 								{currentItems.map((order, index) => {
 									return (
-										<Table.Row
-											onClick={() => {
-												navigate(
-													`/event/${eventId}/orders/${order.orderid}/${order.paymentdetails}`,
-													{ state: { order: order } }
-												);
-											}}>
+										<Table.Row>
 											<Table.Cell>{order.paymentdetails}</Table.Cell>
 											<Table.Cell>{order.orderid}</Table.Cell>
 											<Table.Cell>
-												{new Date(order.date_created * 1000).toLocaleString(
+												{new Date(order.date_created).toLocaleString(
 													'default',
 													{ month: 'long', day: '2-digit', year: 'numeric' }
 												)}
 											</Table.Cell>
 											<Table.Cell>${order.amount_payed}</Table.Cell>
 											<Table.Cell>{order.payment_status}</Table.Cell>
+											<Table.Cell>{order.service_fee}</Table.Cell>
+											<Table.Cell>{order.transaction_fee}</Table.Cell>
 										</Table.Row>
 									);
 								})}
@@ -240,4 +249,4 @@ const Orders = () => {
 	);
 };
 
-export default Orders;
+export default BillingEvent;

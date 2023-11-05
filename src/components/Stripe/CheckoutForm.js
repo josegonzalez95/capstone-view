@@ -22,6 +22,8 @@ const CheckoutForm = ({
 	numOfParticipants,
 	validateEmail,
 	setIsEmailValid,
+	service_fee,
+	transaction_fee,
 }) => {
 	const stripe = useStripe();
 	const elements = useElements();
@@ -136,9 +138,18 @@ const CheckoutForm = ({
 				}
 			);
 			// console.log(res);
-			const totalCharge = amount + amount * 0.06 + numOfParticipants;
+			const totalCharge = amount;
+			const service_fee = amount * 0.06;
+			const transaction_fee = numOfParticipants;
 			const { receipt_url } = await res2.json();
-			await submitParticipants(pi, receipt_url, status, totalCharge);
+			await submitParticipants(
+				pi,
+				receipt_url,
+				status,
+				totalCharge,
+				service_fee,
+				transaction_fee
+			);
 
 			// Your customer will be redirected to your `return_url`. For some payment
 			// methods like iDEAL, your customer will be redirected to an intermediate

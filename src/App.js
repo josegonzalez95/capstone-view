@@ -18,6 +18,8 @@ import FormFields from './components/FormFIelds/FormFields.js';
 import { useEffect, useState } from 'react';
 import { totalTickets } from './api/Tickets/ticketsRoutes.js';
 import image from './assets/cyQN0U01(1).svg';
+import Billing from './components/Billing/Billing.js';
+import BillingEvent from './components/BillingEvent/BillingEvent.js';
 
 function App() {
 	const navigate = useNavigate();
@@ -157,6 +159,14 @@ function App() {
 							<FormFields />
 						</ProtectedRoute>
 					}
+				/>
+				<Route
+					path='/billing'
+					element={<Billing />}
+				/>
+				<Route
+					path='/billing/:eventId/orders'
+					element={<BillingEvent />}
 				/>
 			</Routes>
 		</>
