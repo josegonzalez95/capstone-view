@@ -339,6 +339,17 @@ function RegisterForm() {
 				subject: 'Order confirmation email',
 				from_name: 'PUR Cycling registration platform',
 				message: `click here to see recipt: ${receipt_url}`,
+				amount: (
+					totalCharge +
+					totalCharge * 0.06 +
+					Number(numOfParticipants)
+				).toFixed(2),
+				date: new Date().toLocaleString('default', {
+					month: 'long',
+					day: '2-digit',
+					year: 'numeric',
+				}),
+				pid: paymentIntentId,
 			},
 		};
 		let listOfParticipantId = [];

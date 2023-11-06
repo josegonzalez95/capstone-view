@@ -32,6 +32,9 @@ import ResizableImage from '../ResizableImage/ResizableImage';
 import MessageBar from '../MessageBar/MessageBar';
 
 function Promoters(props) {
+	const [state, setState] = useState({
+		creatingEvent: false,
+	});
 	const [eventsLst, setEvents] = useState([]);
 	const [showLoginMessageBar, setShowLoginMessageBar] = useState(false);
 	const [showUpdateMessageBar, setShowUpdateMessageBar] = useState(false);
@@ -312,6 +315,7 @@ function Promoters(props) {
 		// const newDate = `${new Date(e).getFullYear()}-${new Date(e).getMonth()+1}-${new Date(e).getDate()}`
 		// console.log(newDate)
 		setEventInfo({ ...eventInfo, date: e });
+		seteventToUpdateInfo({ ...eventToUpdateInfo, date: e });
 	};
 
 	// const updateEventCall=async(e)=>{
@@ -426,14 +430,17 @@ function Promoters(props) {
 
 					{
 						<div className={styles.eventsContainer}>
-							{eventsLst.map((eventRow) => {
+							{eventsLst.map((eventRow, index) => {
 								// console.log(eventRow)
 								return (
-									<Grid.Row className={styles.eventRow}>
+									<Grid.Row
+										key={index}
+										className={styles.eventRow}>
 										{eventRow.map((event) => {
 											// console.log(event)
 											return (
 												<Card
+													key={event.id}
 													// style={{
 													// 	backgroundColor: '#38729b',
 													// 	borderColor: '#38729b',
@@ -753,78 +760,83 @@ function Promoters(props) {
 								onClick={() => setOpen(false)}>
 								Cancel
 							</Button>
-							<Button
-								content='Create Event'
-								labelPosition='right'
-								icon='checkmark'
-								onClick={async () => {
-									handleValidation(eventInfo);
-									console.log('create event call on button');
-									const { date, details, location, photo, price, title } =
-										eventInfo;
-									if (
-										date &&
-										details &&
-										location &&
-										photo &&
-										price >= 0 &&
-										title
-									) {
+							{!state.creatingEvent ? (
+								<Button
+									content='Create Event'
+									labelPosition='right'
+									icon='checkmark'
+									onClick={async () => {
+										handleValidation(eventInfo);
+										console.log('create event call on button');
+										const { date, details, location, photo, price, title } =
+											eventInfo;
 										if (
-											details.length <= 1000 &&
-											location.length <= 200 &&
-											title.length <= 1000
+											date &&
+											details &&
+											location &&
+											photo &&
+											price >= 0 &&
+											title
 										) {
-											console.log(eventInfo);
+											if (
+												details.length <= 1000 &&
+												location.length <= 200 &&
+												title.length <= 1000
+											) {
+												console.log(eventInfo);
 
-											const geoCodeResponse = await fetch(
-												`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`
-											).then((response) => response.json());
-											const { lat, lng } =
-												geoCodeResponse.results[0].geometry.location;
+												const geoCodeResponse = await fetch(
+													`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`
+												).then((response) => response.json());
+												const { lat, lng } =
+													geoCodeResponse.results[0].geometry.location;
 
-											// console.log(eventInfo.photo[0])
-											const photoUploadResponse = await uploadPhoto(
-												eventInfo.photo[0]
-											);
-											const photoURL = photoUploadResponse.data;
-											// const photoURL = photo;
-											// const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
-											// console.log(eventBodySend)
+												// console.log(eventInfo.photo[0])
+												const photoUploadResponse = await uploadPhoto(
+													eventInfo.photo[0]
+												);
+												const photoURL = photoUploadResponse.data;
+												// const photoURL = photo;
+												// const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
+												// console.log(eventBodySend)
 
-											const eventBodySend = {
-												...eventInfo,
-												location: JSON.stringify({ lat: lat, lng: lng }),
-												photo: photoURL,
-												promoterid: JSON.parse(localStorage.getItem('user')).id,
-											};
+												const eventBodySend = {
+													...eventInfo,
+													location: JSON.stringify({ lat: lat, lng: lng }),
+													photo: photoURL,
+													promoterid: JSON.parse(localStorage.getItem('user'))
+														.id,
+												};
 
-											// console.log(eventBodySend)
-											const result = await createEvent(eventBodySend);
-											// console.log(result)
-											// console.log(result.newEvent)
-											// window.location.replace(`event/${result.newEvent.event.id}`)
-											// redirect(`/event/${result.newEvent.event.id}`)
-											navigate(`../event/${result.newEvent.event.id}`, {
-												state: { isEventCreate: true },
-												relative: 'path',
-											});
-											setEventInfo({
-												title: '',
-												details: '',
-												price: '',
-												location: '',
-												date: new Date(),
-												photo: '',
-											});
+												// console.log(eventBodySend)
+												const result = await createEvent(eventBodySend);
+												// console.log(result)
+												// console.log(result.newEvent)
+												// window.location.replace(`event/${result.newEvent.event.id}`)
+												// redirect(`/event/${result.newEvent.event.id}`)
+												navigate(`../event/${result.newEvent.event.id}`, {
+													state: { isEventCreate: true },
+													relative: 'path',
+												});
+												setEventInfo({
+													title: '',
+													details: '',
+													price: '',
+													location: '',
+													date: new Date(),
+													photo: '',
+												});
+											}
 										}
-									}
-									// createEventCall();
-									// console.log(eventInfo);
-									// setOpen(false)
-								}}
-								positive
-							/>
+										// createEventCall();
+										// console.log(eventInfo);
+										// setOpen(false)
+									}}
+									positive
+								/>
+							) : (
+								<Button>Creating event...</Button>
+							)}
 						</Modal.Actions>
 					</Modal>
 					<Modal
@@ -994,6 +1006,7 @@ function Promoters(props) {
 									const newErrors = handleValidation(eventToUpdateInfo);
 									console.log(newErrors);
 									console.log(isFormValidArg(newErrors));
+									console.log(date, details, location, photo, price, title);
 									if (date || details || location || photo || price || title) {
 										if (
 											details.length <= 1000 ||
@@ -1073,13 +1086,13 @@ function Promoters(props) {
 
 											// uncomment-----------!!!!!!
 
-											// navigate(`../promoters`, {
-											// 	state: { isEventUpdate: true },
-											// 	relative: 'path',
-											// 	replace: true,
-											// });
+											navigate(`../promoters`, {
+												state: { isEventUpdate: true },
+												relative: 'path',
+												replace: true,
+											});
 
-											// window.location.reload();
+											window.location.reload();
 
 											// console.log(result.newEvent)
 											//window.location.replace(`event/${result.newEvent.event.id}`)

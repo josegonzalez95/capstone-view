@@ -175,8 +175,8 @@ function Event() {
 					<p className={styles.title}>{event.title}</p>
 
 					{/* The following section enables and controls the Social Media Buttons  */}
-					<div className={styles.dtls}>
-						{/* <div
+					{/* <div className={styles.dtls}> */}
+					{/* <div
 							className='container'
 							id='contact'>
 							<link
@@ -185,9 +185,9 @@ function Event() {
 								href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
 							/>
 						</div> */}
-						{/* The buttons for Twitter, WhatsApp and Gmail also share the price and date of the event
+					{/* The buttons for Twitter, WhatsApp and Gmail also share the price and date of the event
             The Facebook buttons don't work the same way because of how they're formatted */}
-						{/* <a
+					{/* <a
 							href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${eventId}%2F&linkname=${event.title}`}
 							className='fa fa-facebook'>
 							{' '}
@@ -216,7 +216,7 @@ function Event() {
 							className='fa fa-google'>
 							{' '}
 						</a> */}
-					</div>
+					{/* </div> */}
 
 					<p
 						style={{

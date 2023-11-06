@@ -51,15 +51,18 @@ function Participants() {
 			// }}
 		>
 			{console.log(eventsLst)}
-			{eventsLst.map((eventRow) => {
+			{eventsLst.map((eventRow, index) => {
 				// console.log(eventRow)
 				return (
 					// <Grid.Row className={eventRow.length === 3 ? styles.eventRow:styles.eventRowShort}>
-					<Grid.Row className={styles.eventRow}>
+					<Grid.Row
+						key={index}
+						className={styles.eventRow}>
 						{eventRow.map((event) => {
 							// console.log(event)
 							return (
 								<Card
+									key={event.id}
 									className={styles.cardContainer}
 									onClick={() => {
 										navigate(`/registerParticipant/${event.id}`);

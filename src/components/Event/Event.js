@@ -64,7 +64,7 @@ function Event() {
 
 	const [participants, setParticipants] = useState([]);
 	const position = { lat: 0, lng: 0 };
-	console.log(process.env.REACT_APP_MAP_KEY);
+	// console.log(process.env.REACT_APP_MAP_KEY);
 	const { isLoaded } = useJsApiLoader({
 		id: 'google-map-script',
 		googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
