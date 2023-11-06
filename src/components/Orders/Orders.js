@@ -113,13 +113,14 @@ const Orders = () => {
 				alignItems: 'center',
 				flexDirection: 'column',
 				color: 'white',
+				fontSize: '1.5rem',
 			}}>
 			{console.log(orders)}
 			{
 				loading ? (
 					<p>Loading orders...</p>
 				) : (
-					<div style={{ width: '50%', marginBottom: '2rem' }}>
+					<div style={{ width: '75%', marginBottom: '2rem' }}>
 						{/* {console.log(data.paymentIntent.data)} */}
 						<h1>Orders</h1>
 						{/* <CsvDownloader className='export-container' datas={exportDocument} filename='orders-export.csv' >

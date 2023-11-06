@@ -39,8 +39,9 @@ const Order = () => {
 				alignItems: 'center',
 				flexDirection: 'column',
 				color: 'white',
+				fontSize: '1.5rem',
 			}}>
-			<div style={{ width: '50%', marginBottom: '2rem' }}>
+			<div style={{ width: '75%', marginBottom: '2rem' }}>
 				{orderParticipantsResponse.loading || thisOrder.loading ? (
 					<p>Loading participants...</p>
 				) : (
