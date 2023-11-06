@@ -175,7 +175,7 @@ const Orders = () => {
 											<Table.Cell>{order.paymentdetails}</Table.Cell>
 											<Table.Cell>{order.orderid}</Table.Cell>
 											<Table.Cell>
-												{new Date(order.date_created * 1000).toLocaleString(
+												{new Date(order.date_created).toLocaleString(
 													'default',
 													{ month: 'long', day: '2-digit', year: 'numeric' }
 												)}
