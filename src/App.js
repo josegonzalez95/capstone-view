@@ -70,6 +70,13 @@ function App() {
 								<Button
 									className='profile'
 									onClick={() => {
+										navigate('billing');
+									}}>
+									Billing
+								</Button>
+								<Button
+									className='profile'
+									onClick={() => {
 										navigate('profile');
 									}}>
 									Profile
@@ -162,11 +169,19 @@ function App() {
 				/>
 				<Route
 					path='/billing'
-					element={<Billing />}
+					element={
+						<ProtectedRoute>
+							<Billing />
+						</ProtectedRoute>
+					}
 				/>
 				<Route
 					path='/billing/:eventId/orders'
-					element={<BillingEvent />}
+					element={
+						<ProtectedRoute>
+							<BillingEvent />
+						</ProtectedRoute>
+					}
 				/>
 			</Routes>
 		</>
