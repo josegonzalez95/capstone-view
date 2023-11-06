@@ -267,6 +267,9 @@ function Event() {
 							</p>
 						</p>
 					</div>
+					<div style={{ width: '100%' }}>
+						<pre>{event.details}</pre>
+					</div>
 					{/* <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
           

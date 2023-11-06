@@ -11,8 +11,9 @@ import {
 	Modal,
 	Form,
 	Label,
+	Select,
 } from 'semantic-ui-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation, redirect } from 'react-router-dom';
 import {
 	createEvent,
@@ -41,6 +42,31 @@ function Promoters(props) {
 	const [showDeleteMessageBar, setShowDeleteMessageBar] = useState(false);
 
 	const location = useLocation();
+	const [text, setText] = useState('');
+
+	const handleTextChange = (e) => {
+		setText(e.target.value);
+
+		setEventInfo({ ...eventInfo, details: e.target.value });
+		seteventToUpdateInfo({ ...eventToUpdateInfo, details: e.target.value });
+	};
+
+	const handleKeyDown = (e) => {
+		if (e.key === 'Tab' && !e.shiftKey) {
+			e.preventDefault();
+			const { selectionStart, selectionEnd } = e.target;
+			const newText =
+				text.substring(0, selectionStart) + '\t' + text.substring(selectionEnd);
+			setText(newText);
+			setEventInfo({ ...eventInfo, details: newText });
+			seteventToUpdateInfo({ ...eventToUpdateInfo, details: e.target.value });
+
+			// set cursor position right after the inserted tab
+			setTimeout(() => {
+				e.target.selectionStart = e.target.selectionEnd = selectionStart + 1;
+			}, 0);
+		}
+	};
 
 	// use effect hook used to load events data by promoter before rendering component
 	useEffect(() => {
@@ -201,6 +227,7 @@ function Promoters(props) {
 		// date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
 		date: new Date(),
 		photo: '',
+		published: false,
 	});
 	const navigate = useNavigate();
 	const [eventToEditID, setEventToEditID] = useState(null);
@@ -499,6 +526,9 @@ function Promoters(props) {
 																		seteventToUpdateInfo(
 																			eventToBeEditedResponse.event
 																		);
+																		setText(
+																			eventToBeEditedResponse.event.details
+																		);
 																		// setEventInfo(eventToBeEditedResponse.event)
 																		setUpdate(true);
 																	}}
@@ -666,7 +696,7 @@ function Promoters(props) {
 													{validationErrors.details}
 												</Label>
 											)}
-											<Form.Input
+											{/* <Form.Input
 												onChange={(e) => {
 													setEventInfo({
 														...eventInfo,
@@ -675,6 +705,14 @@ function Promoters(props) {
 												}}
 												fluid
 												placeholder='Details'
+											/> */}
+											<textarea
+												value={text}
+												onChange={handleTextChange}
+												onKeyDown={handleKeyDown}
+												style={{ whiteSpace: 'pre' }}
+												rows={10}
+												cols={50}
 											/>
 										</Form.Field>
 										<p style={{ marginLeft: '0.5rem' }}>
@@ -806,6 +844,7 @@ function Promoters(props) {
 													photo: photoURL,
 													promoterid: JSON.parse(localStorage.getItem('user'))
 														.id,
+													// details: text,
 												};
 
 												// console.log(eventBodySend)
@@ -905,7 +944,7 @@ function Promoters(props) {
 													{validationErrors.details}
 												</Label>
 											)}
-											<Form.Input
+											{/* <Form.Input
 												onChange={(e) => {
 													seteventToUpdateInfo({
 														...eventToUpdateInfo,
@@ -915,8 +954,37 @@ function Promoters(props) {
 												value={eventToUpdateInfo.details}
 												fluid
 												placeholder='Details'
+											/> */}
+											<textarea
+												value={text}
+												onChange={handleTextChange}
+												onKeyDown={handleKeyDown}
+												style={{ whiteSpace: 'pre' }}
+												rows={10}
+												cols={50}
 											/>
 										</Form.Field>
+										<label style={{ fontWeight: 'bold', marginLeft: '0.5rem' }}>
+											Published
+										</label>
+										<Form.Field
+											control={Select}
+											style={{ width: '100%' }}
+											onChange={(e) => {
+												console.log(e.target.textContent.toLowerCase());
+												seteventToUpdateInfo({
+													...eventToUpdateInfo,
+													published: e.target.textContent.toLowerCase(),
+												});
+											}}
+											options={[
+												{ key: 't', text: 'True', value: 'true' },
+												{ key: 'f', text: 'False', value: 'false' },
+											]}
+											placeholder={'published'}
+											search
+											searchInput={{ id: 'form-select-control-gender' }}
+										/>
 
 										<Form.Field inline>
 											<label>Price</label>
@@ -1000,8 +1068,15 @@ function Promoters(props) {
 								labelPosition='right'
 								icon='checkmark'
 								onClick={async () => {
-									const { date, details, location, photo, price, title } =
-										eventToUpdateInfo;
+									const {
+										date,
+										details,
+										location,
+										photo,
+										price,
+										title,
+										published,
+									} = eventToUpdateInfo;
 									let eventBodySend = { id: eventToEditID };
 									const newErrors = handleValidation(eventToUpdateInfo);
 									console.log(newErrors);
@@ -1063,7 +1138,10 @@ function Promoters(props) {
 											if (title) {
 												eventBodySend = { ...eventBodySend, title: title };
 											}
-
+											eventBodySend = {
+												...eventBodySend,
+												published: published,
+											};
 											// console.log("event thingies",photoUploadResponse.data)
 											// if(photoUploadResponse.data == undefined){
 

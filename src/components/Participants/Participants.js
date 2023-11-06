@@ -23,6 +23,8 @@ function Participants() {
 
 			allEvents = allEvents.filter((evnt) => new Date() < new Date(evnt.date));
 
+			allEvents = allEvents.filter((event) => event.published === true);
+
 			console.log('evnts', allEvents);
 			allEvents.forEach((evnt, i) => {
 				// console.log(evnt)

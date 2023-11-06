@@ -422,6 +422,9 @@ function Event() {
 								{numberParticipants}
 							</p>
 						</div>
+						<div style={{ width: '100%' }}>
+							<pre>{event.details}</pre>
+						</div>
 
 						<div
 							style={{

@@ -35,6 +35,9 @@ import PayPal from '../PayPal/PayPal';
 function RegisterForm() {
 	const [orderCreator, setOrderCreator] = useState('');
 	const { eventId, numOfTickets } = useParams();
+	const [state, setState] = useState({
+		paymentConfirmed: false,
+	});
 
 	const generateParticipants = (length) => {
 		const defaultParticipant = {
@@ -437,9 +440,12 @@ function RegisterForm() {
 				category: '',
 			},
 		]);
-		navigate(`/registerParticipant/${eventId}`, {
-			state: { isRegister: true },
+		setState((prevState) => {
+			return { ...prevState, paymentConfirmed: true };
 		});
+		// navigate(`/registerParticipant/${eventId}`, {
+		// 	state: { isRegister: true },
+		// });
 	};
 
 	const datetime = event ? event.date : '';
@@ -977,6 +983,60 @@ function RegisterForm() {
 							}}
 						/>
 					</Elements>
+				</Modal.Actions>
+			</Modal>
+			<Modal
+				onClose={() => {
+					setState((prevState) => {
+						return { ...prevState, paymentConfirmed: false };
+					});
+					navigate(`/registerParticipant/${eventId}`, {
+						state: { isRegister: true },
+					});
+				}}
+				// onOpen={() =>
+				// 	setState((prevState) => {
+				// 		return { ...prevState, paymentConfirmed: true };
+				// 	})
+				// }
+				open={state.paymentConfirmed}>
+				<Modal.Header>
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'space-between',
+							height: '1.5rem',
+						}}>
+						<p>Your payment was successful</p>
+						<p
+							style={{
+								display: 'flex',
+								justifyContent: 'center',
+								alignContent: 'center',
+								height: 'min-content',
+							}}>
+							<span style={{ fontSize: '1rem', marginRight: '0.25rem' }}>
+								Powered by{' '}
+							</span>
+							<FontAwesomeIcon
+								icon={faStripe}
+								size='xl'
+							/>
+						</p>
+					</div>
+				</Modal.Header>
+
+				<Modal.Actions>
+					<Button
+						// className={styles.btns}
+						color='green'
+						onClick={(e) => {
+							navigate(`/registerParticipant/${eventId}`, {
+								state: { isRegister: true },
+							});
+						}}>
+						Close
+					</Button>
 				</Modal.Actions>
 			</Modal>
 		</div>
