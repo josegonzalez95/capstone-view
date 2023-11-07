@@ -353,6 +353,9 @@ function RegisterForm() {
 					year: 'numeric',
 				}),
 				pid: paymentIntentId,
+				numOfParticipants: numOfParticipants,
+				photo: event.photo,
+				eventName: event.title,
 			},
 		};
 		let listOfParticipantId = [];
@@ -484,7 +487,7 @@ function RegisterForm() {
 				<div className={styles.details}>
 					<p style={{ display: 'flex', marginBottom: '2rem' }}>
 						<p style={{ fontWeight: 'bold', marginRight: '1rem' }}>Date:</p>{' '}
-						{new Date(date).toLocaleString('default', {
+						{new Date(event.date).toLocaleString('default', {
 							month: 'long',
 							day: '2-digit',
 							year: 'numeric',

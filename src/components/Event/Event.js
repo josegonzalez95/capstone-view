@@ -403,7 +403,7 @@ function Event() {
 						<div className={styles.details}>
 							<p style={{ display: 'flex' }}>
 								<p style={{ fontWeight: 'bold', marginRight: '1rem' }}>Date:</p>{' '}
-								{new Date(date).toLocaleString('default', {
+								{new Date(event.date).toLocaleString('default', {
 									month: 'long',
 									day: '2-digit',
 									year: 'numeric',

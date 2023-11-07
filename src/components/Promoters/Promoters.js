@@ -228,6 +228,8 @@ function Promoters(props) {
 		date: new Date(),
 		photo: '',
 		published: false,
+		registrationstart: new Date(),
+		registrationend: new Date(),
 	});
 	const navigate = useNavigate();
 	const [eventToEditID, setEventToEditID] = useState(null);
@@ -343,6 +345,13 @@ function Promoters(props) {
 		// console.log(newDate)
 		setEventInfo({ ...eventInfo, date: e });
 		seteventToUpdateInfo({ ...eventToUpdateInfo, date: e });
+	};
+	const onDateChangeStart = (e) => {
+		seteventToUpdateInfo({ ...eventToUpdateInfo, registrationstart: e });
+	};
+
+	const onDateChangeEnd = (e) => {
+		seteventToUpdateInfo({ ...eventToUpdateInfo, registrationend: e });
 	};
 
 	// const updateEventCall=async(e)=>{
@@ -504,9 +513,6 @@ function Promoters(props) {
 																)}
 															</span>
 														</Card.Meta>
-														<Card.Description style={{ color: 'white' }}>
-															{event.details}
-														</Card.Description>
 													</Card.Content>
 													{/* <Card.Content extra>
                               <Icon name='user' />
@@ -901,7 +907,25 @@ function Promoters(props) {
 									<label style={{ fontWeight: 'bold' }}>Date</label>
 									<DatePicker
 										onChange={(e) => onDateChange(e)}
-										value={eventInfo.date}
+										value={eventToUpdateInfo.date}
+									/>
+								</div>
+								<div style={{ display: 'flex', flexDirection: 'column' }}>
+									<label style={{ fontWeight: 'bold' }}>
+										Registration Start Date
+									</label>
+									<DatePicker
+										onChange={(e) => onDateChangeStart(e)}
+										value={eventToUpdateInfo.registrationstart}
+									/>
+								</div>
+								<div style={{ display: 'flex', flexDirection: 'column' }}>
+									<label style={{ fontWeight: 'bold' }}>
+										Registration End Date
+									</label>
+									<DatePicker
+										onChange={(e) => onDateChangeEnd(e)}
+										value={eventToUpdateInfo.registrationend}
 									/>
 								</div>
 								<Form>
@@ -1076,6 +1100,8 @@ function Promoters(props) {
 										price,
 										title,
 										published,
+										registrationstart,
+										registrationend,
 									} = eventToUpdateInfo;
 									let eventBodySend = { id: eventToEditID };
 									const newErrors = handleValidation(eventToUpdateInfo);
@@ -1096,6 +1122,18 @@ function Promoters(props) {
 											if (date) {
 												console.log('newww date', date);
 												eventBodySend = { ...eventBodySend, date: date };
+											}
+											if (registrationstart) {
+												eventBodySend = {
+													...eventBodySend,
+													registrationstart: registrationstart,
+												};
+											}
+											if (registrationend) {
+												eventBodySend = {
+													...eventBodySend,
+													registrationend: registrationend,
+												};
 											}
 											if (details) {
 												eventBodySend = { ...eventBodySend, details: details };

@@ -259,7 +259,7 @@ function Event() {
 								style={{
 									fontSize: '1.15rem',
 								}}>
-								{new Date(date).toLocaleString('default', {
+								{new Date(event.date).toLocaleString('default', {
 									month: 'long',
 									day: '2-digit',
 									year: 'numeric',
@@ -285,67 +285,71 @@ function Event() {
 							Register
 						</Button> */}
 					</div>
-					<div style={{ width: '100%' }}>
-						<div
-							// style={{
-							// 	fontFamily: 'Arial, sans-serif',
-							// 	width: '100%',
-							// 	margin: '50px auto',
-							// 	fontSize: '1.15rem',
-							// 	backgroundColor: 'red',
-							// }}
-							className={styles.entries}>
-							<h2>Entries</h2>
-							<span>
-								<strong>Price:</strong> ${PRICE.toFixed(2)} + ${FEE.toFixed(2)}{' '}
-								Service Fee + ${transactionFee} Transaction Fee
-							</span>
-							<br />
-							<label>
-								<p
-									style={{
-										marginTop: '1rem',
-										marginBottom: '0.25rem',
-										fontWeight: 'bold',
-									}}>
-									Quantity:
-								</p>
-								<div className={styles['select-container']}>
-									<select
-										value={quantity}
-										onChange={(e) => setQuantity(Number(e.target.value))}>
-										{Array.from({ length: 11 }).map((_, index) => (
-											<option
-												key={index}
-												value={index}>
-												{index}
-											</option>
-										))}
-										{/* <option value='0'>0</option>
+					{console.log('dates', event.registrationstart, event.registrationend)}
+					{new Date() >= new Date(event.registrationstart) &&
+						new Date() <= new Date(event.registrationend) && (
+							<div style={{ width: '100%' }}>
+								<div
+									// style={{
+									// 	fontFamily: 'Arial, sans-serif',
+									// 	width: '100%',
+									// 	margin: '50px auto',
+									// 	fontSize: '1.15rem',
+									// 	backgroundColor: 'red',
+									// }}
+									className={styles.entries}>
+									<h2>Entries</h2>
+									<span>
+										<strong>Price:</strong> ${PRICE.toFixed(2)} + $
+										{FEE.toFixed(2)} Service Fee + ${transactionFee} Transaction
+										Fee
+									</span>
+									<br />
+									<label>
+										<p
+											style={{
+												marginTop: '1rem',
+												marginBottom: '0.25rem',
+												fontWeight: 'bold',
+											}}>
+											Quantity:
+										</p>
+										<div className={styles['select-container']}>
+											<select
+												value={quantity}
+												onChange={(e) => setQuantity(Number(e.target.value))}>
+												{Array.from({ length: 11 }).map((_, index) => (
+													<option
+														key={index}
+														value={index}>
+														{index}
+													</option>
+												))}
+												{/* <option value='0'>0</option>
 								<option value='1'>1</option>
 								<option value='2'>2</option>
 								<option value='3'>3</option> */}
-									</select>
-								</div>
-							</label>
-							<br />
-							<br />
-							<label>
-								<strong>Total:</strong>{' '}
-								{event.price === 0 ? `$ ${0}` : `$${total.toFixed(2)}`}
-							</label>
-							<br />
-							<br />
-							<Button
-								className={styles.rgtsBtn}
-								onClick={() => {
-									if (total > 0) {
-										navigate(`registerForm/${quantity}`);
-									}
-								}}>
-								Confirmar pedido
-							</Button>
-							{/* <button
+											</select>
+										</div>
+									</label>
+									<br />
+									<br />
+									<label>
+										<strong>Total:</strong>{' '}
+										{event.price === 0 ? `$ ${0}` : `$${total.toFixed(2)}`}
+									</label>
+									<br />
+									<br />
+									<Button
+										className={styles.rgtsBtn}
+										onClick={() => {
+											if (total > 0) {
+												navigate(`registerForm/${quantity}`);
+											}
+										}}>
+										Confirmar pedido
+									</Button>
+									{/* <button
 							className={styles.rgtsBtn}
 							onClick={() =>
 								// total > 0
@@ -359,8 +363,9 @@ function Event() {
 							}>
 							Confirmar pedido
 						</button> */}
-						</div>
-					</div>
+								</div>
+							</div>
+						)}
 					{/* <Image src={event.photo} width={800} height={800}/> */}
 					<ResizableImage
 						src={event.photo}

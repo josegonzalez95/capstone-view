@@ -90,7 +90,7 @@ const CheckoutForm = ({
 			//`Elements` instance that was used to create the Payment Element
 			elements,
 			clientSecret: clientSecret,
-			receipt_email: 'gonzalez.massini@gmail.com',
+			receipt_email: orderBodySend.orderCreatorEmail,
 			confirmParams: {
 				return_url: 'http://localhost:3000',
 			},
