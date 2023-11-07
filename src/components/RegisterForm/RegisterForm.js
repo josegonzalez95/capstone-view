@@ -89,6 +89,7 @@ function RegisterForm() {
 	const [isEmailValid, setIsEmailValid] = useState(true);
 	const navigate = useNavigate();
 	const [customFields, setCustomFields] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const getFields = async () => {
@@ -293,11 +294,11 @@ function RegisterForm() {
 
 	useEffect(() => {
 		if (isFormValid()) {
-			if (event.price > 0) {
-				setOpen(true);
-			} else {
-				handleSubmit('free', 'free', 'free', 0);
-			}
+			// if (event.price > 0) {
+			setOpen(true);
+			// } else {
+			// 	handleSubmit('free', 'free', 'free', 0);
+			// }
 		}
 	}, [validationErrors]);
 
@@ -345,7 +346,7 @@ function RegisterForm() {
 				amount: (
 					totalCharge +
 					totalCharge * 0.06 +
-					Number(numOfParticipants)
+					Number(transaction_fee)
 				).toFixed(2),
 				date: new Date().toLocaleString('default', {
 					month: 'long',
@@ -968,24 +969,71 @@ function RegisterForm() {
 					{console.log('is email valid', isEmailValid)}
 				</Modal.Content>
 				<Modal.Actions>
-					<Elements
-						stripe={stripePromise}
-						options={options}>
-						<CheckoutForm
-							setIsEmailValid={setIsEmailValid}
-							validateEmail={validateEmail}
-							amount={event.price * Number(numOfTickets)}
-							numOfParticipants={Number(numOfTickets)}
-							submitParticipants={handleSubmit}
-							setOpen={setOpen}
-							orderBodySend={{
-								participants: participantsInfo,
-								eventId: Number(eventId),
-								paymentMethod: paymentMethod,
-								orderCreatorEmail: orderCreator,
-							}}
-						/>
-					</Elements>
+					{event.price > 0 ? (
+						<Elements
+							stripe={stripePromise}
+							options={options}>
+							<CheckoutForm
+								setIsEmailValid={setIsEmailValid}
+								validateEmail={validateEmail}
+								amount={event.price * Number(numOfTickets)}
+								numOfParticipants={Number(numOfTickets)}
+								submitParticipants={handleSubmit}
+								setOpen={setOpen}
+								orderBodySend={{
+									participants: participantsInfo,
+									eventId: Number(eventId),
+									paymentMethod: paymentMethod,
+									orderCreatorEmail: orderCreator,
+								}}
+							/>
+						</Elements>
+					) : (
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'flex-end',
+								alignItems: 'center',
+							}}>
+							<Button
+								color='black'
+								onClick={() => {
+									if (!loading) {
+										handleSubmit('free', 'free', 'free', 0, 0, 0);
+										setLoading(true);
+									}
+								}}
+								type='submit'
+								disabled={loading}
+								style={{
+									marginTop: '1rem',
+									marginBottom: '1rem',
+									width: '6rem',
+									height: '2.7rem',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									marginRight: '1rem',
+								}}>
+								<p>Confirm</p>
+							</Button>
+
+							<Button
+								style={{
+									marginTop: '1rem',
+									marginBottom: '1rem',
+									width: '6rem',
+									height: '2.7rem',
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+								color='black'
+								onClick={() => setOpen(false)}>
+								Cancel
+							</Button>
+						</div>
+					)}
 				</Modal.Actions>
 			</Modal>
 			<Modal
