@@ -20,6 +20,7 @@ import { totalTickets } from './api/Tickets/ticketsRoutes.js';
 import image from './assets/cyQN0U01(1).svg';
 import Billing from './components/Billing/Billing.js';
 import BillingEvent from './components/BillingEvent/BillingEvent.js';
+import Footer from './components/Footer/Footer.js';
 
 function App() {
 	const navigate = useNavigate();
@@ -184,6 +185,8 @@ function App() {
 					}
 				/>
 			</Routes>
+			{/* <footer style={{ backgroundColor: 'red', height: '2rem' }}></footer> */}
+			<Footer />
 		</>
 	);
 }
