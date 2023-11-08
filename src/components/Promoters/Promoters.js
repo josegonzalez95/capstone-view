@@ -888,6 +888,7 @@ function Promoters(props) {
 						onClose={() => {
 							setValidationErrors();
 							setUpdate(false);
+							setText('');
 						}}
 						onOpen={() => setUpdate(true)}
 						open={update}
