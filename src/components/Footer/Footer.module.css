@@ -14,6 +14,7 @@ footer {
 	padding-top: 1em;
 	display: flex;
 	color: white;
+	z-index: 1000000;
 }
 .footerContainer {
 	margin-top: 2rem;
