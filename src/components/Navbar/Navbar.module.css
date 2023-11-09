@@ -1,0 +1,92 @@
+.navbar {
+	position: fixed; /* Set the navbar to fixed position */
+	top: -15px; /* Position the navbar at the top of the page */
+	width: 100%; /* Full width */
+	transition: all 0.3s linear;
+	z-index: 10000;
+}
+
+menu {
+	transition: all 0.3s linear;
+}
+hr {
+	margin-top: 1em;
+	transition: all 0.3s linear;
+}
+
+button:hover {
+	cursor: pointer;
+}
+.menu {
+	background: white;
+	padding: 3em 0 0 0;
+}
+.menu-links {
+	color: black;
+	text-decoration: none;
+	font-size: 18px;
+	font-family: 'Courier New', Courier, monospace;
+	font-weight: lighter;
+	padding-right: 75px;
+	float: right;
+}
+
+ol {
+	list-style-type: none;
+	display: grid;
+	width: 100%;
+	transition: all 0.5s linear;
+	/* background-color: blueviolet; */
+}
+ol .li {
+	margin: 0 auto;
+	margin-top: 1em;
+	background-color: rgba(0, 0, 0, 0.144);
+	text-align: center;
+	width: 5em;
+	border-radius: 9999px;
+	padding: 0.3em;
+	transition: all 0.3s linear;
+}
+ol .li:hover {
+	background-color: black;
+	cursor: pointer;
+	transition: all 0.3s linear;
+	color: white;
+}
+.navbar .menu ul {
+	display: flex;
+	justify-content: space-between;
+	list-style-type: none;
+	/* float: right; */
+	position: fixed;
+	top: 1.75em;
+	right: 0;
+}
+
+@media (max-width: 740px) {
+	.navbar .menu ul {
+		display: none;
+	}
+}
+@media (min-width: 740px) {
+	ol .li {
+		display: none;
+	}
+}
+.bar {
+	float: right;
+	font-size: 1.5rem;
+	margin: 0 1em;
+	transition: all 0.3s linear;
+}
+.bar:hover {
+	cursor: pointer;
+	background-color: rgba(128, 128, 128, 0.397);
+	border-radius: 5px;
+}
+@media (min-width: 740px) {
+	.bar {
+		display: none;
+	}
+}

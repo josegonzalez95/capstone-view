@@ -224,6 +224,11 @@ function RegisterForm() {
 	];
 
 	const [validationErrors, setValidationErrors] = useState([]);
+	const [isChecked, setIsChecked] = useState(false);
+
+	function toggleCheck() {
+		setIsChecked(!isChecked);
+	}
 
 	const validateEmail = (email) => {
 		// const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -871,6 +876,17 @@ function RegisterForm() {
 											</Form.Field>
 										);
 									})}
+								<input
+									type='checkbox'
+									checked={isChecked}
+									onChange={toggleCheck}
+								/>
+
+								<a
+									style={{ color: 'white', marginLeft: '1rem' }}
+									href='https://storage.googleapis.com/capstone-media/Propuesta_PUR_Cycling_chanllange.pdf'>
+									<span>{'<'}</span>Release of responsibility<span>{'>'}</span>
+								</a>
 							</Form.Group>
 							<br />
 						</div>

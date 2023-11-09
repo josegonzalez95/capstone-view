@@ -21,19 +21,97 @@ import image from './assets/cyQN0U01(1).svg';
 import Billing from './components/Billing/Billing.js';
 import BillingEvent from './components/BillingEvent/BillingEvent.js';
 import Footer from './components/Footer/Footer.js';
+import { FaBars } from 'react-icons/fa';
+import Navbar from './components/Navbar/Navbar.js';
 
 function App() {
 	const navigate = useNavigate();
 	const pathName = window.location.pathname;
+	const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+	const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
 	return (
 		<>
-			{pathName !== '/login' && pathName !== '/signup' ? (
+			<nav className='navBar'>
+				<a
+					className='title'
+					href='/'>
+					<img
+						width={'125rem'}
+						src={image}
+						alt='Logo'
+					/>
+				</a>
+
+				<div className={`btns ${isNavCollapsed ? 'collapse' : 'expanded'}`}>
+					<Button className='myevntsbtn'>
+						<a
+							target='_blank'
+							style={{ color: 'white' }}
+							href='https://www.purcycling.com/_files/ugd/4d62fb_ac0a7bb316a546d6b21ec64ca5bc95b5.pdf'>
+							Privacy Policy
+						</a>
+					</Button>
+					<Button
+						className={`myevntsbtn ${
+							JSON.parse(localStorage.getItem('user')) === null &&
+							'collapseMargin'
+						}`}>
+						<a
+							target='_blank'
+							style={{ color: 'white' }}
+							href='https://www.purcycling.com/_files/ugd/4d62fb_18b94b145fde4a9caf64375f33b9ef51.pdf'>
+							Refund Policy
+						</a>
+					</Button>
+					{JSON.parse(localStorage.getItem('user')) !== null && (
+						<>
+							<Button
+								className='myevntsbtn'
+								onClick={() => {
+									navigate('promoters');
+								}}>
+								MyEvents
+							</Button>
+							<Button
+								className='profile'
+								onClick={() => {
+									navigate('billing');
+								}}>
+								Billing
+							</Button>
+							<Button
+								className='profile'
+								onClick={() => {
+									navigate('profile');
+								}}>
+								Profile
+							</Button>
+							<Button
+								className='signout'
+								onClick={() => {
+									localStorage.clear();
+									window.location.reload();
+								}}>
+								SignOut
+							</Button>
+						</>
+					)}
+				</div>
+
+				<button
+					className='hamburger bar'
+					onClick={handleNavCollapse}
+					style={{ transform: !isNavCollapsed ? 'rotate(-90deg)' : null }}>
+					<FaBars />
+				</button>
+			</nav>
+			{/* {false && pathName !== '/login' && pathName !== '/signup' ? (
 				<nav className='navBar'>
 					<a
 						className='title'
 						href='/'>
-						{/* PURCycling */}
 						<img
 							width={'125rem'}
 							src={image}
@@ -41,7 +119,27 @@ function App() {
 					</a>
 
 					<div className='btns'>
-						{/* {pathName !== '/calendar' && (
+						<div className='footerTextContainer'>
+							<span className='footerText'>
+								<a
+									target='_blank'
+									style={{ color: 'white' }}
+									href='https://www.purcycling.com/_files/ugd/4d62fb_18b94b145fde4a9caf64375f33b9ef51.pdf'>
+									Refund Policy
+								</a>{' '}
+							</span>
+							&nbsp;|
+							<span className='footerText'>
+								<a
+									target='_blank'
+									style={{ color: 'white' }}
+									href='https://www.purcycling.com/_files/ugd/4d62fb_ac0a7bb316a546d6b21ec64ca5bc95b5.pdf'>
+									Privacy Policy
+								</a>
+							</span>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
+						{pathName !== '/calendar' && (
 							<Button
 								className='calendarbtn'
 								onClick={() => {
@@ -49,8 +147,8 @@ function App() {
 								}}>
 								Calendar
 							</Button>
-						)} */}
-						{/* {pathName !== '/' && (
+						)}
+						{pathName !== '/' && (
 							<Button
 								className='calendarbtn'
 								onClick={() => {
@@ -58,7 +156,24 @@ function App() {
 								}}>
 								Events
 							</Button>
-						)} */}
+						)}
+
+						<Button className='myevntsbtn'>
+							<a
+								target='_blank'
+								style={{ color: 'white' }}
+								href='https://www.purcycling.com/_files/ugd/4d62fb_ac0a7bb316a546d6b21ec64ca5bc95b5.pdf'>
+								Privacy Policy
+							</a>
+						</Button>
+						<Button className='myevntsbtn'>
+							<a
+								target='_blank'
+								style={{ color: 'white' }}
+								href='https://www.purcycling.com/_files/ugd/4d62fb_18b94b145fde4a9caf64375f33b9ef51.pdf'>
+								Refund Policy
+							</a>
+						</Button>
 						{JSON.parse(localStorage.getItem('user')) !== null ? (
 							<>
 								<Button
@@ -94,7 +209,7 @@ function App() {
 						) : null}
 					</div>
 				</nav>
-			) : null}
+			) : null} */}
 			<Routes>
 				<Route
 					path='/'
@@ -186,7 +301,7 @@ function App() {
 				/>
 			</Routes>
 			{/* <footer style={{ backgroundColor: 'red', height: '2rem' }}></footer> */}
-			<Footer />
+			{JSON.parse(localStorage.getItem('user')) === null && <Footer />}
 		</>
 	);
 }
