@@ -22,7 +22,6 @@ import Billing from './components/Billing/Billing.js';
 import BillingEvent from './components/BillingEvent/BillingEvent.js';
 import Footer from './components/Footer/Footer.js';
 import { FaBars } from 'react-icons/fa';
-import Navbar from './components/Navbar/Navbar.js';
 
 function App() {
 	const navigate = useNavigate();
