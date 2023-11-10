@@ -300,7 +300,7 @@ function App() {
 				/>
 			</Routes>
 			{/* <footer style={{ backgroundColor: 'red', height: '2rem' }}></footer> */}
-			{JSON.parse(localStorage.getItem('user')) === null && <Footer />}
+			{/* {JSON.parse(localStorage.getItem('user')) === null && <Footer />} */}
 		</>
 	);
 }

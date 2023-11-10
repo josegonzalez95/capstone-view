@@ -48,6 +48,7 @@ function RegisterForm() {
 			address: 'X',
 			birthdate: new Date(),
 			category: 'X',
+			waiver_signature: false,
 			customValues: [
 				{
 					value: '',
@@ -226,9 +227,9 @@ function RegisterForm() {
 	const [validationErrors, setValidationErrors] = useState([]);
 	const [isChecked, setIsChecked] = useState(false);
 
-	function toggleCheck() {
-		setIsChecked(!isChecked);
-	}
+	// function toggleCheck() {
+	// 	setIsChecked(!isChecked);
+	// }
 
 	const validateEmail = (email) => {
 		// const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -258,6 +259,12 @@ function RegisterForm() {
 			errors.phone = 'Wrong phone number';
 		} else {
 			delete errors.phone;
+		}
+
+		if (!participant.waiver_signature) {
+			errors.waiver_signature = 'Signature is required';
+		} else {
+			delete errors.waiver_signature;
 		}
 
 		if (!participant.address) {
@@ -418,6 +425,7 @@ function RegisterForm() {
 								address: 'X',
 								birthdate: new Date(),
 								category: 'X',
+								waiver_signature: prt.waiver_signature,
 							};
 					  })
 					: participantsInfo,
@@ -876,17 +884,39 @@ function RegisterForm() {
 											</Form.Field>
 										);
 									})}
-								{/* <input
+
+								<input
 									type='checkbox'
-									checked={isChecked}
-									onChange={toggleCheck}
+									checked={participantsInfo[i].waiver_signature}
+									onChange={() => {
+										setParticipantsInfo((prevParticipantsInfo) => {
+											const updatedInfo = [...prevParticipantsInfo];
+											updatedInfo[i] = {
+												...updatedInfo[i],
+												waiver_signature:
+													!prevParticipantsInfo[i].waiver_signature,
+											};
+											return updatedInfo;
+										});
+										setIsChecked(!isChecked);
+									}}
 								/>
 
 								<a
 									style={{ color: 'white', marginLeft: '1rem' }}
-									href='https://storage.googleapis.com/capstone-media/Propuesta_PUR_Cycling_chanllange.pdf'>
+									href={event.waiver_form}
+									target='_blank'>
 									<span>{'<'}</span>Release of responsibility<span>{'>'}</span>
-								</a> */}
+								</a>
+								{validationErrors[i] &&
+									validationErrors[i].waiver_signature && (
+										<Label
+											basic
+											color='red'
+											pointing='left'>
+											{validationErrors[i].waiver_signature}
+										</Label>
+									)}
 							</Form.Group>
 							<br />
 						</div>
@@ -924,6 +954,7 @@ function RegisterForm() {
 						onClick={(e) => {
 							// handleSubmit();
 							handleValidation();
+							// console.log(participantsInfo);
 						}}>
 						Submit
 					</Button>
@@ -932,7 +963,8 @@ function RegisterForm() {
 			<Modal
 				onClose={() => setOpen(false)}
 				onOpen={() => setOpen(true)}
-				open={open}>
+				open={open}
+				style={{ marginBottom: '2rem' }}>
 				<Modal.Header>
 					<div
 						style={{

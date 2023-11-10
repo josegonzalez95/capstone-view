@@ -218,6 +218,7 @@ function Promoters(props) {
 		// date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
 		date: new Date(),
 		photo: 'https://storage.googleapis.com/capstone-photos/default.png',
+		waiver: '',
 	});
 	const [eventToUpdateInfo, seteventToUpdateInfo] = useState({
 		title: '',
@@ -792,6 +793,14 @@ function Promoters(props) {
 											<StyledDropzone
 												eventInfo={eventInfo}
 												setEventInfo={setEventInfo}
+												file={'image'}
+											/>
+										</Form.Input>
+										<Form.Input label='Release of responsability'>
+											<StyledDropzone
+												eventInfo={eventInfo}
+												setEventInfo={setEventInfo}
+												file={'pdf'}
 											/>
 										</Form.Input>
 									</Form.Group>
@@ -843,6 +852,10 @@ function Promoters(props) {
 												// const photoURL = photo;
 												// const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
 												// console.log(eventBodySend)
+												const pdfUploadResponse = await uploadPhoto(
+													eventInfo.waiver[0]
+												);
+												const pdfURL = pdfUploadResponse.data;
 
 												const eventBodySend = {
 													...eventInfo,
@@ -850,10 +863,11 @@ function Promoters(props) {
 													photo: photoURL,
 													promoterid: JSON.parse(localStorage.getItem('user'))
 														.id,
+													waiver: pdfURL,
 													// details: text,
 												};
 
-												// console.log(eventBodySend)
+												console.log(eventBodySend);
 												const result = await createEvent(eventBodySend);
 												// console.log(result)
 												// console.log(result.newEvent)
