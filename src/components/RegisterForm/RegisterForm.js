@@ -357,7 +357,7 @@ function RegisterForm() {
 				message: `click here to see recipt: ${receipt_url}`,
 				amount: (
 					totalCharge +
-					totalCharge * 0.06 +
+					totalCharge * 0.08 +
 					Number(transaction_fee)
 				).toFixed(2),
 				date: new Date().toLocaleString('default', {
@@ -369,6 +369,7 @@ function RegisterForm() {
 				numOfParticipants: numOfParticipants,
 				photo: event.photo,
 				eventName: event.title,
+				waiver_form: event.waiver_form,
 			},
 		};
 		let listOfParticipantId = [];

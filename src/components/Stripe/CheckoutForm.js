@@ -74,7 +74,7 @@ const CheckoutForm = ({
 		const res = await fetch(`${process.env.REACT_APP_API_URL}/create-intent`, {
 			method: 'POST',
 			body: JSON.stringify({
-				amount: amount + amount * 0.06 + numOfParticipants,
+				amount: amount + amount * 0.08 + numOfParticipants,
 				orderBodySend,
 			}),
 			headers: {
@@ -139,7 +139,7 @@ const CheckoutForm = ({
 			);
 			// console.log(res);
 			const totalCharge = amount;
-			const service_fee = amount * 0.06;
+			const service_fee = amount * 0.08;
 			const transaction_fee = numOfParticipants;
 			const { receipt_url } = await res2.json();
 			await submitParticipants(
@@ -165,9 +165,7 @@ const CheckoutForm = ({
 			<h4 style={{ margin: '0 0 1rem 0' }}>
 				Transaction fee: ${numOfParticipants}
 			</h4>
-			<h4 style={{ margin: '0 0 1rem 0' }}>
-				Service fee: ${amount * 0.06} (6%)
-			</h4>
+			<h4 style={{ margin: '0 0 1rem 0' }}>Service fee: ${amount * 0.08}</h4>
 			<h4 style={{ margin: '0 0 1rem 0' }}>
 				Tickets cost: ${amount} (${amount / numOfParticipants}x
 				{numOfParticipants})

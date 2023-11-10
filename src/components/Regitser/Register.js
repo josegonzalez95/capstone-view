@@ -156,7 +156,7 @@ function Event() {
 	const [quantity, setQuantity] = useState(0);
 
 	const PRICE = event && event.price;
-	const FEE = event && event.price * 0.06;
+	const FEE = event && event.price * 0.08;
 	const transactionFee = event && event.price === 0 ? 0 : 1;
 
 	const total = quantity + (PRICE + FEE) * quantity;
