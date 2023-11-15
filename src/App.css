@@ -33,7 +33,7 @@
 
 .PP {
 	font-weight: bold !important;
-	margin-right: 1rem !important;
+	/* margin-right: 1rem !important; */
 	color: white !important;
 	background-color: #104975 !important;
 }
