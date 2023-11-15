@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import Promoters from './components/Promoters/Promoters.js';
 import Participants from './components/Participants/Participants';
 import Login from './components/Login/Login.js';
@@ -13,19 +13,15 @@ import CalendarP from './components/Calendar/Calendar.js';
 import RegisterForm from './components/RegisterForm/RegisterForm.js';
 import Orders from './components/Orders/Orders.js';
 import Order from './components/Order/Order.js';
-import ResizableImage from './components/ResizableImage/ResizableImage.js';
 import FormFields from './components/FormFIelds/FormFields.js';
-import { useEffect, useState } from 'react';
-import { totalTickets } from './api/Tickets/ticketsRoutes.js';
+import { useState } from 'react';
 import image from './assets/cyQN0U01(1).svg';
 import Billing from './components/Billing/Billing.js';
 import BillingEvent from './components/BillingEvent/BillingEvent.js';
-import Footer from './components/Footer/Footer.js';
 import { FaBars } from 'react-icons/fa';
 
 function App() {
 	const navigate = useNavigate();
-	const pathName = window.location.pathname;
 	const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
 	const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
@@ -46,6 +42,7 @@ function App() {
 				<div className={`btns ${isNavCollapsed ? 'collapse' : 'expanded'}`}>
 					<Button className='myevntsbtn'>
 						<a
+							rel='noopener noreferrer'
 							target='_blank'
 							style={{ color: 'white' }}
 							href='https://www.purcycling.com/_files/ugd/4d62fb_ac0a7bb316a546d6b21ec64ca5bc95b5.pdf'>
@@ -58,6 +55,7 @@ function App() {
 							'collapseMargin'
 						}`}>
 						<a
+							rel='noopener noreferrer'
 							target='_blank'
 							style={{ color: 'white' }}
 							href='https://www.purcycling.com/_files/ugd/4d62fb_18b94b145fde4a9caf64375f33b9ef51.pdf'>
