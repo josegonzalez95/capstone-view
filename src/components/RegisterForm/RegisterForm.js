@@ -461,9 +461,9 @@ function RegisterForm() {
 		setState((prevState) => {
 			return { ...prevState, paymentConfirmed: true };
 		});
-		navigate(`/registerParticipant/${eventId}`, {
-			state: { isRegister: true },
-		});
+		// navigate(`/registerParticipant/${eventId}`, {
+		// 	state: { isRegister: true },
+		// });
 	};
 
 	const datetime = event ? event.date : '';
@@ -1090,9 +1090,10 @@ function RegisterForm() {
 					setState((prevState) => {
 						return { ...prevState, paymentConfirmed: false };
 					});
-					navigate(`/registerParticipant/${eventId}`, {
-						state: { isRegister: true },
-					});
+					// navigate(`/registerParticipant/${eventId}`, {
+					// 	state: { isRegister: true },
+					// });
+					window.location.href = 'https://www.purcycling.com/eventos';
 				}}
 				// onOpen={() =>
 				// 	setState((prevState) => {
