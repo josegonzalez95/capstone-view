@@ -31,6 +31,16 @@
 	background-color: #38729b !important;
 }
 
+.PP {
+	font-weight: bold !important;
+	margin-right: 1rem !important;
+	color: white !important;
+	background-color: #104975 !important;
+}
+
+.PP:hover {
+	background-color: #38729b !important;
+}
 /* .btns { */
 /* margin-right: 0.75rem !important; */
 /* background-color: blue !important; */
