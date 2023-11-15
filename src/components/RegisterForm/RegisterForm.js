@@ -461,9 +461,9 @@ function RegisterForm() {
 		setState((prevState) => {
 			return { ...prevState, paymentConfirmed: true };
 		});
-		// navigate(`/registerParticipant/${eventId}`, {
-		// 	state: { isRegister: true },
-		// });
+		navigate(`/registerParticipant/${eventId}`, {
+			state: { isRegister: true },
+		});
 	};
 
 	const datetime = event ? event.date : '';
