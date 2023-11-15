@@ -1087,13 +1087,14 @@ function RegisterForm() {
 			</Modal>
 			<Modal
 				onClose={() => {
+					window.location.replace('https://www.purcycling.com/eventos');
 					setState((prevState) => {
 						return { ...prevState, paymentConfirmed: false };
 					});
 					// navigate(`/registerParticipant/${eventId}`, {
 					// 	state: { isRegister: true },
 					// });
-					window.location.href = 'https://www.purcycling.com/eventos';
+					// window.location.href = 'https://www.purcycling.com/eventos';
 				}}
 				// onOpen={() =>
 				// 	setState((prevState) => {
