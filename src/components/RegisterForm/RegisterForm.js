@@ -1133,9 +1133,7 @@ function RegisterForm() {
 						// className={styles.btns}
 						color='green'
 						onClick={(e) => {
-							navigate(`/registerParticipant/${eventId}`, {
-								state: { isRegister: true },
-							});
+							window.location.replace('https://www.purcycling.com/eventos');
 						}}>
 						Close
 					</Button>
