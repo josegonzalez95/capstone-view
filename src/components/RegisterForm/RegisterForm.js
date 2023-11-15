@@ -453,9 +453,18 @@ function RegisterForm() {
 				name: '',
 				email: '',
 				phone: '',
-				address: '',
+				gender: 'X',
+				address: 'X',
 				birthdate: new Date(),
-				category: '',
+				category: 'X',
+				waiver_signature: false,
+				customValues: [
+					{
+						value: '',
+						cfid: '',
+						col_name: '',
+					},
+				],
 			},
 		]);
 		setState((prevState) => {
