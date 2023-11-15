@@ -49,6 +49,7 @@ const FormFields = () => {
 		getFields().catch((err) => {
 			console.error(err);
 		});
+		// eslint-disable-next-line
 	}, []);
 	console.log(state.customFields);
 	return (
@@ -464,9 +465,6 @@ const FormFields = () => {
 								</Table.Header>
 								<Table.Body>
 									{state.options.map((opt) => {
-										{
-											// console.log(opt);
-										}
 										return (
 											<>
 												<Table.Row>

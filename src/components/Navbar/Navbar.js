@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-scroll';
 import { FaBars } from 'react-icons/fa';
 import { CSSTransition } from 'react-transition-group';
 import styles from './Navbar.module.css';

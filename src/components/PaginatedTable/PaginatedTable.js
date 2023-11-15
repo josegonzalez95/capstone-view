@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Table, Button } from 'semantic-ui-react';
-import { useStripe } from '@stripe/react-stripe-js';
 
 function PaginatedTable({ participants }) {
 	const itemsPerPage = 10;
@@ -26,20 +25,20 @@ function PaginatedTable({ participants }) {
 		}
 	};
 
-	const renderPageNumbers = () => {
-		const pageNumbers = [];
-		for (let i = 1; i <= totalPages; i++) {
-			pageNumbers.push(
-				<Button
-					key={i}
-					className={i === currentPage ? 'active' : ''}
-					onClick={() => handlePageChange(i)}>
-					{i}
-				</Button>
-			);
-		}
-		return pageNumbers;
-	};
+	// const renderPageNumbers = () => {
+	// 	const pageNumbers = [];
+	// 	for (let i = 1; i <= totalPages; i++) {
+	// 		pageNumbers.push(
+	// 			<Button
+	// 				key={i}
+	// 				className={i === currentPage ? 'active' : ''}
+	// 				onClick={() => handlePageChange(i)}>
+	// 				{i}
+	// 			</Button>
+	// 		);
+	// 	}
+	// 	return pageNumbers;
+	// };
 
 	return (
 		<div style={{ width: '100%', marginBottom: '2rem' }}>

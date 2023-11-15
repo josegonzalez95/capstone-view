@@ -4,10 +4,7 @@ import { getEvent } from '../../api/Events/eventsRoutes';
 import styles from './Event.module.css';
 import { numberOfParticipants } from '../../api/Participants/participantsRoute';
 import CsvDownloader from 'react-csv-downloader';
-import {
-	getAllParticipantsByEvent,
-	getAllParticipantsByEventWithCustomFields,
-} from '../../api/Events/eventsRoutes';
+import { getAllParticipantsByEventWithCustomFields } from '../../api/Events/eventsRoutes';
 import MyMapComponent from '../Map/MyMapComponent';
 // import Image from "../Image/Image";
 // const { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader } = require("@react-google-maps/api");
@@ -25,7 +22,6 @@ import ResizableImage from '../ResizableImage/ResizableImage';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import MessageBar from '../MessageBar/MessageBar';
 import {
-	getCustomField,
 	createCustomField,
 	createOption,
 	getOptions,
@@ -94,53 +90,53 @@ function Event() {
 		console.log('use effect', lat, lng);
 	}, []);
 
-	useEffect(() => {
-		const getParts = async () => {
-			// const participants = await asyncGetParticipants();
-			// const getCustomFieldsResponse = await getCustomField({ eventid: id });
-			// setCustomFields(getCustomFieldsResponse.eventCustomFields.customFields);
-			// setParticipants(participants);
-			// const res = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
-			//   method: 'POST',
-			//   body:JSON.stringify({
-			//     paymentId:"pi_3Nyd3JDhrjzxPiXM48vQZ7B5"
-			//   }),
-			//   headers: {
-			//     "Content-Type": "application/json",
-			//   },
-			// });
-			// const {paymentIntent} = await res.json()
-			// console.log(paymentIntent.status)
-			// let participantsResult = []
-			// async function processList() {
-			//   const results = await Promise.all(participants.map(async (item) => {
-			//     // console.log(item)
-			//     const result = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
-			//       method: 'POST',
-			//       body:JSON.stringify({
-			//         paymentId:item.paymentdetails
-			//       }),
-			//       headers: {
-			//         "Content-Type": "application/json",
-			//       },
-			//     });
-			//     const response = await result.json()
-			//     // return response.paymentIntent.status
-			//     let status = response.paymentIntent.status
-			//     // ==='succeeded' ? response.paymentIntent.status:"failed"
-			//     return {...item, paymentdetails: status}
-			//   }));
-			//   console.log(results);
-			//   participantsResult = results
-			// }
-			// // Call the async function to start processing the list
-			// await processList();
-			// setParticipants(participantsResult)
-			// console.log(participants);
-			// setParticipants(participants);
-		};
-		// getParts().catch(console.error);
-	}, []);
+	// useEffect(() => {
+	// const getParts = async () => {
+	// const participants = await asyncGetParticipants();
+	// const getCustomFieldsResponse = await getCustomField({ eventid: id });
+	// setCustomFields(getCustomFieldsResponse.eventCustomFields.customFields);
+	// setParticipants(participants);
+	// const res = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
+	//   method: 'POST',
+	//   body:JSON.stringify({
+	//     paymentId:"pi_3Nyd3JDhrjzxPiXM48vQZ7B5"
+	//   }),
+	//   headers: {
+	//     "Content-Type": "application/json",
+	//   },
+	// });
+	// const {paymentIntent} = await res.json()
+	// console.log(paymentIntent.status)
+	// let participantsResult = []
+	// async function processList() {
+	//   const results = await Promise.all(participants.map(async (item) => {
+	//     // console.log(item)
+	//     const result = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent`, {
+	//       method: 'POST',
+	//       body:JSON.stringify({
+	//         paymentId:item.paymentdetails
+	//       }),
+	//       headers: {
+	//         "Content-Type": "application/json",
+	//       },
+	//     });
+	//     const response = await result.json()
+	//     // return response.paymentIntent.status
+	//     let status = response.paymentIntent.status
+	//     // ==='succeeded' ? response.paymentIntent.status:"failed"
+	//     return {...item, paymentdetails: status}
+	//   }));
+	//   console.log(results);
+	//   participantsResult = results
+	// }
+	// // Call the async function to start processing the list
+	// await processList();
+	// setParticipants(participantsResult)
+	// console.log(participants);
+	// setParticipants(participants);
+	// };
+	// getParts().catch(console.error);
+	// }, []);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -150,6 +146,7 @@ function Event() {
 				setShowMessageBar(false);
 			}
 		}, 5000);
+		// eslint-disable-next-line
 	}, [showMessageBar]);
 
 	// let lat;
@@ -313,8 +310,6 @@ function Event() {
 		}
 		// eslint-disable-next-line
 	}, []);
-	const datetime = event ? event.date : '';
-	const [date] = datetime.split('T');
 	return (
 		// {event ? <>{event.details}</>:<>Loading Event</>}
 		event && participants ? (

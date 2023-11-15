@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { Table } from 'semantic-ui-react';
 
 const Order = () => {
-	const { orderId, paymentId } = useParams();
+	const { orderId } = useParams();
 	// console.table(paymentId);
-	const [order, setOrder] = useState(null);
-	const location = useLocation();
+	// const [order, setOrder] = useState(null);
+	// const location = useLocation();
 
-	useEffect(() => {
-		if (location.state && location.state.order) setOrder(location.state.order);
-	});
+	// useEffect(() => {
+	// 	if (location.state && location.state.order) setOrder(location.state.order);
+	// });
 
 	const orderParticipantsResponse = useFetch(
 		`${process.env.REACT_APP_API_URL}/get-order-participants`,

@@ -1,6 +1,6 @@
 import React from 'react';
 import DatePicker from 'react-date-picker';
-import { Dropdown, Form, Select } from 'semantic-ui-react';
+import { Form, Select } from 'semantic-ui-react';
 import styles from './FormPreview.module.css';
 
 const FormPreview = ({ customFields }) => {

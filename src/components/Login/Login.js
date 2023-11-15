@@ -47,6 +47,7 @@ const Login = () => {
 		if (location.state && location.state.isSignUp) {
 			setShowMessageBar(true);
 		}
+		// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
@@ -57,6 +58,7 @@ const Login = () => {
 				setShowMessageBar(false);
 			}
 		}, 5000);
+		// eslint-disable-next-line
 	}, [showMessageBar]);
 
 	// useEffect(()=>{
@@ -116,6 +118,7 @@ const Login = () => {
 				<div className={styles.banner}>
 					{/* PUR Cycling */}
 					<img
+						alt='poster'
 						width={'300rem'}
 						src={image}
 					/>

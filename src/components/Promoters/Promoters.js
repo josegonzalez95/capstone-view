@@ -13,8 +13,8 @@ import {
 	Label,
 	Select,
 } from 'semantic-ui-react';
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate, useLocation, redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
 	createEvent,
 	getEventsByPromoter,
@@ -107,6 +107,7 @@ function Promoters(props) {
 			setEvents(events);
 		};
 		evnts().catch(console.error);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	// let allEvents = []
 
@@ -151,6 +152,7 @@ function Promoters(props) {
 	useEffect(() => {
 		console.log('is form valid', isFormValid());
 		if (isFormValid()) setOpen(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [validationErrors]);
 
 	const handleValidation = (event) => {
@@ -403,6 +405,7 @@ function Promoters(props) {
 				setShowDeleteMessageBar(false);
 			}
 		}, 5000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showUpdateMessageBar, showLoginMessageBar, showDeleteMessageBar]);
 
 	return (
@@ -868,6 +871,11 @@ function Promoters(props) {
 												};
 
 												console.log(eventBodySend);
+												setState(
+													...(prevState) => {
+														return { ...prevState, createEvent: true };
+													}
+												);
 												const result = await createEvent(eventBodySend);
 												// console.log(result)
 												// console.log(result.newEvent)

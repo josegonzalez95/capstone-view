@@ -2,14 +2,10 @@
 
 import DatePicker from 'react-date-picker';
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, redirect } from 'react-router-dom';
-import { Form, Modal, Button, Icon, Label, Select } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
+import { Form, Modal, Button, Label, Select } from 'semantic-ui-react';
 import { getEvent } from '../../api/Events/eventsRoutes';
 import styles from './RegisterForm.module.css';
-import { createParticipant } from '../../api/Participants/participantsRoute.js';
-import { createTicket } from '../../api/Tickets/ticketsRoutes';
-import { createOrder } from '../../api/Orders/ordersRoutes';
-import { Dropdown } from 'semantic-ui-react';
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
 import { createTotalOrder } from '../../api/TotalOrder/TotalOrder';
@@ -26,9 +22,6 @@ import CheckoutForm from '../Stripe/CheckoutForm';
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
 // import { useJsApiLoader } from '@react-google-maps/api';
-
-import StripeCheckoutButton from '../StripeBtn/StripeBtn';
-import PayPal from '../PayPal/PayPal';
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
 
@@ -86,9 +79,7 @@ function RegisterForm() {
 	// const position = {lat:0, lng:0}
 	const [changeState, setChangeState] = useState(false);
 	const [open, setOpen] = useState(false);
-	const [invalidFields, setInvalidFields] = useState([]);
 	const [isEmailValid, setIsEmailValid] = useState(true);
-	const navigate = useNavigate();
 	const [customFields, setCustomFields] = useState([]);
 	const [loading, setLoading] = useState(false);
 
@@ -104,19 +95,21 @@ function RegisterForm() {
 			);
 		};
 		getFields().catch(console.error);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	// console.log(eventId)
 	// console.log(window.location.pathname)
 	const [event, setEvent] = useState();
 	const [numOfParticipants, setNumOfParticipants] = useState(numOfTickets);
 
-	const [disabled, setDisabled] = useState(true); //this controls the clickability of the order confirmation button
+	// const [disabled, setDisabled] = useState(true);
+	//this controls the clickability of the order confirmation button
 	const [paymentMethod, setPaymentMehtod] = useState(''); //this controls what payment method the order receives
 
 	// pk_test_6pRNASCoBOKtIshFeQd4XMUh
 	const stripePromise = loadStripe(process.env.REACT_APP_PUBLIC_KEY);
 
-	const amount = event ? event.price * numOfParticipants : 0;
+	// const amount = event ? event.price * numOfParticipants : 0;
 
 	const options = {
 		mode: 'payment',
@@ -129,14 +122,14 @@ function RegisterForm() {
 		},
 	};
 
-	const onDateChange = (e, i) => {
-		console.log(new Date(e));
+	// const onDateChange = (e, i) => {
+	// 	console.log(new Date(e));
 
-		participantsInfo[i] = { ...participantsInfo[i], birthdate: e };
-		console.log(participantsInfo);
-		setParticipantsInfo(participantsInfo);
-		setChangeState(!changeState);
-	};
+	// 	participantsInfo[i] = { ...participantsInfo[i], birthdate: e };
+	// 	console.log(participantsInfo);
+	// 	setParticipantsInfo(participantsInfo);
+	// 	setChangeState(!changeState);
+	// };
 
 	//  use effect hook used to load event data before rendering component
 	useEffect(() => {
@@ -154,75 +147,75 @@ function RegisterForm() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const categoryOptions = [
-		{
-			key: 'infantiles-13-14',
-			value: 'Infantiles 13-14',
-			text: 'Infantiles 13-14',
-		},
-		{ key: 'cadete-15-16', value: 'Cadete 15-16', text: 'Cadete 15-16' },
-		{ key: 'junior-17-18', value: 'Junior 17-18', text: 'Junior 17-18' },
-		{ key: 'elite-open-19+', value: 'Elite open 19+', text: 'Elite open 19+' },
-		{ key: 'master-30-39', value: 'Master 30-39', text: 'Master 30-39' },
-		{ key: 'master-40-49', value: 'Master 40-49', text: 'Master 40-49' },
-		{ key: 'master-50-59', value: 'Master 50-59', text: 'Master 50-59' },
-		{ key: 'master-60+', value: 'Master 60+', text: 'Master 60+' },
-		{
-			key: 'aficionados-open',
-			value: 'Aficionados Open',
-			text: 'Aficionados Open',
-		},
-		{
-			key: 'categoria-pueblo',
-			value: 'Categoría Pueblo (No Federado)',
-			text: 'Categoría Pueblo (No Federado)',
-		},
-		{
-			key: 'infantiles-13-14',
-			value: 'Feminas Infantiles 13-14',
-			text: 'Feminas Infantiles 13-14',
-		},
-		{
-			key: 'cadete-15-16',
-			value: 'Feminas Cadete 15-16',
-			text: 'Feminas Cadete 15-16',
-		},
-		{
-			key: 'junior-17-18',
-			value: 'Feminas Junior 17-18',
-			text: 'Feminas Junior 17-18',
-		},
-		{
-			key: 'elite-open',
-			value: 'Feminas Elites open',
-			text: 'Feminas Elites open',
-		},
-		{
-			key: 'master-30-39',
-			value: 'Feminas Master 30-39',
-			text: 'Feminas Master 30-39',
-		},
-		{
-			key: 'master-40-49',
-			value: 'Feminas Master 40-49',
-			text: 'Feminas Master 40-49',
-		},
-		{
-			key: 'master-50+',
-			value: 'Feminas Master 50+',
-			text: 'Feminas Master 50+',
-		},
-		{
-			key: 'aficionada-open',
-			value: 'Feminas Aficionada Open',
-			text: 'Feminas Aficionada Open',
-		},
-		{
-			key: 'categoria-pueblo',
-			value: 'Feminas Categoría Pueblo (No Federada)',
-			text: 'Feminas Categoría Pueblo (No Federada)',
-		},
-	];
+	// const categoryOptions = [
+	// 	{
+	// 		key: 'infantiles-13-14',
+	// 		value: 'Infantiles 13-14',
+	// 		text: 'Infantiles 13-14',
+	// 	},
+	// 	{ key: 'cadete-15-16', value: 'Cadete 15-16', text: 'Cadete 15-16' },
+	// 	{ key: 'junior-17-18', value: 'Junior 17-18', text: 'Junior 17-18' },
+	// 	{ key: 'elite-open-19+', value: 'Elite open 19+', text: 'Elite open 19+' },
+	// 	{ key: 'master-30-39', value: 'Master 30-39', text: 'Master 30-39' },
+	// 	{ key: 'master-40-49', value: 'Master 40-49', text: 'Master 40-49' },
+	// 	{ key: 'master-50-59', value: 'Master 50-59', text: 'Master 50-59' },
+	// 	{ key: 'master-60+', value: 'Master 60+', text: 'Master 60+' },
+	// 	{
+	// 		key: 'aficionados-open',
+	// 		value: 'Aficionados Open',
+	// 		text: 'Aficionados Open',
+	// 	},
+	// 	{
+	// 		key: 'categoria-pueblo',
+	// 		value: 'Categoría Pueblo (No Federado)',
+	// 		text: 'Categoría Pueblo (No Federado)',
+	// 	},
+	// 	{
+	// 		key: 'infantiles-13-14',
+	// 		value: 'Feminas Infantiles 13-14',
+	// 		text: 'Feminas Infantiles 13-14',
+	// 	},
+	// 	{
+	// 		key: 'cadete-15-16',
+	// 		value: 'Feminas Cadete 15-16',
+	// 		text: 'Feminas Cadete 15-16',
+	// 	},
+	// 	{
+	// 		key: 'junior-17-18',
+	// 		value: 'Feminas Junior 17-18',
+	// 		text: 'Feminas Junior 17-18',
+	// 	},
+	// 	{
+	// 		key: 'elite-open',
+	// 		value: 'Feminas Elites open',
+	// 		text: 'Feminas Elites open',
+	// 	},
+	// 	{
+	// 		key: 'master-30-39',
+	// 		value: 'Feminas Master 30-39',
+	// 		text: 'Feminas Master 30-39',
+	// 	},
+	// 	{
+	// 		key: 'master-40-49',
+	// 		value: 'Feminas Master 40-49',
+	// 		text: 'Feminas Master 40-49',
+	// 	},
+	// 	{
+	// 		key: 'master-50+',
+	// 		value: 'Feminas Master 50+',
+	// 		text: 'Feminas Master 50+',
+	// 	},
+	// 	{
+	// 		key: 'aficionada-open',
+	// 		value: 'Feminas Aficionada Open',
+	// 		text: 'Feminas Aficionada Open',
+	// 	},
+	// 	{
+	// 		key: 'categoria-pueblo',
+	// 		value: 'Feminas Categoría Pueblo (No Federada)',
+	// 		text: 'Feminas Categoría Pueblo (No Federada)',
+	// 	},
+	// ];
 
 	const [validationErrors, setValidationErrors] = useState([]);
 	const [isChecked, setIsChecked] = useState(false);
@@ -255,7 +248,7 @@ function RegisterForm() {
 
 		if (!participant.phone) {
 			errors.phone = 'Phone is required';
-		} else if (participant.phone.length != 10) {
+		} else if (participant.phone.length !== 10) {
 			errors.phone = 'Wrong phone number';
 		} else {
 			delete errors.phone;
@@ -299,10 +292,10 @@ function RegisterForm() {
 		return errors;
 	};
 
-	const isValidEmail = (email) => {
-		// Implement your email validation logic here
-		return true;
-	};
+	// const isValidEmail = (email) => {
+	// 	// Implement your email validation logic here
+	// 	return true;
+	// };
 
 	useEffect(() => {
 		if (isFormValid()) {
@@ -312,6 +305,7 @@ function RegisterForm() {
 			// 	handleSubmit('free', 'free', 'free', 0);
 			// }
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [validationErrors]);
 
 	const handleValidation = () => {
@@ -332,10 +326,10 @@ function RegisterForm() {
 	//   participants creation, first it creates participants and collect their ids
 	//   then it create the order and collect its id
 	//   finally it create the tickets for the participants and the order
-	const getTotalParticipants = () => {
-		console.log(numOfParticipants);
-		return numOfParticipants;
-	};
+	// const getTotalParticipants = () => {
+	// 	console.log(numOfParticipants);
+	// 	return numOfParticipants;
+	// };
 	const handleSubmit = async (
 		paymentIntentId,
 		receipt_url,
@@ -372,7 +366,7 @@ function RegisterForm() {
 				waiver_form: event.waiver_form,
 			},
 		};
-		let listOfParticipantId = [];
+		// let listOfParticipantId = [];
 
 		console.log(participantsInfo);
 		console.log(orderCreator);
@@ -442,10 +436,12 @@ function RegisterForm() {
 			transaction_fee: transaction_fee,
 		};
 
-		const orderResponse = await createTotalOrder(orderBodySend);
+		// const orderResponse =
+		await createTotalOrder(orderBodySend);
 
 		setPaymentMehtod(''); //resets the payment method back to blank
-		setDisabled(true); //disables the order confirmation button after a successful confirmation
+		// setDisabled(true);
+		//disables the order confirmation button after a successful confirmation
 
 		setNumOfParticipants(1);
 		setParticipantsInfo([
@@ -475,8 +471,8 @@ function RegisterForm() {
 		// });
 	};
 
-	const datetime = event ? event.date : '';
-	const [date] = datetime.split('T');
+	// const datetime = event ? event.date : '';
+	// const [date] = datetime.split('T');
 
 	return event ? (
 		<div className={styles.parent}>
@@ -749,7 +745,7 @@ function RegisterForm() {
 															console.log(e.target.textContent.toLowerCase());
 															setParticipantsInfo((prevParticipantsInfo) => {
 																const updatedInfo = [...prevParticipantsInfo];
-																const propName = field.name;
+																// const propName = field.name;
 																updatedInfo[i]['customValues'][index] = {
 																	value: e.target.textContent.toLowerCase(),
 																	cfid: field.id,
@@ -779,7 +775,7 @@ function RegisterForm() {
 																			const updatedInfo = [
 																				...prevParticipantsInfo,
 																			];
-																			const propName = field.name;
+																			// const propName = field.name;
 																			updatedInfo[i]['customValues'][index] = {
 																				value: e.target.textContent,
 																				cfid: field.id,
@@ -809,7 +805,7 @@ function RegisterForm() {
 																			const updatedInfo = [
 																				...prevParticipantsInfo,
 																			];
-																			const propName = field.name;
+																			// const propName = field.name;
 																			updatedInfo[i]['customValues'][index] = {
 																				value: e.target.value,
 																				cfid: field.id,
@@ -839,7 +835,7 @@ function RegisterForm() {
 															let value = e.target.value.replace(/\D/g, '');
 															setParticipantsInfo((prevParticipantsInfo) => {
 																const updatedInfo = [...prevParticipantsInfo];
-																const propName = field.name;
+																// const propName = field.name;
 																updatedInfo[i]['customValues'][index] = {
 																	value,
 																	cfid: field.id,
@@ -868,7 +864,7 @@ function RegisterForm() {
 
 																setParticipantsInfo((prevParticipantsInfo) => {
 																	const updatedInfo = [...prevParticipantsInfo];
-																	const propName = field.name;
+																	// const propName = field.name;
 																	updatedInfo[i]['customValues'][index] = {
 																		value: e,
 																		cfid: field.id,
@@ -915,7 +911,8 @@ function RegisterForm() {
 								<a
 									style={{ color: 'white', marginLeft: '1rem' }}
 									href={event.waiver_form}
-									target='_blank'>
+									target='_blank'
+									rel='noopener noreferrer'>
 									<span>{'<'}</span>Release of responsibility<span>{'>'}</span>
 								</a>
 								{validationErrors[i] &&

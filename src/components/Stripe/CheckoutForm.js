@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { loadStripe } from '@stripe/stripe-js';
-import { useNavigate } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 import styles from './CheckoutForm.module.css';
 
 import {
 	PaymentElement,
-	Elements,
 	useStripe,
 	useElements,
 } from '@stripe/react-stripe-js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStripe } from '@fortawesome/free-brands-svg-icons';
 
 const CheckoutForm = ({
 	amount,
@@ -22,15 +16,13 @@ const CheckoutForm = ({
 	numOfParticipants,
 	validateEmail,
 	setIsEmailValid,
-	service_fee,
-	transaction_fee,
 }) => {
 	const stripe = useStripe();
 	const elements = useElements();
-	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 	useEffect(() => {
 		setIsEmailValid(true);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const options = {
@@ -83,10 +75,10 @@ const CheckoutForm = ({
 		});
 		console.log(res);
 
-		const { client_secret: clientSecret, pi: pi, paymentId } = await res.json();
+		const { client_secret: clientSecret, pi } = await res.json();
 		// submitParticipants()
 
-		const { error, paymentIntent } = await stripe.confirmPayment({
+		const { error } = await stripe.confirmPayment({
 			//`Elements` instance that was used to create the Payment Element
 			elements,
 			clientSecret: clientSecret,
@@ -246,7 +238,7 @@ const CheckoutForm = ({
 			<p>{/* Powered by <FontAwesomeIcon icon={faStripe} size="2xl"/> */}</p>
 
 			{/* Show error message to your customers */}
-			{/* {errorMessage && <div>{errorMessage}</div>} */}
+			{errorMessage && <div>{errorMessage}</div>}
 		</form>
 	);
 };

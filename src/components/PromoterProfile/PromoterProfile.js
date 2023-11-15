@@ -56,6 +56,7 @@ const PromoterProfile = ({ id }) => {
 	useEffect(() => {
 		console.log('is form valid', isFormValid());
 		if (isFormValid()) setOpen(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [validationErrors]);
 
 	const handleValidation = () => {

@@ -103,6 +103,7 @@ const Signup = () => {
 						<img
 							width={'300rem'}
 							src={image}
+							alt='poster'
 						/>
 					</div>
 					<div className={styles.form}>

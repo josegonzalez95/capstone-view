@@ -1,7 +1,7 @@
 // this component show event information to participants and provides a form to registed as many participants the client wants
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Modal, Button, Select, Form } from 'semantic-ui-react';
+import { Modal, Button } from 'semantic-ui-react';
 import { getEvent } from '../../api/Events/eventsRoutes';
 import styles from './Register.module.css';
 import MyMapComponent from '../Map/MyMapComponent';
@@ -146,10 +146,8 @@ function Event() {
 				setShowRegisterMessageBar(false);
 			}
 		}, 5000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showRegisterMessgeBar]);
-
-	const datetime = event ? event.date : '';
-	const [date] = datetime.split('T');
 
 	// console.log('Date:', date); // Date: 2023-04-13
 	// console.log('Time:', time.slice(0, -5)); // Time: 08:00:00

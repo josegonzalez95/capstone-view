@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import useFetch from '../../hooks/useFetch';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
-import CsvDownloader from 'react-csv-downloader';
 import { eventOrders } from '../../api/Orders/ordersRoutes';
 
 const BillingEvent = () => {
 	const { eventId } = useParams();
-	const { data, error } = useFetch(
-		`${process.env.REACT_APP_API_URL}/search-payments`,
-		{ eventId: Number(eventId) }
-	);
+	// const { data, error } = useFetch(
+	// 	`${process.env.REACT_APP_API_URL}/search-payments`,
+	// 	{ eventId: Number(eventId) }
+	// );
 	// const [loading, setLoading] = useState(true)
-	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
 	const itemsPerPage = 10;
 	const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +34,7 @@ const BillingEvent = () => {
 			setLoading(false);
 		};
 		getOrders().catch(console.error);
+		// eslint-disable-next-line
 	}, []);
 
 	let totalRevenue = 0;
@@ -50,42 +48,42 @@ const BillingEvent = () => {
 		});
 	}
 
-	const exportDocument = async () => {
-		// let result = [
-		//   "Total Revenue", `$${totalRevenue/100}`,
-		console.log('la mierda');
-		// ]
-		const res = await fetch(
-			`${process.env.REACT_APP_API_URL}/search-payments`,
-			{
-				method: 'POST',
-				body: JSON.stringify({ eventId: Number(eventId) }),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-		console.log(res);
-		const data = await res.json();
-		// return data
-		console.log(data);
-		// return JSON.parse(data)
-		// const result = data.json()
-		const result = data.paymentIntent.data.map((order) => {
-			const { metadata, created, ...newOrder } = order;
-			return {
-				...newOrder,
-				order_id: metadata.order_id,
-				created: new Date(created * 1000).toLocaleString('default', {
-					month: 'long',
-					day: '2-digit',
-					year: 'numeric',
-				}),
-			};
-		});
-		// console.log(result)
-		return result;
-	};
+	// const exportDocument = async () => {
+	// 	// let result = [
+	// 	//   "Total Revenue", `$${totalRevenue/100}`,
+	// 	console.log('la mierda');
+	// 	// ]
+	// 	const res = await fetch(
+	// 		`${process.env.REACT_APP_API_URL}/search-payments`,
+	// 		{
+	// 			method: 'POST',
+	// 			body: JSON.stringify({ eventId: Number(eventId) }),
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 			},
+	// 		}
+	// 	);
+	// 	console.log(res);
+	// 	const data = await res.json();
+	// 	// return data
+	// 	console.log(data);
+	// 	// return JSON.parse(data)
+	// 	// const result = data.json()
+	// 	const result = data.paymentIntent.data.map((order) => {
+	// 		const { metadata, created, ...newOrder } = order;
+	// 		return {
+	// 			...newOrder,
+	// 			order_id: metadata.order_id,
+	// 			created: new Date(created * 1000).toLocaleString('default', {
+	// 				month: 'long',
+	// 				day: '2-digit',
+	// 				year: 'numeric',
+	// 			}),
+	// 		};
+	// 	});
+	// 	// console.log(result)
+	// 	return result;
+	// };
 
 	const handlePageChange = (newPage) => {
 		if (newPage >= 1 && newPage <= totalPages) {

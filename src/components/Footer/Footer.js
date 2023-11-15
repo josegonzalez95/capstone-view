@@ -8,6 +8,7 @@ const Footer = () => {
 				<div className={styles.footerTextContainer}>
 					<span className={styles.footerText}>
 						<a
+							rel='noopener noreferrer'
 							target='_blank'
 							style={{ color: 'white' }}
 							href='https://www.purcycling.com/_files/ugd/4d62fb_18b94b145fde4a9caf64375f33b9ef51.pdf'>
@@ -17,6 +18,7 @@ const Footer = () => {
 					&nbsp;|
 					<span className={styles.footerText}>
 						<a
+							rel='noopener noreferrer'
 							target='_blank'
 							style={{ color: 'white' }}
 							href='https://www.purcycling.com/_files/ugd/4d62fb_ac0a7bb316a546d6b21ec64ca5bc95b5.pdf'>
