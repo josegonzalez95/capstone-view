@@ -31,7 +31,7 @@ function App() {
 			<nav className='navBar'>
 				<a
 					className='title'
-					href='/'>
+					href='https://www.purcycling.com/eventos'>
 					<img
 						width={'125rem'}
 						src={image}
@@ -40,11 +40,24 @@ function App() {
 				</a>
 
 				<div className={`btns ${isNavCollapsed ? 'collapse' : 'expanded'}`}>
-					<Button className='myevntsbtn'>
+					<Button
+						className={`myevntsbtn ${
+							JSON.parse(localStorage.getItem('user')) === null &&
+							'collapseMargin'
+						}`}>
+						<a
+							style={{ color: 'white', marginBottom: '0px' }}
+							href='https://www.purcycling.com/eventos'>
+							Events
+						</a>
+					</Button>
+					<Button
+						className='PP'
+						style={{ marginTop: '0px' }}>
 						<a
 							rel='noopener noreferrer'
 							target='_blank'
-							style={{ color: 'white' }}
+							style={{ color: 'white', marginTop: '0px' }}
 							href='https://www.purcycling.com/_files/ugd/4d62fb_ac0a7bb316a546d6b21ec64ca5bc95b5.pdf'>
 							Privacy Policy
 						</a>
