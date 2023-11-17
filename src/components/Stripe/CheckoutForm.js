@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon, Message } from 'semantic-ui-react';
 import styles from './CheckoutForm.module.css';
 
 import {
@@ -95,6 +95,7 @@ const CheckoutForm = ({
 			// details incomplete)
 			console.log('error was here');
 			setErrorMessage(error.message);
+			setLoading(false);
 		} else {
 			const res = await fetch(
 				`${process.env.REACT_APP_API_URL}/get-payment-intent`,
@@ -238,7 +239,26 @@ const CheckoutForm = ({
 			<p>{/* Powered by <FontAwesomeIcon icon={faStripe} size="2xl"/> */}</p>
 
 			{/* Show error message to your customers */}
-			{errorMessage && <div>{errorMessage}</div>}
+			{errorMessage && (
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'flex-end',
+					}}>
+					<Message
+						negative
+						style={{
+							width: 'fit-content',
+						}}>
+						<Message.Header>
+							<Icon name='warning circle'></Icon>
+							{errorMessage} Verify your card details or if it has sufficient
+							funds and Try again.
+						</Message.Header>
+						{/* <p>That offer has expired</p> */}
+					</Message>
+				</div>
+			)}
 		</form>
 	);
 };
