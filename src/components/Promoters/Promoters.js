@@ -871,11 +871,9 @@ function Promoters(props) {
 												};
 
 												console.log(eventBodySend);
-												setState(
-													...(prevState) => {
-														return { ...prevState, createEvent: true };
-													}
-												);
+												setState((prevState) => {
+													return { ...prevState, createEvent: true };
+												});
 												const result = await createEvent(eventBodySend);
 												// console.log(result)
 												// console.log(result.newEvent)
